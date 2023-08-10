@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ee7c7471f2edd542993e4fdfc8f6a79, type: 3}
+  m_Name: MachineGun_MG-RD20
+  m_EditorClassIdentifier: 
+  GUID:
+    m_guid: 6057d4243e344e169a34b607bd7a6403
+  DisplayName: MG-RD20
+  UseCount: 480
+  UseRatePerSecond: 8
+  TargetLayers: 15
+  Damage: 1
+  CollisionRadius: 1
+  Lifetime: 3
+  Velocity: 520
+  TargetingMinDot: 0.82
+  TargetingCameraDotScore: 1
+  TargetingComponentDotScore: 0.05
+  TargetingDistance: 450
+  TargetingOptimalDistance: 100
+  TargetingDistanceScoreMultiplier: 0.2
+  HUDPrefab: {fileID: 807154664928231954, guid: 289e2a89775c7964ba1f911480f4e556,
+    type: 3}
+  HUD_ValidTarget: {fileID: 1899606932, guid: 6f1d423766ba1204ca4912040a6af123, type: 3}
+  HUD_ValidTarget_Size: 35
+  HUD_ActiveTarget: {fileID: 110146325, guid: 6f1d423766ba1204ca4912040a6af123, type: 3}
+  HUD_ActiveTarget_Size: 48
+  HUD_Prediction: {fileID: 1282217232, guid: 6f1d423766ba1204ca4912040a6af123, type: 3}
+  HUD_Prediction_Size: 40

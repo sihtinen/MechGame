@@ -1,0 +1,30 @@
+fileFormatVersion: 2
+guid: 2dc9aa6cf265cd448ae7d526cbeb0324
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Schibsted Grotesk
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 99dbfb8fdfc439f4c91f8d603a0eee1e, type: 3}
+  - {fileID: 12800000, guid: 3391c3a9c2a7d954e8961b44c28397de, type: 3}
+  - {fileID: 12800000, guid: 16d119595e33d82448aec5a138b9cc43, type: 3}
+  - {fileID: 12800000, guid: 7c257c28dfdf1a8438ac82ded6fb84de, type: 3}
+  - {fileID: 12800000, guid: e6426cb281c90124db15a75127a3714c, type: 3}
+  - {fileID: 12800000, guid: 3a5578385dba500458a19c224854e153, type: 3}
+  - {fileID: 12800000, guid: 64342da44d7eee047914b04df2063d47, type: 3}
+  - {fileID: 12800000, guid: c4dcabe282f03d840b9471c0d5c3c613, type: 3}
+  - {fileID: 12800000, guid: 231127929bbd4ec47aa2129983b2d43e, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

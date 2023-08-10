@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5773c11c98f3d946a46c54a992a2350, type: 3}
+  m_Name: Thruster_THS-100
+  m_EditorClassIdentifier: 
+  GUID:
+    m_guid: c4bd2ae57b7d41eaade5835e6b32f490
+  DisplayName: THS-100
+  RechargeRate: 7
+  EnableThrust_Normal: 1
+  HorizontalForce_Normal: 8000
+  VerticalForce_Normal: 1000
+  EnergyDrainRate_Normal: 10
+  EnableThrust_Boost: 1
+  HorizontalForce_Boost: 1500
+  VerticalForce_Boost: 7400
+  EnergyDrainRate_Boost: 28
+  HUDPrefab: {fileID: 178931032519082355, guid: 12e7eb9a56eeb114e81517880f7e6687,
+    type: 3}

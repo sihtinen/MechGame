@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a88c68c85a5b4d4cbc3adf398dc6aae, type: 3}
+  m_Name: Context Processor Settings
+  m_EditorClassIdentifier: 
+  ResultInterpolationSteps: 8
+  ResultSmoothTime: 0.4
+  CollisionSphereRadius: 7.49
+  SampleLayers:
+  - SampleCount: 1
+    CollisionDistance: 0
+    HeightOffset: 80
+  - SampleCount: 9
+    CollisionDistance: 66
+    HeightOffset: 60
+  - SampleCount: 14
+    CollisionDistance: 70
+    HeightOffset: 40
+  - SampleCount: 16
+    CollisionDistance: 80
+    HeightOffset: 0
+  - SampleCount: 14
+    CollisionDistance: 70
+    HeightOffset: -40
+  - SampleCount: 9
+    CollisionDistance: 66
+    HeightOffset: -60
+  - SampleCount: 1
+    CollisionDistance: 0
+    HeightOffset: -80
