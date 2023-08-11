@@ -11,6 +11,7 @@ public class ContextEntity : MonoBehaviour
     [NonEditable] public float Result_Value = 0;
     [NonEditable] public Vector3 Result_Offset = Vector3.zero;
 
+    [NonSerialized] public bool JobUpdateEnabled = true;
     [NonSerialized] public int SamplerCount = 0;
     [NonSerialized] public ContextData Data;
     [NonSerialized] public Transform TransformComponent = null;
@@ -95,9 +96,14 @@ public class ContextEntity : MonoBehaviour
     {
         if (m_raycastJob.HasValue)
         {
-            completeRaycastJobAndInitializeSamplers();
-            evaluateProcessors();
-            calculateResults();
+            m_raycastJob.Value.Complete();
+
+            if (JobUpdateEnabled)
+            {
+                initializeSamplers();
+                evaluateProcessors();
+                calculateResults();
+            }
         }
 
         m_didPhysicsUpdate = true;
@@ -143,10 +149,8 @@ public class ContextEntity : MonoBehaviour
         }
     }
 
-    private void completeRaycastJobAndInitializeSamplers()
+    private void initializeSamplers()
     {
-        m_raycastJob.Value.Complete();
-
         for (int i = 0; i < SamplerCount; i++)
         {
             var _sampler = Data.Samplers[i];
@@ -189,11 +193,13 @@ public class ContextEntity : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (m_didPhysicsUpdate)
-        {
-            m_didPhysicsUpdate = false;
+        if (m_didPhysicsUpdate == false)
+            return;
+
+        m_didPhysicsUpdate = false;
+
+        if (JobUpdateEnabled)
             scheduleRaycastJob();
-        }
     }
 
     private void scheduleRaycastJob()

@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using NaughtyAttributes;
 
-public class FlyingMech : RigidBodyEntity
+public class FlyingMech : RigidBodyEntity, IDamageable
 {
+    [NonEditable] public int CurrentHealth;
     [NonEditable] public Vector3 MoveTargetPos;
 
     [Header("Object References")]
@@ -28,25 +29,38 @@ public class FlyingMech : RigidBodyEntity
 
     private ContextEntity m_contextEntity = null;
 
+    public event Action<IDamageable.HealthUpdateParams> OnHealthUpdated = null;
+
     protected override void Awake()
     {
         base.Awake();
 
+        CurrentHealth = m_settings.Health;
+
         MoveTargetPos = TransformComponent.position;
         TryGetComponent(out m_contextEntity);
+    }
+
+    private void Start()
+    {
+        var _healthBar = HealthBarPool.Get();
+        _healthBar.BindToInterface(this);
     }
 
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
 
-        MoveTargetPos = 
-            m_contextEntity.TransformComponent.position + 
-            m_contextEntity.Result_Value * m_contextEntity.Result_Offset;
+        if (CurrentHealth > 0)
+        {
+            MoveTargetPos =
+                m_contextEntity.TransformComponent.position +
+                m_contextEntity.Result_Value * m_contextEntity.Result_Offset;
 
-        updateFlyHeightPID();
-        updateRotationPIDs();
-        updateMovementPIDs();
+            updateFlyHeightPID();
+            updateRotationPIDs();
+            updateMovementPIDs();
+        }
 
         RigidBody.AddForce(m_settings.GravityMultiplier * Physics.gravity, ForceMode.Acceleration);
     }
@@ -129,5 +143,29 @@ public class FlyingMech : RigidBodyEntity
             forceDirectionLocal: -Vector3.right,
             currentValue: _toTarget.magnitude + Mathf.Abs(_relativeVelocity.x),
             targetValue: 0);
+    }
+
+    int IDamageable.GetCurrentHealth() => CurrentHealth;
+    int IDamageable.GetMaxHealth() => m_settings.Health;
+    Transform IDamageable.GetTransform() => TransformComponent;
+
+    void IDamageable.DealDamage(int damage)
+    {
+        if (CurrentHealth <= 0)
+            return;
+
+        int _prevHealth = CurrentHealth;
+        CurrentHealth -= damage;
+
+        if (CurrentHealth <= 0)
+        {
+            m_contextEntity.enabled = false;
+        }
+
+        OnHealthUpdated?.Invoke(new IDamageable.HealthUpdateParams
+        {
+            PreviousHealth = _prevHealth,
+            CurrentHealth = CurrentHealth,
+        });
     }
 }

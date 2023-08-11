@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4930812072831532375}
   - component: {fileID: 6182472531969007218}
   - component: {fileID: 6323991583439975804}
+  - component: {fileID: 6499828461112826041}
   m_Layer: 5
   m_Name: Health Bar
   m_TagString: Untagged
@@ -63,7 +64,7 @@ MonoBehaviour:
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
-  m_ReverseArrangement: 0
+  m_ReverseArrangement: 1
 --- !u!114 &6182472531969007218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91,5 +92,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_deactivateGOWhenReturnedToPool: 0
+  m_anchorOffset: {x: -0.045, y: 0, z: 0}
   m_tickPrefab: {fileID: 7213053920578390181, guid: 366348894fc97f74e8e8a938bd381a63,
     type: 3}
+--- !u!225 &6499828461112826041
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1161908531310017538}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0

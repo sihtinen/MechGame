@@ -294,6 +294,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c09b58e9c77bb242a0d2d56f6025c8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurrentHealth: 0
   MoveTargetPos: {x: 0, y: 0, z: 0}
   m_settings: {fileID: 11400000, guid: 91464cfa4ba80744b85276d56aaa59d7, type: 2}
   m_pidFlyHeight: {fileID: 11400000, guid: 4a0f9b1d880caf541a42830beff9f365, type: 2}
@@ -2191,6 +2192,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c09b58e9c77bb242a0d2d56f6025c8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurrentHealth: 0
   MoveTargetPos: {x: 0, y: 0, z: 0}
   m_settings: {fileID: 11400000, guid: 91464cfa4ba80744b85276d56aaa59d7, type: 2}
   m_pidFlyHeight: {fileID: 11400000, guid: 4a0f9b1d880caf541a42830beff9f365, type: 2}
@@ -4860,6 +4862,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c09b58e9c77bb242a0d2d56f6025c8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurrentHealth: 0
   MoveTargetPos: {x: 0, y: 0, z: 0}
   m_settings: {fileID: 11400000, guid: 91464cfa4ba80744b85276d56aaa59d7, type: 2}
   m_pidFlyHeight: {fileID: 11400000, guid: 4a0f9b1d880caf541a42830beff9f365, type: 2}
@@ -5196,6 +5199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c09b58e9c77bb242a0d2d56f6025c8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurrentHealth: 0
   MoveTargetPos: {x: 0, y: 0, z: 0}
   m_settings: {fileID: 11400000, guid: 91464cfa4ba80744b85276d56aaa59d7, type: 2}
   m_pidFlyHeight: {fileID: 11400000, guid: 4a0f9b1d880caf541a42830beff9f365, type: 2}
@@ -5364,6 +5368,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c09b58e9c77bb242a0d2d56f6025c8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurrentHealth: 0
   MoveTargetPos: {x: 0, y: 0, z: 0}
   m_settings: {fileID: 11400000, guid: 91464cfa4ba80744b85276d56aaa59d7, type: 2}
   m_pidFlyHeight: {fileID: 11400000, guid: 4a0f9b1d880caf541a42830beff9f365, type: 2}

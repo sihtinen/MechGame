@@ -6,6 +6,10 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "MechGame/Mechs/New Mech Settings")]
 public class MechSettings : ScriptableObject
 {
+    [Min(1)] public int Health = 1000;
+
+    [Space]
+
     public float MaxMovementSpeed = 20f;
     public AnimationCurve MovementForwardDirectionMultCurve = new AnimationCurve();
 
