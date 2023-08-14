@@ -21,6 +21,11 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
     [SerializeField, Expandable] private PID m_yawRotationPID = null;
     [SerializeField, Expandable] private PID m_rollRotationPID = null;
     [SerializeField, Expandable] private MechSettings m_settings = null;
+    [Space]
+    [SerializeField] private EquipmentSlot m_eqSlotShoulderLeft = null;
+    [SerializeField] private EquipmentSlot m_eqSlotArmLeft = null;
+    [SerializeField] private EquipmentSlot m_eqSlotShoulderRight = null;
+    [SerializeField] private EquipmentSlot m_eqSlotArmRight = null;
 
     private bool m_isGrounded = false;
     public bool IsGrounded => m_isGrounded;
@@ -45,35 +50,35 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
 
         initializeSlot(
             settings.Loadout.Slot_LeftShoulder,
-            EquipmentSlotTypes.LeftShoulder,
+            m_eqSlotShoulderLeft,
             settings.IsPlayer, 
             PlayerInputComponent.LeftShoulderInputRef);
 
         initializeSlot(
             settings.Loadout.Slot_LeftArm,
-            EquipmentSlotTypes.LeftArm,
+            m_eqSlotArmLeft,
             settings.IsPlayer,
             PlayerInputComponent.LeftArmInputRef);
 
         initializeSlot(
             settings.Loadout.Slot_RightShoulder,
-            EquipmentSlotTypes.RightShoulder,
+            m_eqSlotShoulderRight,
             settings.IsPlayer,
             PlayerInputComponent.RightShoulderInputRef);
 
         initializeSlot(
             settings.Loadout.Slot_RightArm,
-            EquipmentSlotTypes.RightArm,
+            m_eqSlotArmRight,
             settings.IsPlayer,
             PlayerInputComponent.RightArmInputRef);
     }
 
-    private void initializeSlot(Equipment equipment, EquipmentSlotTypes slotType, bool isPlayer, InputActionReference inputActionRef)
+    private void initializeSlot(Equipment equipment, EquipmentSlot slot, bool isPlayer, InputActionReference inputActionRef)
     {
         if (equipment == null)
             return;
 
-        equipment.InitializeGameplay(this, slotType, isPlayer, inputActionRef);
+        equipment.InitializeGameplay(this, slot, isPlayer, inputActionRef);
     }
 
     protected override void FixedUpdate()

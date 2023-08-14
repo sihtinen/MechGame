@@ -54,7 +54,7 @@ public class MachineGunProjectiles : SingletonBehaviour<MachineGunProjectiles>
                 var _projectile = projectileDataList[i];
                 _renderData.Position = _projectile.Position;
                 _renderData.Velocity = _projectile.Speed * _projectile.Direction;
-                _renderData.Size = 3;
+                _renderData.Size = 1.5f;
             }
             else
                 _renderData.Size = 0;

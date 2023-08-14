@@ -64,6 +64,9 @@ public class MechProjectileRuntime : MechEquipmentRuntime
         {
             var _possibleTarget = _possibleTargets[i];
 
+            if (_possibleTarget.TryGetComponent(out IDamageable _damageable) && _damageable.GetCurrentHealth() <= 0)
+                continue;
+
             Vector3 _toTarget = _possibleTarget.TransformComponent.position - m_transform.position;
             Vector3 _toTargetNormalized = _toTarget.normalized;
 
