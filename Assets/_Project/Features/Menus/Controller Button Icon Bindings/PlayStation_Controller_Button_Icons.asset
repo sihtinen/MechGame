@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a1197c930e5573459e789647d0abf59, type: 3}
+  m_Name: PlayStation_Controller_Button_Icons
+  m_EditorClassIdentifier: 
+  m_dpadUp: {fileID: 21300000, guid: 522f7b34bceb03e40ba82be2fc7c7758, type: 3}
+  m_dpadDown: {fileID: 21300000, guid: d10875b031cb49b469d6f19f77513ad3, type: 3}
+  m_dpadLeft: {fileID: 21300000, guid: 47e7e258cbf7d5e479a6162a3711c8e7, type: 3}
+  m_dpadRight: {fileID: 21300000, guid: 2b4979361d4806d41a2f9dece0729d92, type: 3}
+  m_faceUp: {fileID: 21300000, guid: 3010abfd1ac26614ba56852fb1b0cd9f, type: 3}
+  m_faceDown: {fileID: 21300000, guid: 65d42163e1e293349ac3996cea1573a0, type: 3}
+  m_faceLeft: {fileID: 21300000, guid: 9c556fc9e15046d4bb33ed113d298f71, type: 3}
+  m_faceRight: {fileID: 21300000, guid: b136f4bfa97ba2f4598d9ede91822ced, type: 3}
+  m_shoulderLeft: {fileID: 21300000, guid: 4bb0fd6633ad584479dbbd7f085384f7, type: 3}
+  m_shoulderRight: {fileID: 21300000, guid: e1fc2702a1a9e704d936604d2d71d00a, type: 3}
+  m_triggerLeft: {fileID: 21300000, guid: 334ef97e7a1d7924e9318c5cc4e02d02, type: 3}
+  m_triggerRight: {fileID: 21300000, guid: da079de00e204a3419000f0b456849d8, type: 3}
+  m_menuLeft: {fileID: 21300000, guid: 64abca3f8e2d1fa47a1a33bd7c535827, type: 3}
+  m_menuRight: {fileID: 21300000, guid: 3a8510b59cb5de748bcc13038a1dafa8, type: 3}

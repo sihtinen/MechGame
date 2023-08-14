@@ -13,6 +13,8 @@ public abstract class UIScreen<T> : SingletonBehaviour<T> where T : MonoBehaviou
 
     protected Canvas m_canvas;
 
+    private int m_openedFrame;
+
     protected override void Awake()
     {
         base.Awake();
@@ -58,6 +60,7 @@ public abstract class UIScreen<T> : SingletonBehaviour<T> where T : MonoBehaviou
     {
         IsOpened = true;
         m_canvas.enabled = true;
+        m_openedFrame = Time.frameCount;
 
         var _inputEventComponent = UIEventSystemComponent.Instance;
         if (_inputEventComponent != null && _inputEventComponent.ActiveInputDevice != InputDeviceTypes.KeyboardAndMouse)
@@ -75,6 +78,8 @@ public abstract class UIScreen<T> : SingletonBehaviour<T> where T : MonoBehaviou
 
         onClosed();
     }
+
+    protected bool wasOpenedThisFrame() => m_openedFrame == Time.frameCount;
 
     protected virtual void onOpened() { }
     protected virtual void onClosed() { }

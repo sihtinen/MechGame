@@ -34,11 +34,36 @@ public class SaveSlotSelectionScreen : UIScreen<SaveSlotSelectionScreen>
 
     private void onCancelInputPerformed(InputAction.CallbackContext context)
     {
-        if (IsOpened == false)
+        if (IsOpened == false || wasOpenedThisFrame())
             return;
 
         this.Close();
 
         MainMenuScreen.Instance.Open();
+    }
+
+    public void Button_Slot(int slotIndex)
+    {
+        this.Close();
+
+        ConfirmationScreen.Instance.BuildContent(
+            header: "Create new save?",
+            description: $"Do you want to create a new save file in slot {slotIndex+1}?\nAll progress will be saved automatically in the release version.",
+            onAccept: this.onCreateNewSaveAccept,
+            onCancel: this.onCreateNewSaveCancel);
+
+        ConfirmationScreen.Instance.Open();
+    }
+
+    private void onCreateNewSaveAccept()
+    {
+        ConfirmationScreen.Instance.Close();
+    }
+
+    private void onCreateNewSaveCancel()
+    {
+        ConfirmationScreen.Instance.Close();
+
+        this.Open();
     }
 }

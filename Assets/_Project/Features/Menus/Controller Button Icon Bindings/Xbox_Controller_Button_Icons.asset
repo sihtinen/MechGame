@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a1197c930e5573459e789647d0abf59, type: 3}
+  m_Name: Xbox_Controller_Button_Icons
+  m_EditorClassIdentifier: 
+  m_dpadUp: {fileID: 21300000, guid: 9ea47576be17cfa4e920fe4ad204bb65, type: 3}
+  m_dpadDown: {fileID: 21300000, guid: 4db4e1289e8f29746bf0884b918b1490, type: 3}
+  m_dpadLeft: {fileID: 21300000, guid: 3eacf8c96a26ae747a3c148cf7860073, type: 3}
+  m_dpadRight: {fileID: 21300000, guid: 7ce0598460999cb41aa19da494b39576, type: 3}
+  m_faceUp: {fileID: 21300000, guid: 35eb47712ae42bd469618b0c25458d2d, type: 3}
+  m_faceDown: {fileID: 21300000, guid: c550d2e73b2702444bec1a0b282b2e89, type: 3}
+  m_faceLeft: {fileID: 21300000, guid: 3fa78bb3fa7e315458a717d73e5cadf3, type: 3}
+  m_faceRight: {fileID: 21300000, guid: e4340abd33accc740b830d94b029a146, type: 3}
+  m_shoulderLeft: {fileID: 21300000, guid: 731708ad7d94ac34fa2af83ea67f08ab, type: 3}
+  m_shoulderRight: {fileID: 21300000, guid: b0ffbda2b9ffc2e4abd94762148bead5, type: 3}
+  m_triggerLeft: {fileID: 21300000, guid: d555eaf4543934144ace59e138e09374, type: 3}
+  m_triggerRight: {fileID: 21300000, guid: 00032ebdb84f8ea47bc4c6a0efe57001, type: 3}
+  m_menuLeft: {fileID: 21300000, guid: f64a090b563c41c4a90035d361566c74, type: 3}
+  m_menuRight: {fileID: 21300000, guid: 0fb80e51a85649a40a7eecf98dff9e94, type: 3}

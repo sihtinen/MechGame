@@ -10,6 +10,9 @@ public class UIEventSystemComponent : SingletonBehaviour<UIEventSystemComponent>
     [Header("Runtime Parameters")]
     [NonEditable] public InputDeviceTypes ActiveInputDevice = InputDeviceTypes.KeyboardAndMouse;
 
+    [Header("Object References")]
+    public ControllerButtonIconDatabase ControllerButtonIconDatabaseAsset = null;
+
     public event Action<InputDeviceTypes> OnActiveInputDeviceChanged = null;
 
     private InputSystemUIInputModule m_inputModule = null;
@@ -38,6 +41,11 @@ public class UIEventSystemComponent : SingletonBehaviour<UIEventSystemComponent>
             case "Keyboard":
                 _newInputDevice = InputDeviceTypes.KeyboardAndMouse;
                 break;
+
+            case "DualSenseGamepadHID":
+                _newInputDevice = InputDeviceTypes.PlayStation;
+                break;
+
             default:
                 Debug.Log(context.action.activeControl.device.name);
                 break;
