@@ -16,21 +16,21 @@ public abstract class MechEquipmentRuntime : MonoBehaviour
         m_inputActionRef.action.canceled += this.onInputCanceled;
     }
 
-    public InputDeviceType GetActiveInputDeviceType()
+    public InputDeviceTypes GetActiveInputDeviceType()
     {
         if (m_inputActionRef == null || m_inputActionRef.action.activeControl == null)
-            return InputDeviceType.Inactive;
+            return InputDeviceTypes.Inactive;
 
         switch (m_inputActionRef.action.activeControl.device.displayName)
         {
             case "Xbox Controller":
-                return InputDeviceType.Xbox;
+                return InputDeviceTypes.Xbox;
 
             case "DualSense Wireless Controller":
-                return InputDeviceType.Playstation;
+                return InputDeviceTypes.PlayStation;
 
             default:
-                return InputDeviceType.Keyboard;
+                return InputDeviceTypes.KeyboardAndMouse;
         }
     }
 
@@ -45,12 +45,4 @@ public abstract class MechEquipmentRuntime : MonoBehaviour
 
     protected virtual void onInputStarted(InputAction.CallbackContext context) { }
     protected virtual void onInputCanceled(InputAction.CallbackContext context) { }
-
-    public enum InputDeviceType
-    {
-        Inactive = -1,
-        Keyboard = 0,
-        Xbox = 1,
-        Playstation = 2,
-    }
 }

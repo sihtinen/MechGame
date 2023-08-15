@@ -18,6 +18,17 @@ namespace Tensori.SaveSystem
             Data_Object = new Dictionary<string, object>();
         }
 
+        public SaveData(SaveData other)
+        {
+            Version = other.Version;
+
+            Data_Int = new Dictionary<string, int>(other.Data_Int);
+            Data_Double = new Dictionary<string, double>(other.Data_Double);
+            Data_String = new Dictionary<string, string>(other.Data_String);
+            Data_Bool = new Dictionary<string, bool>(other.Data_Bool);
+            Data_Object = new Dictionary<string, object>(other.Data_Object);
+        }
+
         public double Version;
 
         public Dictionary<string, int> Data_Int;

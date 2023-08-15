@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class HUDEquipmentElementBase : MonoBehaviour
 {
-    protected MechEquipmentRuntime.InputDeviceType m_inputDeviceType;
+    protected InputDeviceTypes m_inputDeviceType;
     protected RectTransform m_rectTransform = null;
     protected HUDEquipmentSlot m_currentSlot = null;
     private MechEquipmentRuntime m_equipmentRuntime = null;
@@ -38,7 +38,7 @@ public class HUDEquipmentElementBase : MonoBehaviour
             return;
 
         var _inputDeviceType = m_equipmentRuntime.GetActiveInputDeviceType();
-        if (_inputDeviceType != MechEquipmentRuntime.InputDeviceType.Inactive && _inputDeviceType != m_inputDeviceType)
+        if (_inputDeviceType != InputDeviceTypes.Inactive && _inputDeviceType != m_inputDeviceType)
         {
             m_inputDeviceType = _inputDeviceType;
             onInputDeviceTypeChanged();
@@ -60,45 +60,45 @@ public class HUDEquipmentElementBase : MonoBehaviour
             case EquipmentSlotTypes.LeftShoulder:
                 switch (m_inputDeviceType)
                 {
-                    case MechEquipmentRuntime.InputDeviceType.Keyboard:
+                    case InputDeviceTypes.KeyboardAndMouse:
                         return "L-Shift";
-                    case MechEquipmentRuntime.InputDeviceType.Xbox:
+                    case InputDeviceTypes.Xbox:
                         return "LB";
                     default:
-                    case MechEquipmentRuntime.InputDeviceType.Playstation:
+                    case InputDeviceTypes.PlayStation:
                         return "L1";
                 }
             case EquipmentSlotTypes.LeftArm:
                 switch (m_inputDeviceType)
                 {
-                    case MechEquipmentRuntime.InputDeviceType.Keyboard:
+                    case InputDeviceTypes.KeyboardAndMouse:
                         return "Mouse0";
-                    case MechEquipmentRuntime.InputDeviceType.Xbox:
+                    case InputDeviceTypes.Xbox:
                         return "LT";
                     default:
-                    case MechEquipmentRuntime.InputDeviceType.Playstation:
+                    case InputDeviceTypes.PlayStation:
                         return "L2";
                 }
             case EquipmentSlotTypes.RightShoulder:
                 switch (m_inputDeviceType)
                 {
-                    case MechEquipmentRuntime.InputDeviceType.Keyboard:
+                    case InputDeviceTypes.KeyboardAndMouse:
                         return "Space";
-                    case MechEquipmentRuntime.InputDeviceType.Xbox:
+                    case InputDeviceTypes.Xbox:
                         return "RB";
                     default:
-                    case MechEquipmentRuntime.InputDeviceType.Playstation:
+                    case InputDeviceTypes.PlayStation:
                         return "R1";
                 }
             case EquipmentSlotTypes.RightArm:
                 switch (m_inputDeviceType)
                 {
-                    case MechEquipmentRuntime.InputDeviceType.Keyboard:
+                    case InputDeviceTypes.KeyboardAndMouse:
                         return "Mouse1";
-                    case MechEquipmentRuntime.InputDeviceType.Xbox:
+                    case InputDeviceTypes.Xbox:
                         return "RT";
                     default:
-                    case MechEquipmentRuntime.InputDeviceType.Playstation:
+                    case InputDeviceTypes.PlayStation:
                         return "R2";
                 }
         }

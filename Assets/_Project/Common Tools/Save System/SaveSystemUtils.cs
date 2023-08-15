@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Tensori.SaveSystem
 {
-    public static class SaveManager
+    public static class SaveSystemUtils
     {
         public enum SaveFileFormat
         {

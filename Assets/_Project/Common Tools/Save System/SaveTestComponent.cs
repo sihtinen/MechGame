@@ -64,13 +64,13 @@ namespace Tensori.SaveSystem
 
                     m_saveData.RegisterVariable("Object 01", _saveableObject);
 
-                    SaveManager.SaveToFile(SaveFileName, m_saveData);
+                    SaveSystemUtils.SaveToFile(SaveFileName, m_saveData);
 
                     break;
 
                 case TestMode.Load:
 
-                    bool _loadSuccess = SaveManager.LoadFromFile(SaveFileName, ref m_saveData);
+                    bool _loadSuccess = SaveSystemUtils.LoadFromFile(SaveFileName, ref m_saveData);
 
                     if (_loadSuccess)
                     {

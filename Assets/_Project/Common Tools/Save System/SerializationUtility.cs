@@ -22,7 +22,7 @@ namespace Tensori.SaveSystem
             if (obj == null)
                 return null;
 
-            BinaryFormatter _binaryFormatter = new BinaryFormatter();
+            var _binaryFormatter = new BinaryFormatter();
 
             using (MemoryStream _memStream = new MemoryStream())
             {
@@ -45,9 +45,9 @@ namespace Tensori.SaveSystem
                 if (isCompressed)
                     byteArray = byteArray.Decompress();
 
-                using (MemoryStream _memStream = new MemoryStream())
+                using (var _memStream = new MemoryStream())
                 {
-                    BinaryFormatter _binaryFormatter = new BinaryFormatter();
+                    var _binaryFormatter = new BinaryFormatter();
                     _memStream.Write(byteArray, 0, byteArray.Length);
                     _memStream.Seek(0, SeekOrigin.Begin);
                     T obj = (T)_binaryFormatter.Deserialize(_memStream);
@@ -64,9 +64,9 @@ namespace Tensori.SaveSystem
 
         public static byte[] Compress(this byte[] data)
         {
-            MemoryStream _output = new MemoryStream();
+            var _output = new MemoryStream();
 
-            using (DeflateStream _dstream = new DeflateStream(_output, CompressionLevel.Optimal))
+            using (var _dstream = new DeflateStream(_output, CompressionLevel.Optimal))
             {
                 _dstream.Write(data, 0, data.Length);
             }
@@ -76,15 +76,15 @@ namespace Tensori.SaveSystem
 
         public static byte[] Decompress(this byte[] data)
         {
-            MemoryStream input = new MemoryStream(data);
-            MemoryStream output = new MemoryStream();
+            var _input = new MemoryStream(data);
+            var _output = new MemoryStream();
 
-            using (DeflateStream dstream = new DeflateStream(input, CompressionMode.Decompress))
+            using (var _dstream = new DeflateStream(_input, CompressionMode.Decompress))
             {
-                dstream.CopyTo(output);
+                _dstream.CopyTo(_output);
             }
 
-            return output.ToArray();
+            return _output.ToArray();
         }
     }
 }

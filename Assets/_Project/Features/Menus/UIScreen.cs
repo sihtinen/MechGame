@@ -9,7 +9,7 @@ public abstract class UIScreen<T> : SingletonBehaviour<T> where T : MonoBehaviou
     [NonSerialized] public bool IsOpened = false;
 
     [Header("UI Screen General Settings")]
-    [SerializeField] private GameObject m_gamepadFirstActiveElement = null;
+    [SerializeField] protected GameObject m_gamepadFirstActiveElement = null;
 
     protected Canvas m_canvas;
 

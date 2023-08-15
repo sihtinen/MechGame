@@ -33,7 +33,7 @@ namespace Tensori.SaveSystem
             {
                 while (m_allFoundFileInstances.Count >= BACKUP_LIMIT)
                 {
-                    SaveFileInstance _oldest = m_allFoundFileInstances[0];
+                    var _oldest = m_allFoundFileInstances[0];
 
                     for (int i = 1; i < m_allFoundFileInstances.Count; i++)
                     {
@@ -58,11 +58,15 @@ namespace Tensori.SaveSystem
         {
             findAndCollectAllSaveFileInstances(folderPath, fileName, fileType);
 
-            BackupLoadResult _result = new BackupLoadResult { FileFound = false, FilePath = string.Empty };
+            var _result = new BackupLoadResult 
+            { 
+                FileFound = false,
+                FilePath = string.Empty
+            };
 
             if (m_allFoundFileInstances.Count > 0)
             {
-                SaveFileInstance _newest = m_allFoundFileInstances[0];
+                var _newest = m_allFoundFileInstances[0];
 
                 for (int i = 1; i < m_allFoundFileInstances.Count; i++)
                 {
@@ -88,23 +92,23 @@ namespace Tensori.SaveSystem
             {
                 foreach (string _filePathInstance in _fileArray)
                 {
-                    if (_filePathInstance.Contains(fileName))
+                    if (_filePathInstance.Contains(fileName) == false)
+                        continue;
+
+                    string _rawFileName = _filePathInstance.Substring(_filePathInstance.LastIndexOf(fileName));
+
+                    if (_rawFileName.Contains(fileName + "_"))
                     {
-                        string _rawFileName = _filePathInstance.Substring(_filePathInstance.LastIndexOf(fileName));
+                        string _saveDateAsString = _rawFileName.Replace(fileName + "_", string.Empty).Replace(fileType, string.Empty);
+                        DateTime _date = DateTime.ParseExact(_saveDateAsString, DATE_FORMAT, null);
+                        m_allFoundFileInstances.Add(new SaveFileInstance { SaveTime = _date, FullFilePath = _filePathInstance });
+                    }
+                    else
+                    {
+                        Debug.LogWarning("SaveBackupUtility: invalid file found, deleting file:\n" + _filePathInstance);
 
-                        if (_rawFileName.Contains(fileName + "_"))
-                        {
-                            string _saveDateAsString = _rawFileName.Replace(fileName + "_", string.Empty).Replace(fileType, string.Empty);
-                            DateTime _date = DateTime.ParseExact(_saveDateAsString, DATE_FORMAT, null);
-                            m_allFoundFileInstances.Add(new SaveFileInstance { SaveTime = _date, FullFilePath = _filePathInstance });
-                        }
-                        else
-                        {
-                            Debug.LogWarning("SaveBackupUtility: invalid file found, deleting file:\n" + _filePathInstance);
-
-                            if (File.Exists(_filePathInstance))
-                                File.Delete(_filePathInstance);
-                        }
+                        if (File.Exists(_filePathInstance))
+                            File.Delete(_filePathInstance);
                     }
                 }
             }
