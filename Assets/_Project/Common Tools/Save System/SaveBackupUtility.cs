@@ -38,9 +38,7 @@ namespace Tensori.SaveSystem
                     for (int i = 1; i < m_allFoundFileInstances.Count; i++)
                     {
                         if (m_allFoundFileInstances[i].SaveTime < _oldest.SaveTime)
-                        {
                             _oldest = m_allFoundFileInstances[i];
-                        }
                     }
 
                     if (File.Exists(_oldest.FullFilePath))

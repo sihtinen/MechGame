@@ -49,7 +49,7 @@ public abstract class UIScreen<T> : SingletonBehaviour<T> where T : MonoBehaviou
 
             default:
 
-                if (EventSystem.current.currentSelectedGameObject == null)
+                if (EventSystem.current.currentSelectedGameObject != m_gamepadFirstActiveElement)
                     EventSystem.current.SetSelectedGameObject(m_gamepadFirstActiveElement);
 
                 break;

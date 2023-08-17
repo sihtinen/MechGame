@@ -19,7 +19,9 @@ public class HubScreen : UIScreen<HubScreen>
 
     public void Button_Development()
     {
+        this.Close();
 
+        DevelopmentScreen.Instance.Open();
     }
 
     public void Button_Settings()

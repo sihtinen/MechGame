@@ -26,7 +26,8 @@ namespace Tensori.SaveSystem
                 Directory.CreateDirectory(_filePath);
 
             string _fileStreamPath = null;
-            string _saveDate;
+            string _saveDate = null;
+            bool _saveSuccess = false;
 
             switch (format)
             {
@@ -44,12 +45,15 @@ namespace Tensori.SaveSystem
             {
                 case SaveFileFormat.Binary:
                     SaveDataCompressed _compressedSaveFile = new SaveDataCompressed(saveData.SerializeToByteArray(true));
-                    BinaryFileOperations.Write(_fileStreamPath, _compressedSaveFile);
+                    _saveSuccess = BinaryFileOperations.Write(_fileStreamPath, _compressedSaveFile);
                     break;
                 case SaveFileFormat.Json:
-                    JsonFileOperations.Write(_fileStreamPath, saveData);
+                    _saveSuccess = JsonFileOperations.Write(_fileStreamPath, saveData);
                     break;
             }
+
+            if (_saveSuccess)
+                Debug.Log($"SaveSystemUtils: file '{fileName + _saveDate}' saved, format: {format}");
         }
 
         public static bool LoadFromFile(string fileName, ref SaveData populateSource, SaveFileFormat format = SaveFileFormat.Json)
@@ -71,7 +75,7 @@ namespace Tensori.SaveSystem
                     break;
             }
 
-            SaveBackupUtility.BackupLoadResult _backupResult = SaveBackupUtility.GetNewestSaveFile(_filePath, fileName, _fileType);
+            var _backupResult = SaveBackupUtility.GetNewestSaveFile(_filePath, fileName, _fileType);
             bool _loadOperationSuccess = false;
 
             while (_loadOperationSuccess == false && _backupResult.FileFound == true)
@@ -99,12 +103,12 @@ namespace Tensori.SaveSystem
 
                 if (_loadOperationSuccess)
                 {
-                    Debug.Log($"SaveManager: file '{fileName}{_fileType}' loaded");
+                    Debug.Log($"SaveSystemUtils: file '{_backupResult.FilePath}' loaded");
                     return true;
                 }
                 else
                 {
-                    Debug.LogError($"SaveManager: file corrupted, deleting file:\n{_backupResult.FilePath}");
+                    Debug.LogError($"SaveSystemUtils: file corrupted, deleting file:\n{_backupResult.FilePath}");
 
                     if (File.Exists(_backupResult.FilePath))
                         File.Delete(_backupResult.FilePath);

@@ -8,6 +8,8 @@ public class SaveManager : SingletonBehaviour<SaveManager>
     [Header("Save Manager Settings")]
     [SerializeField] private string m_saveFileName = "save_slot_";
     [SerializeField] private double m_saveFileVersion = 1.0;
+    [SerializeField] private List<SavePreProcessor> m_savePreProcessors = new List<SavePreProcessor>();
+
     public double SaveFileVersion => m_saveFileVersion;
 
     [Header("Runtime Parameters")]
@@ -27,10 +29,8 @@ public class SaveManager : SingletonBehaviour<SaveManager>
 
         if (Application.isEditor)
         {
-            bool _editorSaveFound = LoadSaveData();
-
-            if (_editorSaveFound == false)
-                SaveData();
+            LoadSaveData();
+            SaveData();
         }
     }
 
@@ -38,6 +38,9 @@ public class SaveManager : SingletonBehaviour<SaveManager>
     {
         if (saveSlotID != null)
             m_currentSaveSlotId = saveSlotID;
+
+        for (int i = 0; i < m_savePreProcessors.Count; i++)
+            m_savePreProcessors[i].PreProcess(m_currentSaveData);
 
         string _saveFileName = m_saveFileName + m_currentSaveSlotId;
         SaveSystemUtils.SaveToFile(_saveFileName, m_currentSaveData);
@@ -49,6 +52,14 @@ public class SaveManager : SingletonBehaviour<SaveManager>
             m_currentSaveSlotId = saveSlotID;
 
         string _saveFileName = m_saveFileName + m_currentSaveSlotId;
-        return SaveSystemUtils.LoadFromFile(_saveFileName, ref m_currentSaveData, SaveSystemUtils.SaveFileFormat.Json);
+        bool _saveFileLoaded = SaveSystemUtils.LoadFromFile(_saveFileName, ref m_currentSaveData, SaveSystemUtils.SaveFileFormat.Json);
+
+        if (_saveFileLoaded)
+        {
+            for (int i = 0; i < m_savePreProcessors.Count; i++)
+                m_savePreProcessors[i].PreProcess(m_currentSaveData);
+        }
+
+        return _saveFileLoaded;
     }
 }

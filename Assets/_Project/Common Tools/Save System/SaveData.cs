@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using UnityEngine;
 
 namespace Tensori.SaveSystem
 {
@@ -15,7 +17,7 @@ namespace Tensori.SaveSystem
             Data_Double = new Dictionary<string, double>();
             Data_String = new Dictionary<string, string>();
             Data_Bool = new Dictionary<string, bool>();
-            Data_Object = new Dictionary<string, object>();
+            Data_Object = new Dictionary<string, string>();
         }
 
         public SaveData(SaveData other)
@@ -26,7 +28,7 @@ namespace Tensori.SaveSystem
             Data_Double = new Dictionary<string, double>(other.Data_Double);
             Data_String = new Dictionary<string, string>(other.Data_String);
             Data_Bool = new Dictionary<string, bool>(other.Data_Bool);
-            Data_Object = new Dictionary<string, object>(other.Data_Object);
+            Data_Object = new Dictionary<string, string>(other.Data_Object);
         }
 
         public double Version;
@@ -35,7 +37,7 @@ namespace Tensori.SaveSystem
         public Dictionary<string, double> Data_Double;
         public Dictionary<string, string> Data_String;
         public Dictionary<string, bool> Data_Bool;
-        public Dictionary<string, object> Data_Object;
+        public Dictionary<string, string> Data_Object;
 
         public void RegisterVariable<T>(string id, T value)
         {
@@ -80,9 +82,9 @@ namespace Tensori.SaveSystem
                 case object _object:
 
                     if (Data_Object.ContainsKey(id))
-                        Data_Object[id] = _object;
+                        Data_Object[id] = JsonFileOperations.ToJson(_object);
                     else
-                        Data_Object.Add(id, _object);
+                        Data_Object.Add(id, JsonFileOperations.ToJson(_object));
 
                     break;
             }
@@ -114,16 +116,16 @@ namespace Tensori.SaveSystem
 
         public bool ReadObject<T>(string id, ref T result) where T : class
         {
-            bool _success = Data_Object.TryGetValue(id, out object _serializedObjectAsString);
+            if (Data_Object.ContainsKey(id) == false)
+                return false;
+
+            bool _success = Data_Object.TryGetValue(id, out var _json);
             if (_success)
             {
-                _success = JsonFileOperations.ConvertFromString(_serializedObjectAsString.ToString(), result);
-
-                if (_success) 
-                    return true;
+                result = JsonFileOperations.FromJson<T>(_json);
+                return result != null;
             }
 
-            result = default(T);
             return false;
         }
 
@@ -156,7 +158,7 @@ namespace Tensori.SaveSystem
             {
                 _result += $"{entry.Key}: {entry.Value}\n";
             }
-            foreach (KeyValuePair<string, object> entry in Data_Object)
+            foreach (KeyValuePair<string, string> entry in Data_Object)
             {
                 _result += $"{entry.Key}: {entry.Value}\n";
             }

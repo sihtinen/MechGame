@@ -354,6 +354,24 @@ public partial class @MechGameInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""TabPrevious"",
+                    ""type"": ""Button"",
+                    ""id"": ""33e45be4-faa6-44b3-b1d1-4050cdf42368"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""TabNext"",
+                    ""type"": ""Button"",
+                    ""id"": ""f8d7ea7e-77cf-4e47-adbb-b25bf5893db7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -774,6 +792,50 @@ public partial class @MechGameInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""TrackedDeviceOrientation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b180089b-10e5-4607-a7ef-ae4206b0729f"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TabNext"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""357e2ed4-90ff-4fb0-8189-76ff9d00cc19"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TabNext"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ea4bf8bc-a5fe-4179-bd25-900fa6d565bb"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TabPrevious"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""35d03fb0-379b-4a8b-ab0d-1c25be111fbe"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TabPrevious"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -800,6 +862,8 @@ public partial class @MechGameInputActions: IInputActionCollection2, IDisposable
         m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
         m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
+        m_UI_TabPrevious = m_UI.FindAction("TabPrevious", throwIfNotFound: true);
+        m_UI_TabNext = m_UI.FindAction("TabNext", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -957,6 +1021,8 @@ public partial class @MechGameInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_RightClick;
     private readonly InputAction m_UI_TrackedDevicePosition;
     private readonly InputAction m_UI_TrackedDeviceOrientation;
+    private readonly InputAction m_UI_TabPrevious;
+    private readonly InputAction m_UI_TabNext;
     public struct UIActions
     {
         private @MechGameInputActions m_Wrapper;
@@ -971,6 +1037,8 @@ public partial class @MechGameInputActions: IInputActionCollection2, IDisposable
         public InputAction @RightClick => m_Wrapper.m_UI_RightClick;
         public InputAction @TrackedDevicePosition => m_Wrapper.m_UI_TrackedDevicePosition;
         public InputAction @TrackedDeviceOrientation => m_Wrapper.m_UI_TrackedDeviceOrientation;
+        public InputAction @TabPrevious => m_Wrapper.m_UI_TabPrevious;
+        public InputAction @TabNext => m_Wrapper.m_UI_TabNext;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1010,6 +1078,12 @@ public partial class @MechGameInputActions: IInputActionCollection2, IDisposable
             @TrackedDeviceOrientation.started += instance.OnTrackedDeviceOrientation;
             @TrackedDeviceOrientation.performed += instance.OnTrackedDeviceOrientation;
             @TrackedDeviceOrientation.canceled += instance.OnTrackedDeviceOrientation;
+            @TabPrevious.started += instance.OnTabPrevious;
+            @TabPrevious.performed += instance.OnTabPrevious;
+            @TabPrevious.canceled += instance.OnTabPrevious;
+            @TabNext.started += instance.OnTabNext;
+            @TabNext.performed += instance.OnTabNext;
+            @TabNext.canceled += instance.OnTabNext;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
@@ -1044,6 +1118,12 @@ public partial class @MechGameInputActions: IInputActionCollection2, IDisposable
             @TrackedDeviceOrientation.started -= instance.OnTrackedDeviceOrientation;
             @TrackedDeviceOrientation.performed -= instance.OnTrackedDeviceOrientation;
             @TrackedDeviceOrientation.canceled -= instance.OnTrackedDeviceOrientation;
+            @TabPrevious.started -= instance.OnTabPrevious;
+            @TabPrevious.performed -= instance.OnTabPrevious;
+            @TabPrevious.canceled -= instance.OnTabPrevious;
+            @TabNext.started -= instance.OnTabNext;
+            @TabNext.performed -= instance.OnTabNext;
+            @TabNext.canceled -= instance.OnTabNext;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -1082,5 +1162,7 @@ public partial class @MechGameInputActions: IInputActionCollection2, IDisposable
         void OnRightClick(InputAction.CallbackContext context);
         void OnTrackedDevicePosition(InputAction.CallbackContext context);
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
+        void OnTabPrevious(InputAction.CallbackContext context);
+        void OnTabNext(InputAction.CallbackContext context);
     }
 }

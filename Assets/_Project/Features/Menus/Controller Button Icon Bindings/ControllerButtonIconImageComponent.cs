@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class ControllerButtonIconImageComponent : MonoBehaviour
 {
     [SerializeField] private InputActionReference m_inputActionRef = null;
+    [SerializeField] private GameObject m_disableObjectWhenController = null;
 
     private Image m_image = null;
 
@@ -40,6 +41,10 @@ public class ControllerButtonIconImageComponent : MonoBehaviour
         if (deviceType == InputDeviceTypes.KeyboardAndMouse)
         {
             gameObject.SetActiveOptimized(false);
+
+            if (m_disableObjectWhenController != null)
+                m_disableObjectWhenController.SetActiveOptimized(true);
+
             return;
         }
 
@@ -51,5 +56,8 @@ public class ControllerButtonIconImageComponent : MonoBehaviour
             m_image.overrideSprite = _iconSprite;
 
         gameObject.SetActiveOptimized(_iconSprite != null);
+
+        if (m_disableObjectWhenController != null)
+            m_disableObjectWhenController.SetActiveOptimized(_iconSprite == null);
     }
 }

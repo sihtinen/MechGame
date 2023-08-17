@@ -47,21 +47,14 @@ namespace Tensori.SaveSystem
             return true;
         }
 
-        public static bool ConvertFromString<T>(string serializedObject, T target)
+        public static string ToJson(object obj)
         {
-            if (string.IsNullOrEmpty(serializedObject))
-                return false;
+            return JsonConvert.SerializeObject(obj, Formatting.None);
+        }
 
-            try
-            {
-                JsonConvert.PopulateObject(serializedObject, target);
-                return true;
-            }
-            catch (Exception exc)
-            {
-                Debug.LogError("Error while loading: Read ERRORS-file.\n" + exc);
-                return false;
-            }
+        public static T FromJson<T>(string json) where T : class
+        {
+            return JsonConvert.DeserializeObject<T>(json);
         }
     }
 }

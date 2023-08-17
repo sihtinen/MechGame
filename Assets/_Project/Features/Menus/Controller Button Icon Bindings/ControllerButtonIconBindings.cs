@@ -40,7 +40,12 @@ public class ControllerButtonIconBindings : ScriptableObject
                 case "buttonWest": return m_faceLeft;
                 case "buttonEast": return m_faceRight;
 
-                default: break;
+                case "leftShoulder": return m_shoulderLeft;
+                case "rightShoulder": return m_shoulderRight;
+
+                default:
+                    //Debug.LogWarning("ControllerButtonIconBindings: icon logic missing for control path - " + _controlPath.name);
+                    break;
             }
         }
 
