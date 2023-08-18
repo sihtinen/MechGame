@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class AnimatedButton : MonoBehaviour, 
+public class UISelectionHighlight : MonoBehaviour, 
     ISelectHandler, 
     IDeselectHandler, 
     IPointerEnterHandler,
@@ -14,6 +14,12 @@ public class AnimatedButton : MonoBehaviour,
     private void Start()
     {
         if (m_onSelectedElement != null)
+            m_onSelectedElement.SetActiveOptimized(false);
+    }
+
+    private void OnDisable()
+    {
+        if (Application.isPlaying)
             m_onSelectedElement.SetActiveOptimized(false);
     }
 
@@ -31,7 +37,7 @@ public class AnimatedButton : MonoBehaviour,
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        EventSystem.current.SetSelectedGameObject(gameObject);
+        EventSystemUtils.SetSelectedObjectWithManualCall(gameObject);
     }
 
     public void OnPointerExit(PointerEventData eventData)

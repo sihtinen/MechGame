@@ -148,7 +148,9 @@ GameObject:
   - component: {fileID: 8578471532175177141}
   - component: {fileID: 117704447680155573}
   - component: {fileID: 1792329534215206967}
-  - component: {fileID: 4736590857031574102}
+  - component: {fileID: 6498515594375115155}
+  - component: {fileID: 397899403968806488}
+  - component: {fileID: 8468432208401416499}
   m_Layer: 5
   m_Name: Loadout Button
   m_TagString: Untagged
@@ -258,7 +260,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8578471532175177141}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1792329534215206967}
+        m_TargetAssemblyTypeName: LoadoutButton, Assembly-CSharp
+        m_MethodName: Button_Clicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1792329534215206967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -273,7 +287,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_deactivateGOWhenReturnedToPool: 1
   m_nameText: {fileID: 5244738581037532897}
---- !u!114 &4736590857031574102
+--- !u!114 &6498515594375115155
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -282,10 +296,34 @@ MonoBehaviour:
   m_GameObject: {fileID: 9108438162598611789}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d04bef62e88c50345af4958fb4a0d73c, type: 3}
+  m_Script: {fileID: 11500000, guid: cd749d1e1fc93484297b4acefa28db3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_onSelectedElement: {fileID: 9628398067757718}
+--- !u!225 &397899403968806488
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9108438162598611789}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &8468432208401416499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9108438162598611789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 194eb25d3842dcc47ad30b8e25fac0bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1760771772636911525
 PrefabInstance:
   m_ObjectHideFlags: 0

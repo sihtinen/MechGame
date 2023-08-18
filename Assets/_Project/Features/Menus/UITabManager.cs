@@ -9,7 +9,7 @@ public class UITabManager : MonoBehaviour
 {
     [SerializeField] private List<UITab> m_tabs = new List<UITab>();
 
-    private int m_currentTabIndex;
+    private int m_currentTabIndex = 0;
 
     private InputAction m_previousTabInputAction = null;
     private InputAction m_nextTabInputAction = null;

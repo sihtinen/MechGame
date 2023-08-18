@@ -90,7 +90,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76cc4e01212810e40b2d8082970c7854, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_isPersistentObject: 0
+  m_isPersistentObject: 1
   m_saveFileName: save-slot-
   m_saveFileVersion: 1
   m_savePreProcessors:

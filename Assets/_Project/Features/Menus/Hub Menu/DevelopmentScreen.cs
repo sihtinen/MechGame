@@ -13,4 +13,11 @@ public class DevelopmentScreen : UIScreen<DevelopmentScreen>
 
         m_tabManager.OpenTab(0);
     }
+
+    protected override void onOpened()
+    {
+        base.onOpened();
+
+        m_tabManager.OpenTab(0);
+    }
 }

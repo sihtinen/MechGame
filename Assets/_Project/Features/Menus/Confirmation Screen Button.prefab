@@ -91,6 +91,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_isPersistentObject: 0
   m_gamepadFirstActiveElement: {fileID: 0}
+  m_headerText: {fileID: 0}
+  m_descriptionText: {fileID: 0}
 --- !u!114 &7933421740681138479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105,6 +107,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_inputActionRef: {fileID: 8861550562251348826, guid: 2f28d9729a43efb458ec42a6ca8418c6,
     type: 3}
+  m_disableObjectWhenController: {fileID: 0}
 --- !u!1 &1507288391927852760
 GameObject:
   m_ObjectHideFlags: 0
@@ -181,7 +184,9 @@ GameObject:
   - component: {fileID: 5382626696346989393}
   - component: {fileID: 968663151480245365}
   - component: {fileID: 6332362354250851028}
-  - component: {fileID: 5497400883655349026}
+  - component: {fileID: 7324296390732551502}
+  - component: {fileID: 4664574050425598869}
+  - component: {fileID: 4967735802461646033}
   m_Layer: 5
   m_Name: Confirmation Screen Button
   m_TagString: Untagged
@@ -292,7 +297,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &5497400883655349026
+--- !u!114 &7324296390732551502
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -301,10 +306,34 @@ MonoBehaviour:
   m_GameObject: {fileID: 4722887656149435796}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d04bef62e88c50345af4958fb4a0d73c, type: 3}
+  m_Script: {fileID: 11500000, guid: cd749d1e1fc93484297b4acefa28db3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_onSelectedElement: {fileID: 6532455408566859576}
+--- !u!225 &4664574050425598869
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4722887656149435796}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &4967735802461646033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4722887656149435796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 194eb25d3842dcc47ad30b8e25fac0bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8474760080351314433
 GameObject:
   m_ObjectHideFlags: 0

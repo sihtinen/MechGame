@@ -20,7 +20,6 @@ public abstract class UIScreen<T> : SingletonBehaviour<T> where T : MonoBehaviou
         base.Awake();
 
         TryGetComponent(out m_canvas);
-        m_canvas.enabled = false;
     }
 
     protected virtual void Start()
@@ -28,6 +27,8 @@ public abstract class UIScreen<T> : SingletonBehaviour<T> where T : MonoBehaviou
         var _inputEventComponent = UIEventSystemComponent.Instance;
         if (_inputEventComponent != null)
             _inputEventComponent.OnActiveInputDeviceChanged += this.onInputDeviceChanged;
+
+        this.Close();
     }
 
     protected virtual void OnDestroy()
@@ -45,12 +46,18 @@ public abstract class UIScreen<T> : SingletonBehaviour<T> where T : MonoBehaviou
         switch (deviceType)
         {
             case InputDeviceTypes.KeyboardAndMouse:
+
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+
                 break;
 
             default:
 
-                if (EventSystem.current.currentSelectedGameObject != m_gamepadFirstActiveElement)
-                    EventSystem.current.SetSelectedGameObject(m_gamepadFirstActiveElement);
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+
+                EventSystemUtils.SetSelectedObjectWithManualCall(m_gamepadFirstActiveElement);
 
                 break;
         }
@@ -65,14 +72,18 @@ public abstract class UIScreen<T> : SingletonBehaviour<T> where T : MonoBehaviou
         var _inputEventComponent = UIEventSystemComponent.Instance;
         if (_inputEventComponent != null && _inputEventComponent.ActiveInputDevice != InputDeviceTypes.KeyboardAndMouse)
         {
-            EventSystem.current.SetSelectedGameObject(m_gamepadFirstActiveElement);
+            EventSystemUtils.SetSelectedObjectWithManualCall(m_gamepadFirstActiveElement);
         }
 
         onOpened();
+
+        gameObject.SetActiveOptimized(true);
     }
 
     public void Close()
     {
+        gameObject.SetActiveOptimized(false);
+
         IsOpened = false;
         m_canvas.enabled = false;
 

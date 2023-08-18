@@ -54,12 +54,22 @@ public class SaveManager : SingletonBehaviour<SaveManager>
         string _saveFileName = m_saveFileName + m_currentSaveSlotId;
         bool _saveFileLoaded = SaveSystemUtils.LoadFromFile(_saveFileName, ref m_currentSaveData, SaveSystemUtils.SaveFileFormat.Json);
 
-        if (_saveFileLoaded)
+        if (_saveFileLoaded == false)
         {
-            for (int i = 0; i < m_savePreProcessors.Count; i++)
-                m_savePreProcessors[i].PreProcess(m_currentSaveData);
+            m_currentSaveData.Version = m_saveFileVersion;
+            m_currentSaveData.ClearRegisteredData();
         }
 
+        for (int i = 0; i < m_savePreProcessors.Count; i++)
+            m_savePreProcessors[i].PreProcess(m_currentSaveData);
+
         return _saveFileLoaded;
+    }
+
+    [ContextMenu("Console Log Save Data")]
+    public void Editor_ConsoleLogSaveData()
+    {
+        if (m_currentSaveData != null)
+            Debug.Log(m_currentSaveData.ToString());
     }
 }
