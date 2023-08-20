@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Tensori.SaveSystem;
+using System;
 
 public class SaveManager : SingletonBehaviour<SaveManager>
 {
@@ -17,6 +18,8 @@ public class SaveManager : SingletonBehaviour<SaveManager>
 
     private SaveData m_currentSaveData = null;
     public SaveData CurrentSave => m_currentSaveData;
+
+    public event Action OnSaveLoaded = null;
 
     protected override void Awake()
     {
@@ -62,6 +65,9 @@ public class SaveManager : SingletonBehaviour<SaveManager>
 
         for (int i = 0; i < m_savePreProcessors.Count; i++)
             m_savePreProcessors[i].PreProcess(m_currentSaveData);
+
+        if (_saveFileLoaded)
+            OnSaveLoaded?.Invoke();
 
         return _saveFileLoaded;
     }

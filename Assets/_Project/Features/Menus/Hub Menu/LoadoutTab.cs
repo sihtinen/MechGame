@@ -24,7 +24,7 @@ public class LoadoutTab : UITab
     private int m_editLoadoutIndex = -1;
     private MechLoadout.MechLoadoutListSerialized m_loadoutList = new MechLoadout.MechLoadoutListSerialized();
 
-    private InputActionMap m_inputActionMap = null;
+    private InputAction m_cancelAction = null;
 
     private List<GameObject> m_emptyLoadoutSlotElements = new List<GameObject>();
     private List<LoadoutButton> m_activeLoadoutSelectionButtons = new List<LoadoutButton>();
@@ -48,8 +48,8 @@ public class LoadoutTab : UITab
         {
             _uiEventSystemComponent.OnActiveInputDeviceChanged += this.onActiveInputDeviceChanged;
 
-            m_inputActionMap = _uiEventSystemComponent.UIActionMap;
-            m_inputActionMap.FindAction("Cancel").started += this.onCancelInput;
+            m_cancelAction = _uiEventSystemComponent.UIActionMap.FindAction("Cancel");
+            m_cancelAction.started += this.onCancelInput;
         }
     }
 
@@ -59,10 +59,10 @@ public class LoadoutTab : UITab
         if (_uiEventSystemComponent != null)
             _uiEventSystemComponent.OnActiveInputDeviceChanged -= this.onActiveInputDeviceChanged;
 
-        if (m_inputActionMap != null)
+        if (m_cancelAction != null)
         {
-            m_inputActionMap.FindAction("Cancel").started -= this.onCancelInput;
-            m_inputActionMap = null;
+            m_cancelAction.started -= this.onCancelInput;
+            m_cancelAction = null;
         }
     }
 

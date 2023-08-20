@@ -94,6 +94,7 @@ MonoBehaviour:
   m_saveFileName: save-slot-
   m_saveFileVersion: 1
   m_savePreProcessors:
+  - {fileID: 11400000, guid: 6f229f3bacf92334aadfcf333b2df469, type: 2}
   - {fileID: 11400000, guid: 6adbbb0f2fbc6c94db0aeb56d3388773, type: 2}
   m_currentSaveSlotId: editor
 --- !u!1 &3272521624609934035

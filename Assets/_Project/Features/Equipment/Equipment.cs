@@ -9,6 +9,7 @@ public abstract class Equipment : ScriptableObject
     [Header("Equipment Generic Settings")]
     public GUIDWrapper GUID = new GUIDWrapper();
     public string DisplayName = "New Equipment";
+    public EquipmentCategory Category = null;
 
     public abstract void InitializeGameplay(
         MechController mech,

@@ -15,6 +15,7 @@ MonoBehaviour:
   GUID:
     m_guid: 6057d4243e344e169a34b607bd7a6403
   DisplayName: MG-RD20
+  Category: {fileID: 11400000, guid: 7e6c17a535ecda94bad8a7b904e1cb81, type: 2}
   UseCount: 320
   UseRatePerSecond: 8
   TargetLayers: 15

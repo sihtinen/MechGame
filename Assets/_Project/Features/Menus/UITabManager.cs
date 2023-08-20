@@ -16,8 +16,11 @@ public class UITabManager : MonoBehaviour
 
     private void Start()
     {
-        for (int i = 0; i < m_tabs.Count; i++)
+        for (int i = m_tabs.Count - 1; i >= 0; i--)
+        {
+            m_tabs[i].gameObject.SetActiveOptimized(true);
             m_tabs[i].Close();
+        }
 
         var _uiEventComponent = UIEventSystemComponent.Instance;
         if (_uiEventComponent != null)
