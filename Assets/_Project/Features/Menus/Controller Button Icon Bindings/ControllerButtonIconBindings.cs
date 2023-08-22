@@ -24,6 +24,9 @@ public class ControllerButtonIconBindings : ScriptableObject
     [Space]
     [SerializeField] private Sprite m_menuLeft = null;
     [SerializeField] private Sprite m_menuRight = null;
+    [Space]
+    [SerializeField] private Sprite m_stickLeft = null;
+    [SerializeField] private Sprite m_stickRight = null;
 
     public Sprite GetIcon(InputActionReference inputActionRef)
     {
@@ -42,9 +45,14 @@ public class ControllerButtonIconBindings : ScriptableObject
 
                 case "leftShoulder": return m_shoulderLeft;
                 case "rightShoulder": return m_shoulderRight;
+                case "leftTrigger": return m_triggerLeft;
+                case "rightTrigger": return m_triggerRight;
+
+                case "leftStickPress": return m_stickLeft;
+                case "rightStickPress": return m_stickRight;
 
                 default:
-                    //Debug.LogWarning("ControllerButtonIconBindings: icon logic missing for control path - " + _controlPath.name);
+                    Debug.LogWarning("ControllerButtonIconBindings: icon logic missing for control path - " + _controlPath.name);
                     break;
             }
         }

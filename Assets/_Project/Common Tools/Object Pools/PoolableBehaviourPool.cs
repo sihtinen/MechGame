@@ -15,7 +15,7 @@ public abstract class PoolableBehaviourPool<T> : MonoBehaviour where T : MonoBeh
     private Stack<T> m_unusedObjectsStack = null;
     private List<T> m_usedObjectsList = null;
 
-    private static PoolableBehaviourPool<T> m_instance = null;
+    protected static PoolableBehaviourPool<T> m_instance = null;
 
     private void Awake()
     {

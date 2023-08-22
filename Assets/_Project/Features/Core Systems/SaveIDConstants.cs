@@ -5,6 +5,5 @@ using UnityEngine;
 public static class SaveIDConstants
 {
     public static readonly string UNLOCKED_EQUIPMENT_ID = "UnlockedEquipment";
-    public static readonly string ACTIVE_LOADOUT_INDEX_ID = "ActiveLoadoutIndex";
     public static readonly string LOADOUT_LIST_ID = "MechLoadouts";
 }

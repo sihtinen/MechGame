@@ -5,81 +5,67 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
-public class LoadoutTab : UITab
+public class ManageLoadoutsTab : UITab
 {
+    private static ManageLoadoutsTab m_instance = null;
+
+    [Header("Visual Settings")]
+    [SerializeField] private Vector2 m_popupPanel_PosOffset = new Vector2(250, 0);
+
     [Header("Object References")]
     [SerializeField] private RectTransform m_loadoutButtonGroupTransform = null;
     [SerializeField] private UISelectionHighlight m_createNewLoadoutButton = null;
-    [SerializeField] private RectTransform m_dividerElement = null;
-    [SerializeField] private RectTransform m_selectionBackButtonElement = null;
     [SerializeField] private GameObject m_emptyLoadoutSlotPrefab = null;
-    [Space]
     [SerializeField] private MechLoadout m_selectedLoadoutAsset = null;
+    [SerializeField] private RectTransform m_popupMenu = null;
     [Space]
-    [SerializeField] private RectTransform m_loadoutSelectionPanel = null;
-    [Space]
-    [SerializeField] private ManageLoadoutPanel m_manageLoadoutPanel = null;
+    [SerializeField] private Button m_popupButton_Edit = null;
+    [SerializeField] private Button m_popupButton_Rename = null;
+    [SerializeField] private Button m_popupButton_Duplicate = null;
+    [SerializeField] private Button m_popupButton_Delete = null;
 
     private int m_editLoadoutIndex = -1;
+    public static int EditLoadoutIndex => m_instance.m_editLoadoutIndex;
+    
     private MechLoadout.MechLoadoutListSerialized m_loadoutList = new MechLoadout.MechLoadoutListSerialized();
-
-    private InputAction m_cancelAction = null;
 
     private List<GameObject> m_emptyLoadoutSlotElements = new List<GameObject>();
     private List<LoadoutButton> m_activeLoadoutSelectionButtons = new List<LoadoutButton>();
 
     private int m_maxLoadouts = 6;
 
-    private void Awake()
+    public override void Initialize()
     {
+        base.Initialize();
+
+        m_instance = this;
+
         for (int i = 0; i < m_maxLoadouts; i++)
         {
             var _newEmptyLoadoutElement = Instantiate(m_emptyLoadoutSlotPrefab, m_loadoutButtonGroupTransform);
             _newEmptyLoadoutElement.SetActiveOptimized(false);
             m_emptyLoadoutSlotElements.Add(_newEmptyLoadoutElement);
         }
+
+        m_popupButton_Edit.onClick.AddListener(this.Button_Edit);
+        m_popupButton_Rename.onClick.AddListener(this.Button_Rename);
+        m_popupButton_Duplicate.onClick.AddListener(this.Button_Duplicate);
+        m_popupButton_Delete.onClick.AddListener(this.Button_Delete);
     }
 
-    private void Start()
+    protected override void onActiveInputDeviceChanged(InputDeviceTypes deviceType)
     {
-        var _uiEventSystemComponent = UIEventSystemComponent.Instance;
-        if (_uiEventSystemComponent != null)
-        {
-            _uiEventSystemComponent.OnActiveInputDeviceChanged += this.onActiveInputDeviceChanged;
+        if (IsOpened == false)
+            return;
 
-            m_cancelAction = _uiEventSystemComponent.UIActionMap.FindAction("Cancel");
-            m_cancelAction.started += this.onCancelInput;
-        }
-    }
-
-    private void OnDestroy()
-    {
-        var _uiEventSystemComponent = UIEventSystemComponent.Instance;
-        if (_uiEventSystemComponent != null)
-            _uiEventSystemComponent.OnActiveInputDeviceChanged -= this.onActiveInputDeviceChanged;
-
-        if (m_cancelAction != null)
-        {
-            m_cancelAction.started -= this.onCancelInput;
-            m_cancelAction = null;
-        }
-    }
-
-    private void onActiveInputDeviceChanged(InputDeviceTypes deviceType)
-    {
         updateSelectedObject();
     }
 
-    private void onCancelInput(InputAction.CallbackContext context)
+    protected override void onCancelInput(InputAction.CallbackContext context)
     {
-        if (gameObject == null)
-        {
-            context.action.performed -= this.onCancelInput;
-            return;
-        }
-
-        if (IsOpened == false || gameObject.activeInHierarchy == false)
+        if (IsOpened == false)
             return;
 
         if (m_editLoadoutIndex >= 0)
@@ -93,30 +79,52 @@ public class LoadoutTab : UITab
         base.onOpened();
 
         m_editLoadoutIndex = -1;
+        m_popupMenu.gameObject.SetActiveOptimized(false);
 
         rebuild();
     }
 
+    protected override void onClosed()
+    {
+        base.onClosed();
+
+        m_popupMenu.gameObject.SetActiveOptimized(false);
+    }
+
+    private void LateUpdate()
+    {
+        if (IsOpened == false)
+            return;
+
+        if (m_editLoadoutIndex >= 0)
+            updatePopupMenuPosition();
+    }
+
     private void rebuild()
     {
-        m_manageLoadoutPanel.ClosePanel();
-
         m_activeLoadoutSelectionButtons.Clear();
         LoadoutButtonPool.ResetUsedObjects();
 
-        if (m_editLoadoutIndex < 0)
-            buildLoadoutSelectionView();
-        else
-            buildLoadoutManagementView();
-
-        updatePanels();
+        buildLoadoutSelectionView();
+        updatePopupMenuState();
         updateSelectedObject();
+    }
+
+    private void updatePopupMenuState()
+    {
+        bool _isMenuActive = m_editLoadoutIndex >= 0;
+
+        m_popupMenu.gameObject.SetActiveOptimized(_isMenuActive);
+
+        if (_isMenuActive == false)
+            return;
+
+        m_popupButton_Delete.interactable = m_loadoutList.AllLoadouts.Count > 1;
     }
 
     private void buildLoadoutSelectionView()
     {
         var _saveData = SaveManager.Instance.CurrentSave;
-        var _selectedLoadoutIndex = _saveData.ReadInt(SaveIDConstants.ACTIVE_LOADOUT_INDEX_ID).Item2;
         _saveData.ReadObject(SaveIDConstants.LOADOUT_LIST_ID, ref m_loadoutList);
 
         for (int i = m_loadoutList.AllLoadouts.Count; i --> 0;)
@@ -130,7 +138,6 @@ public class LoadoutTab : UITab
 
             _newLoadoutButton.Populate(
                 mechLoadout: m_selectedLoadoutAsset,
-                isSelected: i == _selectedLoadoutIndex,
                 onClick: () => { this.Button_LoadoutSelected(_index); });
 
             _newLoadoutButton.transform.SetAsFirstSibling();
@@ -159,31 +166,6 @@ public class LoadoutTab : UITab
 
             _element.SetActiveOptimized(_isActive);
         }
-
-        m_dividerElement.SetAsLastSibling();
-        m_selectionBackButtonElement.SetAsLastSibling();
-    }
-
-    private void buildLoadoutManagementView()
-    {
-        var _saveData = SaveManager.Instance.CurrentSave;
-        var _selectedLoadoutIndex = _saveData.ReadInt(SaveIDConstants.ACTIVE_LOADOUT_INDEX_ID).Item2;
-        _saveData.ReadObject(SaveIDConstants.LOADOUT_LIST_ID, ref m_loadoutList);
-
-        var _loadoutSerialized = m_loadoutList.AllLoadouts[m_editLoadoutIndex];
-        m_selectedLoadoutAsset.PopulateFromSerializedData(_loadoutSerialized);
-
-        m_createNewLoadoutButton.gameObject.SetActiveOptimized(false);
-
-        m_manageLoadoutPanel.OpenPanel(
-            loadout: m_selectedLoadoutAsset,
-            isSelected: _selectedLoadoutIndex == m_editLoadoutIndex,
-            canBeDeleted: m_loadoutList.AllLoadouts.Count > 1);
-    }
-
-    private void updatePanels()
-    {
-        m_loadoutSelectionPanel.gameObject.SetActiveOptimized(m_editLoadoutIndex < 0);
     }
 
     private void updateSelectedObject()
@@ -201,7 +183,7 @@ public class LoadoutTab : UITab
         if (m_editLoadoutIndex < 0)
             _selectedObj = m_activeLoadoutSelectionButtons[m_activeLoadoutSelectionButtons.Count - 1].gameObject;
         else
-            m_manageLoadoutPanel.ResetControllerSelection();
+            _selectedObj = m_popupButton_Edit.gameObject;
 
         EventSystemUtils.SetSelectedObjectWithManualCall(_selectedObj);
     }
@@ -214,6 +196,18 @@ public class LoadoutTab : UITab
         m_editLoadoutIndex = loadoutIndex;
 
         rebuild();
+
+        updatePopupMenuPosition();
+    }
+
+    private void updatePopupMenuPosition()
+    {
+        var _buttonElement = m_loadoutButtonGroupTransform.GetChild(m_editLoadoutIndex) as RectTransform;
+        var _anchorPos = Camera.main.ScreenToViewportPoint(_buttonElement.position);
+
+        m_popupMenu.anchorMin = _anchorPos;
+        m_popupMenu.anchorMax = _anchorPos;
+        m_popupMenu.anchoredPosition = m_popupPanel_PosOffset;
     }
 
     public void Button_CreateNewLoadout()
@@ -229,6 +223,8 @@ public class LoadoutTab : UITab
         _saveData.RegisterVariable(SaveIDConstants.LOADOUT_LIST_ID, m_loadoutList);
         SaveManager.Instance.SaveData();
 
+        m_editLoadoutIndex = m_loadoutList.AllLoadouts.Count - 1;
+
         rebuild();
     }
 
@@ -239,23 +235,22 @@ public class LoadoutTab : UITab
         HubScreen.Instance.Open();
     }
 
-    public void Button_CloseLoadoutManagement()
+    public void Button_Edit()
     {
-        m_editLoadoutIndex = -1;
-
-        rebuild();
+        DevelopmentScreen.Instance.OpenTab(1);
     }
 
-    public void Button_SetSelectedLoadoutAsActive()
+    public void Button_Rename()
     {
-        var _saveData = SaveManager.Instance.CurrentSave;
-        _saveData.RegisterVariable(SaveIDConstants.ACTIVE_LOADOUT_INDEX_ID, m_editLoadoutIndex);
-        SaveManager.Instance.SaveData();
 
-        rebuild();
     }
 
-    public void Button_DeleteSelectedLoadout()
+    public void Button_Duplicate()
+    {
+
+    }
+
+    public void Button_Delete()
     {
         if (m_loadoutList.AllLoadouts.Count <= 1)
             return;
@@ -265,13 +260,16 @@ public class LoadoutTab : UITab
         m_loadoutList.AllLoadouts.RemoveAt(m_editLoadoutIndex);
         _saveData.RegisterVariable(SaveIDConstants.LOADOUT_LIST_ID, m_loadoutList);
 
-        int _savedActiveLoadoutIndex = _saveData.ReadInt(SaveIDConstants.ACTIVE_LOADOUT_INDEX_ID).Item2;
-        if (_savedActiveLoadoutIndex == m_editLoadoutIndex)
-            _saveData.RegisterVariable(SaveIDConstants.ACTIVE_LOADOUT_INDEX_ID, 0);
-
         SaveManager.Instance.SaveData();
 
         m_editLoadoutIndex = -1;
+        rebuild();
+    }
+
+    public void Button_CloseLoadoutManagement()
+    {
+        m_editLoadoutIndex = -1;
+
         rebuild();
     }
 }

@@ -9,16 +9,22 @@ public class ControllerButtonIconImageComponent : MonoBehaviour
 {
     [SerializeField] private InputActionReference m_inputActionRef = null;
     [SerializeField] private GameObject m_disableObjectWhenController = null;
-
-    private Image m_image = null;
+    [SerializeField] private Image m_inputIconImage = null;
 
     private void Awake()
     {
-        TryGetComponent(out m_image);
+        if (m_inputIconImage == null)
+            TryGetComponent(out m_inputIconImage);
     }
 
     private void Start()
     {
+        if (m_inputActionRef == null)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+
         var _eventSystemComponent = UIEventSystemComponent.Instance;
         if (_eventSystemComponent != null)
         {
@@ -53,7 +59,7 @@ public class ControllerButtonIconImageComponent : MonoBehaviour
         var _iconSprite = _iconDatabase.GetIcon(deviceType, m_inputActionRef);
 
         if (_iconSprite != null)
-            m_image.overrideSprite = _iconSprite;
+            m_inputIconImage.overrideSprite = _iconSprite;
 
         gameObject.SetActiveOptimized(_iconSprite != null);
 

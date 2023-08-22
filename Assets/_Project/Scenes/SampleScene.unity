@@ -3012,8 +3012,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_mouseSensitivity: 0.2
-  m_stickSensitivityPitch: 220
-  m_stickSensitivityYaw: 280
+  m_stickSensitivityPitch: 180
+  m_stickSensitivityYaw: 210
   m_followHeightOffset: 26
   m_followDistance: 70
   m_minPitch: -80

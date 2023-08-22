@@ -9,6 +9,9 @@ public class EquipmentDatabase : ScriptableObject
 
     public Equipment GetAsset(string guid)
     {
+        if (string.IsNullOrEmpty(guid))
+            return null;
+
         for (int i = 0; i < m_allAssets.Count; i++)
         {
             var _asset = m_allAssets[i];

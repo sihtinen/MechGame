@@ -80,6 +80,51 @@ public partial class @MechGameInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Melee"",
+                    ""type"": ""Button"",
+                    ""id"": ""58d71a6c-a38c-4471-bc11-9bb8d7baa007"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Utility1"",
+                    ""type"": ""Button"",
+                    ""id"": ""8d8f8ae2-4c1c-4b11-9a89-442b47bbf9b1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Utility2"",
+                    ""type"": ""Button"",
+                    ""id"": ""82464bd2-8ccc-454c-8b61-27b17e317535"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Utility3"",
+                    ""type"": ""Button"",
+                    ""id"": ""40bec563-7ab2-4942-84ed-60b9e4d0229d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Utility4"",
+                    ""type"": ""Button"",
+                    ""id"": ""18307406-9d44-4e34-a5a6-5f7ce79a6d68"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -258,6 +303,116 @@ public partial class @MechGameInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""ShoulderRight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1f28d0e7-208d-4ad6-81b2-e4603a193d5d"",
+                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Melee"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a322e881-d5ee-4ae3-8bc7-5d136c8b3c83"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Melee"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""16b4aa91-023f-4240-8325-05d5c855c7ed"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Utility1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c0a6ef03-6e40-4e7f-b280-065582303c84"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Utility1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""01314635-25c7-4ffc-bf7b-1dbaa918589e"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Utility2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""624cea56-9aed-4d03-a697-0c7684a155f6"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Utility2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""97c23e3a-c79b-463c-af57-511acc67cea2"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Utility3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c91227c0-52ec-417f-8d87-4fdeb5fe047e"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Utility3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e54ef102-fd40-4acb-9bd1-3996a0857ed3"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Utility4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0181ac20-90ee-4ac8-9dda-f4539ab90848"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Utility4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -372,6 +527,24 @@ public partial class @MechGameInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""NavigateLeft"",
+                    ""type"": ""Button"",
+                    ""id"": ""44a44076-a3dd-44f6-8f89-568c3e31aa10"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""NavigateRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""388e466b-d688-4882-ad4d-fdf9cb9236d5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -836,6 +1009,28 @@ public partial class @MechGameInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""TabPrevious"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4a70ed84-f76c-4afb-a6ad-2f7cd74d6d29"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NavigateLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2ea27be5-ff04-4917-b6a0-81fb327805a7"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NavigateRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -850,6 +1045,11 @@ public partial class @MechGameInputActions: IInputActionCollection2, IDisposable
         m_Mech_ArmRight = m_Mech.FindAction("ArmRight", throwIfNotFound: true);
         m_Mech_ShoulderLeft = m_Mech.FindAction("ShoulderLeft", throwIfNotFound: true);
         m_Mech_ShoulderRight = m_Mech.FindAction("ShoulderRight", throwIfNotFound: true);
+        m_Mech_Melee = m_Mech.FindAction("Melee", throwIfNotFound: true);
+        m_Mech_Utility1 = m_Mech.FindAction("Utility1", throwIfNotFound: true);
+        m_Mech_Utility2 = m_Mech.FindAction("Utility2", throwIfNotFound: true);
+        m_Mech_Utility3 = m_Mech.FindAction("Utility3", throwIfNotFound: true);
+        m_Mech_Utility4 = m_Mech.FindAction("Utility4", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -864,6 +1064,8 @@ public partial class @MechGameInputActions: IInputActionCollection2, IDisposable
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
         m_UI_TabPrevious = m_UI.FindAction("TabPrevious", throwIfNotFound: true);
         m_UI_TabNext = m_UI.FindAction("TabNext", throwIfNotFound: true);
+        m_UI_NavigateLeft = m_UI.FindAction("NavigateLeft", throwIfNotFound: true);
+        m_UI_NavigateRight = m_UI.FindAction("NavigateRight", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -931,6 +1133,11 @@ public partial class @MechGameInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Mech_ArmRight;
     private readonly InputAction m_Mech_ShoulderLeft;
     private readonly InputAction m_Mech_ShoulderRight;
+    private readonly InputAction m_Mech_Melee;
+    private readonly InputAction m_Mech_Utility1;
+    private readonly InputAction m_Mech_Utility2;
+    private readonly InputAction m_Mech_Utility3;
+    private readonly InputAction m_Mech_Utility4;
     public struct MechActions
     {
         private @MechGameInputActions m_Wrapper;
@@ -941,6 +1148,11 @@ public partial class @MechGameInputActions: IInputActionCollection2, IDisposable
         public InputAction @ArmRight => m_Wrapper.m_Mech_ArmRight;
         public InputAction @ShoulderLeft => m_Wrapper.m_Mech_ShoulderLeft;
         public InputAction @ShoulderRight => m_Wrapper.m_Mech_ShoulderRight;
+        public InputAction @Melee => m_Wrapper.m_Mech_Melee;
+        public InputAction @Utility1 => m_Wrapper.m_Mech_Utility1;
+        public InputAction @Utility2 => m_Wrapper.m_Mech_Utility2;
+        public InputAction @Utility3 => m_Wrapper.m_Mech_Utility3;
+        public InputAction @Utility4 => m_Wrapper.m_Mech_Utility4;
         public InputActionMap Get() { return m_Wrapper.m_Mech; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -968,6 +1180,21 @@ public partial class @MechGameInputActions: IInputActionCollection2, IDisposable
             @ShoulderRight.started += instance.OnShoulderRight;
             @ShoulderRight.performed += instance.OnShoulderRight;
             @ShoulderRight.canceled += instance.OnShoulderRight;
+            @Melee.started += instance.OnMelee;
+            @Melee.performed += instance.OnMelee;
+            @Melee.canceled += instance.OnMelee;
+            @Utility1.started += instance.OnUtility1;
+            @Utility1.performed += instance.OnUtility1;
+            @Utility1.canceled += instance.OnUtility1;
+            @Utility2.started += instance.OnUtility2;
+            @Utility2.performed += instance.OnUtility2;
+            @Utility2.canceled += instance.OnUtility2;
+            @Utility3.started += instance.OnUtility3;
+            @Utility3.performed += instance.OnUtility3;
+            @Utility3.canceled += instance.OnUtility3;
+            @Utility4.started += instance.OnUtility4;
+            @Utility4.performed += instance.OnUtility4;
+            @Utility4.canceled += instance.OnUtility4;
         }
 
         private void UnregisterCallbacks(IMechActions instance)
@@ -990,6 +1217,21 @@ public partial class @MechGameInputActions: IInputActionCollection2, IDisposable
             @ShoulderRight.started -= instance.OnShoulderRight;
             @ShoulderRight.performed -= instance.OnShoulderRight;
             @ShoulderRight.canceled -= instance.OnShoulderRight;
+            @Melee.started -= instance.OnMelee;
+            @Melee.performed -= instance.OnMelee;
+            @Melee.canceled -= instance.OnMelee;
+            @Utility1.started -= instance.OnUtility1;
+            @Utility1.performed -= instance.OnUtility1;
+            @Utility1.canceled -= instance.OnUtility1;
+            @Utility2.started -= instance.OnUtility2;
+            @Utility2.performed -= instance.OnUtility2;
+            @Utility2.canceled -= instance.OnUtility2;
+            @Utility3.started -= instance.OnUtility3;
+            @Utility3.performed -= instance.OnUtility3;
+            @Utility3.canceled -= instance.OnUtility3;
+            @Utility4.started -= instance.OnUtility4;
+            @Utility4.performed -= instance.OnUtility4;
+            @Utility4.canceled -= instance.OnUtility4;
         }
 
         public void RemoveCallbacks(IMechActions instance)
@@ -1023,6 +1265,8 @@ public partial class @MechGameInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_TrackedDeviceOrientation;
     private readonly InputAction m_UI_TabPrevious;
     private readonly InputAction m_UI_TabNext;
+    private readonly InputAction m_UI_NavigateLeft;
+    private readonly InputAction m_UI_NavigateRight;
     public struct UIActions
     {
         private @MechGameInputActions m_Wrapper;
@@ -1039,6 +1283,8 @@ public partial class @MechGameInputActions: IInputActionCollection2, IDisposable
         public InputAction @TrackedDeviceOrientation => m_Wrapper.m_UI_TrackedDeviceOrientation;
         public InputAction @TabPrevious => m_Wrapper.m_UI_TabPrevious;
         public InputAction @TabNext => m_Wrapper.m_UI_TabNext;
+        public InputAction @NavigateLeft => m_Wrapper.m_UI_NavigateLeft;
+        public InputAction @NavigateRight => m_Wrapper.m_UI_NavigateRight;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1084,6 +1330,12 @@ public partial class @MechGameInputActions: IInputActionCollection2, IDisposable
             @TabNext.started += instance.OnTabNext;
             @TabNext.performed += instance.OnTabNext;
             @TabNext.canceled += instance.OnTabNext;
+            @NavigateLeft.started += instance.OnNavigateLeft;
+            @NavigateLeft.performed += instance.OnNavigateLeft;
+            @NavigateLeft.canceled += instance.OnNavigateLeft;
+            @NavigateRight.started += instance.OnNavigateRight;
+            @NavigateRight.performed += instance.OnNavigateRight;
+            @NavigateRight.canceled += instance.OnNavigateRight;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
@@ -1124,6 +1376,12 @@ public partial class @MechGameInputActions: IInputActionCollection2, IDisposable
             @TabNext.started -= instance.OnTabNext;
             @TabNext.performed -= instance.OnTabNext;
             @TabNext.canceled -= instance.OnTabNext;
+            @NavigateLeft.started -= instance.OnNavigateLeft;
+            @NavigateLeft.performed -= instance.OnNavigateLeft;
+            @NavigateLeft.canceled -= instance.OnNavigateLeft;
+            @NavigateRight.started -= instance.OnNavigateRight;
+            @NavigateRight.performed -= instance.OnNavigateRight;
+            @NavigateRight.canceled -= instance.OnNavigateRight;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -1149,6 +1407,11 @@ public partial class @MechGameInputActions: IInputActionCollection2, IDisposable
         void OnArmRight(InputAction.CallbackContext context);
         void OnShoulderLeft(InputAction.CallbackContext context);
         void OnShoulderRight(InputAction.CallbackContext context);
+        void OnMelee(InputAction.CallbackContext context);
+        void OnUtility1(InputAction.CallbackContext context);
+        void OnUtility2(InputAction.CallbackContext context);
+        void OnUtility3(InputAction.CallbackContext context);
+        void OnUtility4(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
@@ -1164,5 +1427,7 @@ public partial class @MechGameInputActions: IInputActionCollection2, IDisposable
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
         void OnTabPrevious(InputAction.CallbackContext context);
         void OnTabNext(InputAction.CallbackContext context);
+        void OnNavigateLeft(InputAction.CallbackContext context);
+        void OnNavigateRight(InputAction.CallbackContext context);
     }
 }

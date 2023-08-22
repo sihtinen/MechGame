@@ -7,50 +7,35 @@ using UnityEngine.InputSystem;
 [DefaultExecutionOrder(-1)]
 public class UITabManager : MonoBehaviour
 {
+    [SerializeField] private bool m_enableInput = true;
+    [SerializeField] private InputActionReference m_previousTabInputRef = null;
+    [SerializeField] private InputActionReference m_nextTabInputRef = null;
+
     [SerializeField] private List<UITab> m_tabs = new List<UITab>();
 
     private int m_currentTabIndex = 0;
 
-    private InputAction m_previousTabInputAction = null;
-    private InputAction m_nextTabInputAction = null;
-
     private void Start()
     {
-        for (int i = m_tabs.Count - 1; i >= 0; i--)
+        for (int i = 0; i < m_tabs.Count; i++)
+            m_tabs[i].Initialize();
+
+        if (m_enableInput)
         {
-            m_tabs[i].gameObject.SetActiveOptimized(true);
-            m_tabs[i].Close();
-        }
+            m_previousTabInputRef.action.started += this.onPreviousTabInput;
+            if (m_previousTabInputRef.action.enabled == false) m_previousTabInputRef.action.Enable();
 
-        var _uiEventComponent = UIEventSystemComponent.Instance;
-        if (_uiEventComponent != null)
-        {
-            var _actionMap = _uiEventComponent.UIActionMap;
-
-            m_previousTabInputAction = _actionMap.FindAction("TabPrevious");
-            m_previousTabInputAction.started += this.onPreviousTabInput;
-            if (m_previousTabInputAction.enabled == false) m_previousTabInputAction.Enable();
-
-            m_nextTabInputAction = _actionMap.FindAction("TabNext");
-            m_nextTabInputAction.started += this.onNextTabInput;
-            if (m_nextTabInputAction.enabled == false) m_nextTabInputAction.Enable();
+            m_nextTabInputRef.action.started += this.onNextTabInput;
+            if (m_nextTabInputRef.action.enabled == false) m_nextTabInputRef.action.Enable();
         }
     }
 
     private void OnDestroy()
-    { 
-        if (m_previousTabInputAction != null)
+    {
+        if (m_enableInput)
         {
-            m_previousTabInputAction.started -= this.onPreviousTabInput;
-            if (m_previousTabInputAction.enabled) m_previousTabInputAction.Disable();
-            m_previousTabInputAction = null;
-        }
-
-        if (m_nextTabInputAction != null)
-        {
-            m_nextTabInputAction.started -= this.onNextTabInput;
-            if (m_nextTabInputAction.enabled) m_nextTabInputAction.Disable();
-            m_nextTabInputAction = null;
+            m_previousTabInputRef.action.started -= this.onPreviousTabInput;
+            m_nextTabInputRef.action.started -= this.onNextTabInput;
         }
     }
 

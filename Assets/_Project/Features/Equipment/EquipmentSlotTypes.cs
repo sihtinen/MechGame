@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum EquipmentSlotTypes
 {
+    Undefined = -1,
     LeftShoulder = 0,
     LeftArm = 1,
     RightShoulder = 2,

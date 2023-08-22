@@ -94,7 +94,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 2
+    m_Mode: 3
     m_WrapAround: 1
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -162,6 +162,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_onSelectedElement: {fileID: 3658500086654441511}
+  m_onSelectedImage: {fileID: 0}
 --- !u!1 &5543619509274960514
 GameObject:
   m_ObjectHideFlags: 0

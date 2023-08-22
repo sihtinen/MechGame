@@ -230,7 +230,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 2
+    m_Mode: 3
     m_WrapAround: 1
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -300,6 +300,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_onSelectedElement: {fileID: 9628398067757718}
+  m_onSelectedImage: {fileID: 0}
 --- !u!225 &397899403968806488
 CanvasGroup:
   m_ObjectHideFlags: 0

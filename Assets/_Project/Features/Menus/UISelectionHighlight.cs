@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class UISelectionHighlight : MonoBehaviour, 
     ISelectHandler, 
@@ -10,29 +11,27 @@ public class UISelectionHighlight : MonoBehaviour,
     IPointerExitHandler
 {
     [SerializeField] private GameObject m_onSelectedElement = null;
+    [SerializeField] private Image m_onSelectedImage = null;
 
     private void Start()
     {
-        if (m_onSelectedElement != null)
-            m_onSelectedElement.SetActiveOptimized(false);
+        setHighlightActive(false);
     }
 
     private void OnDisable()
     {
         if (Application.isPlaying)
-            m_onSelectedElement.SetActiveOptimized(false);
+            setHighlightActive(false);
     }
 
     public void OnSelect(BaseEventData eventData)
     {
-        if (m_onSelectedElement != null)
-            m_onSelectedElement.SetActiveOptimized(true);
+        setHighlightActive(true);
     }
 
     public void OnDeselect(BaseEventData eventData)
     {
-        if (m_onSelectedElement != null)
-            m_onSelectedElement.SetActiveOptimized(false);
+        setHighlightActive(false);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -44,5 +43,18 @@ public class UISelectionHighlight : MonoBehaviour,
     {
         if (EventSystem.current != null)
             EventSystem.current.SetSelectedGameObject(null);
+    }
+
+    private void setHighlightActive(bool isActive)
+    {
+        if (m_onSelectedElement != null)
+            m_onSelectedElement.SetActiveOptimized(isActive);
+
+        if (m_onSelectedImage != null)
+        {
+            var _col = m_onSelectedImage.color;
+            _col.a = isActive ? 1 : 0;
+            m_onSelectedImage.color = _col;
+        }
     }
 }

@@ -17,7 +17,7 @@ public class LoadoutButton : PoolableBehaviour<LoadoutButton>
         m_onClickAction = null;
     }
 
-    internal void Populate(MechLoadout mechLoadout, bool isSelected, Action onClick)
+    internal void Populate(MechLoadout mechLoadout, Action onClick)
     {
         m_nameText.SetText(mechLoadout.LoadoutName);
         m_onClickAction = onClick;

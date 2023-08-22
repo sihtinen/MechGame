@@ -33,4 +33,27 @@ public class HubScreen : UIScreen<HubScreen>
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
     }
+
+    protected override void onOpened()
+    {
+        base.onOpened();
+
+        updateInputGuides(UIEventSystemComponent.Instance.ActiveInputDevice);
+    }
+
+    protected override void onInputDeviceChanged(InputDeviceTypes deviceType)
+    {
+        base.onInputDeviceChanged(deviceType);
+
+        if (IsOpened == false)
+            return;
+
+        updateInputGuides(deviceType);
+    }
+
+    private void updateInputGuides(InputDeviceTypes deviceType)
+    {
+        InputGuideElementPool.ResetUsedObjects();
+        InputGuideElementPool.CreateGuide_SubmitButton("Select", deviceType);
+    }
 }

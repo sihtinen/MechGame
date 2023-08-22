@@ -52,7 +52,7 @@ public class StorageTab : UITab
 
                 var _newUI = EquipmentUIElementPool.Get();
                 _newUI.transform.SetParent(m_verticalGroupContent);
-                _newUI.BindToEquipment(_equipment);
+                _newUI.Initialize(_equipment, EquipmentSlotTypes.RightShoulder);
                 _newUI.gameObject.SetActiveOptimized(true);
 
                 m_activeUIElements.Add(_newUI);

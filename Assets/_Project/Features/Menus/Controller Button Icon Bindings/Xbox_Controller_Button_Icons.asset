@@ -26,3 +26,5 @@ MonoBehaviour:
   m_triggerRight: {fileID: 21300000, guid: 00032ebdb84f8ea47bc4c6a0efe57001, type: 3}
   m_menuLeft: {fileID: 21300000, guid: f64a090b563c41c4a90035d361566c74, type: 3}
   m_menuRight: {fileID: 21300000, guid: 0fb80e51a85649a40a7eecf98dff9e94, type: 3}
+  m_stickLeft: {fileID: 21300000, guid: 3dc99b4f03133cb41a61f35ed9f5f034, type: 3}
+  m_stickRight: {fileID: 21300000, guid: 8a3cc8d4132542744b91c524d6adda31, type: 3}

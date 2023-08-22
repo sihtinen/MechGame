@@ -21,7 +21,6 @@ public class SaveLoadoutProcessor : SavePreProcessor
         {
             m_cachedLoadoutList.AllLoadouts.Add(m_defaultLoadoutTemplate.Serialize());
             saveData.RegisterVariable(SaveIDConstants.LOADOUT_LIST_ID, m_cachedLoadoutList);
-            saveData.RegisterVariable<int>(SaveIDConstants.ACTIVE_LOADOUT_INDEX_ID, 0);
         }
     }
 }
