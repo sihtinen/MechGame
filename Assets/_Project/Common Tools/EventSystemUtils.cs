@@ -7,11 +7,11 @@ public static class EventSystemUtils
 {
     private static List<ISelectHandler> m_selectHandlers = new List<ISelectHandler>();
 
-    public static void SetSelectedObjectWithManualCall(GameObject go, bool isDelayed = true)
+    public static void SetSelectedObjectWithManualCall(string source, GameObject go, bool isDelayed = true)
     {
         if (isDelayed)
         {
-            EventSystem.current.StartCoroutine(setSelectedObject(go));
+            EventSystem.current.StartCoroutine(setSelectedObject(source, go));
             return;
         }
 
@@ -28,9 +28,9 @@ public static class EventSystemUtils
         }
     }
 
-    private static IEnumerator setSelectedObject(GameObject go)
+    private static IEnumerator setSelectedObject(string source, GameObject go)
     {
         yield return null;
-        SetSelectedObjectWithManualCall(go, isDelayed: false);
+        SetSelectedObjectWithManualCall(source, go, isDelayed: false);
     }
 }

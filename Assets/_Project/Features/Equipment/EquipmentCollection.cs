@@ -32,7 +32,7 @@ public class EquipmentCollection : ScriptableObject
         for (int i = 0; i < data.EquipmentGUIDs.Count; i++)
         {
             var _guid = data.EquipmentGUIDs[i];
-            var _asset = _equipmentDatabase.GetAsset(_guid);
+            var _asset = _equipmentDatabase.GetAsset<Equipment>(_guid);
 
             if (_asset != null)
                 EquipmentAssets.Add(_asset);

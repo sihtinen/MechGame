@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -12,6 +13,12 @@ public class UISelectionHighlight : MonoBehaviour,
 {
     [SerializeField] private GameObject m_onSelectedElement = null;
     [SerializeField] private Image m_onSelectedImage = null;
+
+    [Header("Unity Events")]
+    public UnityEvent OnSelected = new();
+    public UnityEvent OnDeselected = new();
+
+    private bool m_isSelected = false;
 
     private void Start()
     {
@@ -26,17 +33,31 @@ public class UISelectionHighlight : MonoBehaviour,
 
     public void OnSelect(BaseEventData eventData)
     {
+        if (m_isSelected)
+            return;
+
+        m_isSelected = true;
+
         setHighlightActive(true);
+
+        OnSelected?.Invoke();
     }
 
     public void OnDeselect(BaseEventData eventData)
     {
+        if (m_isSelected == false)
+            return;
+
+        m_isSelected = false;
+
         setHighlightActive(false);
+
+        OnDeselected?.Invoke();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        EventSystemUtils.SetSelectedObjectWithManualCall(gameObject);
+        EventSystemUtils.SetSelectedObjectWithManualCall(GetType().Name, gameObject);
     }
 
     public void OnPointerExit(PointerEventData eventData)

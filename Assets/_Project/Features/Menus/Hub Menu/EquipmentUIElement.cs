@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 public class EquipmentUIElement : PoolableBehaviour<EquipmentUIElement>
 {
@@ -10,15 +11,30 @@ public class EquipmentUIElement : PoolableBehaviour<EquipmentUIElement>
     [SerializeField] private TMP_Text m_typeText = null;
 
     private Equipment m_equipment = null;
+    private UISelectionHighlight m_uiSelectionHighlight = null;
+    private Action m_onSelectedCallback = null;
+
+    private void Awake()
+    {
+        TryGetComponent(out m_uiSelectionHighlight);
+        m_uiSelectionHighlight.OnSelected.AddListener(this.onSelected);
+    }
+
+    private void onSelected()
+    {
+        m_onSelectedCallback?.Invoke();
+    }
 
     protected override void resetAndClearBindings()
     {
         m_equipment = null;
+        m_onSelectedCallback = null;
     }
 
-    public void Initialize(Equipment equipment, EquipmentSlotTypes slotType)
+    public void Initialize(Equipment equipment, Action onSelectedCallback, EquipmentSlotTypes slotType = EquipmentSlotTypes.Undefined)
     {
         m_equipment = equipment;
+        m_onSelectedCallback = onSelectedCallback;
 
         if (equipment != null)
         {
@@ -27,10 +43,11 @@ public class EquipmentUIElement : PoolableBehaviour<EquipmentUIElement>
         }
         else
         {
-            m_nameText.SetText("EMPTY");
+            m_nameText.SetText("-EMPTY-");
             m_typeText.SetText(string.Empty);
         }
 
-        m_slotNameText.SetText(slotType == EquipmentSlotTypes.Undefined ? string.Empty : slotType.ToString());
+        if (slotType != EquipmentSlotTypes.Undefined)
+            m_slotNameText.SetText(slotType.ToString());
     }
 }

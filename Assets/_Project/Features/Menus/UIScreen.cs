@@ -57,7 +57,8 @@ public abstract class UIScreen<T> : SingletonBehaviour<T> where T : MonoBehaviou
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
 
-                EventSystemUtils.SetSelectedObjectWithManualCall(m_gamepadFirstActiveElement);
+                if (m_gamepadFirstActiveElement != null)
+                    EventSystemUtils.SetSelectedObjectWithManualCall(GetType().Name, m_gamepadFirstActiveElement);
 
                 break;
         }
@@ -72,7 +73,7 @@ public abstract class UIScreen<T> : SingletonBehaviour<T> where T : MonoBehaviou
         var _inputEventComponent = UIEventSystemComponent.Instance;
         if (_inputEventComponent != null && _inputEventComponent.ActiveInputDevice != InputDeviceTypes.KeyboardAndMouse)
         {
-            EventSystemUtils.SetSelectedObjectWithManualCall(m_gamepadFirstActiveElement);
+            EventSystemUtils.SetSelectedObjectWithManualCall(GetType().Name, m_gamepadFirstActiveElement);
         }
 
         onOpened();

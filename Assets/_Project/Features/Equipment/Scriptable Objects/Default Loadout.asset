@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52794d2d90044024a9564c525447a310, type: 3}
+  m_Name: Default Loadout
+  m_EditorClassIdentifier: 
+  LoadoutName: Default
+  LeftShoulder: {fileID: 11400000, guid: 284f7342680fc8747addda7214b709a7, type: 2}
+  RightShoulder: {fileID: 0}
+  LeftArm: {fileID: 0}
+  RightArm: {fileID: 11400000, guid: 139ca052919341042bf8e673f49436a6, type: 2}
+  Melee: {fileID: 0}
+  Generator: {fileID: 0}
+  Head: {fileID: 11400000, guid: 62fadc2b979c3ef47b425ef09f775e31, type: 2}
+  Arms: {fileID: 11400000, guid: e3a703c94fbc37844b3678918a061581, type: 2}
+  Body: {fileID: 11400000, guid: ed83da73f9404ef4fba42eccf5f633b7, type: 2}
+  Legs: {fileID: 11400000, guid: dc3e7306fc1d78b4d895bcdd253be8eb, type: 2}
+  Utility1: {fileID: 0}
+  Utility2: {fileID: 0}
+  Utility3: {fileID: 0}
+  Utility4: {fileID: 0}
+  Passive1: {fileID: 0}
+  Passive2: {fileID: 0}
+  Passive3: {fileID: 0}
+  Passive4: {fileID: 0}

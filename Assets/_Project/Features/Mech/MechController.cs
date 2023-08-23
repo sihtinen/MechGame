@@ -49,25 +49,25 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
             _inputComponent.enabled = settings.IsPlayer;
 
         initializeSlot(
-            settings.Loadout.Slot_LeftShoulder,
+            settings.Loadout.LeftShoulder,
             m_eqSlotShoulderLeft,
             settings.IsPlayer, 
             PlayerInputComponent.LeftShoulderInputRef);
 
         initializeSlot(
-            settings.Loadout.Slot_LeftArm,
+            settings.Loadout.LeftArm,
             m_eqSlotArmLeft,
             settings.IsPlayer,
             PlayerInputComponent.LeftArmInputRef);
 
         initializeSlot(
-            settings.Loadout.Slot_RightShoulder,
+            settings.Loadout.RightShoulder,
             m_eqSlotShoulderRight,
             settings.IsPlayer,
             PlayerInputComponent.RightShoulderInputRef);
 
         initializeSlot(
-            settings.Loadout.Slot_RightArm,
+            settings.Loadout.RightArm,
             m_eqSlotArmRight,
             settings.IsPlayer,
             PlayerInputComponent.RightArmInputRef);

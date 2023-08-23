@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 [System.Serializable]
 [CreateAssetMenu(menuName = "MechGame/Equipment/New Projectile Equipment")]
-public class ProjectileEquipment : Equipment
+public class ProjectileEquipment : PrimaryEquipment
 {
     [Header("Projectile Settings")]
     [Min(1)] public int UseCount = 320;
@@ -49,5 +49,13 @@ public class ProjectileEquipment : Equipment
         _hudElement.BindToRuntimeComponent(_projectileRuntimeComponent);
 
         TargetingHUDManager.Instance.RegisterProjectileRuntime(_projectileRuntimeComponent);
+    }
+
+    protected override void populateDataPanel_Custom(DataPanel dataPanel)
+    {
+        dataPanel.CreateTextElement().Initialize("Damage", Damage.ToStringMinimalAlloc());
+        dataPanel.CreateTextElement().Initialize("Capacity", UseCount.ToStringMinimalAlloc());
+        dataPanel.CreateTextElement().Initialize("Rate of fire", UseRatePerSecond.ToStringMinimalAlloc() + "/s");
+        dataPanel.CreateTextElement().Initialize("Projectile speed", Velocity.ToString("0"));
     }
 }

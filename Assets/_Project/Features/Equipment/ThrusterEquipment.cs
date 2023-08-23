@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 [System.Serializable]
 [CreateAssetMenu(menuName = "MechGame/Equipment/New Thruster Equipment")]
-public class ThrusterEquipment : Equipment
+public class ThrusterEquipment : PrimaryEquipment
 {
     [Min(0f)] public float RechargeRate = 1.0f;
 
@@ -35,5 +35,10 @@ public class ThrusterEquipment : Equipment
 
         var _hudElement = HUDManager.Instance.InitializeHUDElement(HUDPrefab, slot.SlotType);
         _hudElement.BindToRuntimeComponent(_thrusterComp);
+    }
+
+    protected override void populateDataPanel_Custom(DataPanel dataPanel)
+    {
+        dataPanel.CreateTextElement().Initialize("Recharge Rate", RechargeRate.ToString("0"), 18, 18);
     }
 }

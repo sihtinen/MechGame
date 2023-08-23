@@ -7,7 +7,7 @@ public class EquipmentDatabase : ScriptableObject
 {
     [SerializeField] private List<Equipment> m_allAssets = new List<Equipment>();
 
-    public Equipment GetAsset(string guid)
+    public T GetAsset<T>(string guid) where T : Equipment
     {
         if (string.IsNullOrEmpty(guid))
             return null;
@@ -17,7 +17,7 @@ public class EquipmentDatabase : ScriptableObject
             var _asset = m_allAssets[i];
 
             if (_asset.GUID.ToString() == guid)
-                return _asset;
+                return _asset as T;
         }
 
         Debug.LogError($"EquipmentDatabase.GetAsset(): no asset found with GUID [{guid}]");

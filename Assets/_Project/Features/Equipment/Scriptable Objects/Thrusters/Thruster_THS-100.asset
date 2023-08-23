@@ -15,7 +15,11 @@ MonoBehaviour:
   GUID:
     m_guid: c4bd2ae57b7d41eaade5835e6b32f490
   DisplayName: THS-100
+  Description: An industry standard thruster. Provides balanced horizontal and vertical
+    mobility.
   Category: {fileID: 11400000, guid: 365d51970c3993d44a2ac967ea3cf20e, type: 2}
+  Weight: 100
+  EnergyDrain: 100
   RechargeRate: 7
   EnableThrust_Normal: 1
   HorizontalForce_Normal: 8000

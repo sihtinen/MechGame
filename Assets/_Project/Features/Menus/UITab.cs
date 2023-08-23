@@ -84,7 +84,7 @@ public abstract class UITab : MonoBehaviour
 
             if (_child.gameObject.activeInHierarchy)
             {
-                EventSystemUtils.SetSelectedObjectWithManualCall(_child.gameObject);
+                EventSystemUtils.SetSelectedObjectWithManualCall(GetType().Name, _child.gameObject);
                 return;
             }
         }

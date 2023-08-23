@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfb555f4a9c3f0045882104fa1ac77d9, type: 3}
+  m_Name: Legs_Default
+  m_EditorClassIdentifier: 
+  GUID:
+    m_guid: 75a45af1c2a24afcae6f40ebd4fc45a2
+  DisplayName: Legs-Default
+  Description: Description
+  Category: {fileID: 11400000, guid: 877b74ca5d3d2af4b8552fde09522c05, type: 2}
+  Weight: 100
+  EnergyDrain: 100

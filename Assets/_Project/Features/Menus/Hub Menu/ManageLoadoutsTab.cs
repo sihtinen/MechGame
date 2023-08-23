@@ -185,7 +185,7 @@ public class ManageLoadoutsTab : UITab
         else
             _selectedObj = m_popupButton_Edit.gameObject;
 
-        EventSystemUtils.SetSelectedObjectWithManualCall(_selectedObj);
+        EventSystemUtils.SetSelectedObjectWithManualCall(GetType().Name, _selectedObj);
     }
 
     public void Button_LoadoutSelected(int loadoutIndex)
