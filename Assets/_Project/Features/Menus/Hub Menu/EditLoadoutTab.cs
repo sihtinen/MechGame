@@ -1,35 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 public class EditLoadoutTab : UITab
 {
     [Header("Object References")]
-    [SerializeField] private EquipmentUIElement m_lArm = null;
-    [SerializeField] private EquipmentUIElement m_rArm = null;
-    [SerializeField] private EquipmentUIElement m_lShoulder = null;
-    [SerializeField] private EquipmentUIElement m_rShoulder = null;
-    [SerializeField] private EquipmentUIElement m_melee = null;
-    [SerializeField] private EquipmentUIElement m_generator = null;
-    [SerializeField] private EquipmentUIElement m_head = null;
-    [SerializeField] private EquipmentUIElement m_body = null;
-    [SerializeField] private EquipmentUIElement m_arms = null;
-    [SerializeField] private EquipmentUIElement m_legs = null;
-    [SerializeField] private EquipmentUIElement m_utility1 = null;
-    [SerializeField] private EquipmentUIElement m_utility2 = null;
-    [SerializeField] private EquipmentUIElement m_utility3 = null;
-    [SerializeField] private EquipmentUIElement m_utility4 = null;
-    [SerializeField] private EquipmentUIElement m_passive1 = null;
-    [SerializeField] private EquipmentUIElement m_passive2 = null;
-    [SerializeField] private EquipmentUIElement m_passive3 = null;
-    [SerializeField] private EquipmentUIElement m_passive4 = null;
+    [SerializeField] private EquipmentUIElementDictionary m_equipmentElementDictionary = new();
     [Space]
     [SerializeField] private MechLoadout m_loadoutAsset = null;
     [SerializeField] private DataPanel m_equipmentDataPanel = null;
+    [SerializeField] private EquipmentSlotEditTab m_slotEditTab = null;
 
     private MechLoadout.MechLoadoutListSerialized m_loadoutList = new();
 
@@ -49,8 +31,8 @@ public class EditLoadoutTab : UITab
         if (IsOpened == false)
             return;
 
-        if (deviceType != InputDeviceTypes.KeyboardAndMouse)
-            EventSystemUtils.SetSelectedObjectWithManualCall(GetType().Name, m_lArm.gameObject);
+        if (getActiveInputDevice() != InputDeviceTypes.KeyboardAndMouse)
+            EventSystemUtils.SetSelectedObjectWithManualCall(GetType().Name, m_equipmentElementDictionary[EquipmentSlotTypes.LeftArm].gameObject);
     }
 
     protected override void onCancelInput(InputAction.CallbackContext context)
@@ -68,31 +50,17 @@ public class EditLoadoutTab : UITab
         _saveData.ReadObject(SaveIDConstants.LOADOUT_LIST_ID, ref m_loadoutList);
         m_loadoutAsset.PopulateFromSerializedData(m_loadoutList.AllLoadouts[ManageLoadoutsTab.EditLoadoutIndex]);
 
-        m_lArm.Initialize(m_loadoutAsset.LeftArm, () => onEquipmentSelected(m_loadoutAsset.LeftArm));
-        m_rArm.Initialize(m_loadoutAsset.RightArm, () => onEquipmentSelected(m_loadoutAsset.RightArm));
-        m_lShoulder.Initialize(m_loadoutAsset.LeftShoulder, () => onEquipmentSelected(m_loadoutAsset.LeftShoulder));
-        m_rShoulder.Initialize(m_loadoutAsset.RightShoulder, () => onEquipmentSelected(m_loadoutAsset.RightShoulder));
+        foreach (var _kvp in m_loadoutAsset.Dictionary)
+        {
+            var _uiElement = m_equipmentElementDictionary[_kvp.Key];
 
-        m_melee.Initialize(m_loadoutAsset.Melee, () => onEquipmentSelected(m_loadoutAsset.Melee));
-        m_generator.Initialize(m_loadoutAsset.Generator, () => onEquipmentSelected(m_loadoutAsset.Generator));
-
-        m_head.Initialize(m_loadoutAsset.Head, () => onEquipmentSelected(m_loadoutAsset.Head));
-        m_arms.Initialize(m_loadoutAsset.Arms, () => onEquipmentSelected(m_loadoutAsset.Arms));
-        m_body.Initialize(m_loadoutAsset.Body, () => onEquipmentSelected(m_loadoutAsset.Body));
-        m_legs.Initialize(m_loadoutAsset.Legs, () => onEquipmentSelected(m_loadoutAsset.Head));
-
-        m_utility1.Initialize(m_loadoutAsset.Utility1, () => onEquipmentSelected(m_loadoutAsset.Utility1));
-        m_utility2.Initialize(m_loadoutAsset.Utility2, () => onEquipmentSelected(m_loadoutAsset.Utility2));
-        m_utility3.Initialize(m_loadoutAsset.Utility3, () => onEquipmentSelected(m_loadoutAsset.Utility3));
-        m_utility4.Initialize(m_loadoutAsset.Utility4, () => onEquipmentSelected(m_loadoutAsset.Utility4));
-
-        m_passive1.Initialize(m_loadoutAsset.Passive1, () => onEquipmentSelected(m_loadoutAsset.Passive1));
-        m_passive2.Initialize(m_loadoutAsset.Passive2, () => onEquipmentSelected(m_loadoutAsset.Passive2));
-        m_passive3.Initialize(m_loadoutAsset.Passive3, () => onEquipmentSelected(m_loadoutAsset.Passive3));
-        m_passive4.Initialize(m_loadoutAsset.Passive4, () => onEquipmentSelected(m_loadoutAsset.Passive4));
+            _uiElement.Initialize(
+                equipment: _kvp.Value, 
+                onSelectedCallback: () => onEquipmentSelected(_kvp.Value));
+        }
 
         if (getActiveInputDevice() != InputDeviceTypes.KeyboardAndMouse)
-            EventSystemUtils.SetSelectedObjectWithManualCall(GetType().Name, m_lArm.gameObject);
+            EventSystemUtils.SetSelectedObjectWithManualCall(GetType().Name, m_equipmentElementDictionary[EquipmentSlotTypes.LeftArm].gameObject);
     }
 
     private void onEquipmentSelected(Equipment equipment)
@@ -111,7 +79,26 @@ public class EditLoadoutTab : UITab
     public void Button_SlotClicked(int slotTypeInt)
     {
         var _slotType = (EquipmentSlotTypes)slotTypeInt;
+        m_slotEditTab.SetSlot(_slotType);
+        DevelopmentScreen.Instance.OpenTab(2);
+    }
 
+    [ContextMenu("Clear UI Element Dictionary")]
+    private void clearUIElementDictionary()
+    {
+        m_equipmentElementDictionary.Clear();
 
+        foreach (int i in Enum.GetValues(typeof(EquipmentSlotTypes)))
+        {
+            if (i < 0)
+                continue;
+
+            m_equipmentElementDictionary.Add((EquipmentSlotTypes)i, null);
+        }
+
+#if UNITY_EDITOR
+        UnityEditor.EditorUtility.SetDirty(this);
+        UnityEditor.AssetDatabase.SaveAssetIfDirty(this);
+#endif
     }
 }

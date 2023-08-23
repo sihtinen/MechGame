@@ -14,6 +14,8 @@ public class HorizontalDivider : PoolableBehaviour<HorizontalDivider>
 
     public void SetPreferredHeight(float height)
     {
+        (transform as RectTransform).SetHeight(height);
+
         if (m_layoutElement == null)
             m_layoutElement = gameObject.AddComponent<LayoutElement>();
 

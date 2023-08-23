@@ -51,3 +51,6 @@ public class EquipmentUIElement : PoolableBehaviour<EquipmentUIElement>
             m_slotNameText.SetText(slotType.ToString());
     }
 }
+
+[System.Serializable]
+public class EquipmentUIElementDictionary : SerializableDictionary<EquipmentSlotTypes, EquipmentUIElement> { }

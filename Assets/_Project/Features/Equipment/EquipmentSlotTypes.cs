@@ -6,10 +6,10 @@ public enum EquipmentSlotTypes
 {
     Undefined = -1,
 
-    LeftShoulder = 0,
-    LeftArm = 1,
-    RightShoulder = 2,
-    RightArm = 3,
+    LeftArm = 0,
+    RightArm = 1,
+    LeftShoulder = 2,
+    RightShoulder = 3,
 
     Melee = 4,
     Generator = 5,

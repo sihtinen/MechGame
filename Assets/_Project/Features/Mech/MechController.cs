@@ -48,29 +48,29 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
         if (TryGetComponent(out MechPlayerInput _inputComponent))
             _inputComponent.enabled = settings.IsPlayer;
 
-        initializeSlot(
-            settings.Loadout.LeftShoulder,
-            m_eqSlotShoulderLeft,
-            settings.IsPlayer, 
-            PlayerInputComponent.LeftShoulderInputRef);
+        //initializeSlot(
+        //    settings.Loadout.LeftShoulder,
+        //    m_eqSlotShoulderLeft,
+        //    settings.IsPlayer, 
+        //    PlayerInputComponent.LeftShoulderInputRef);
 
-        initializeSlot(
-            settings.Loadout.LeftArm,
-            m_eqSlotArmLeft,
-            settings.IsPlayer,
-            PlayerInputComponent.LeftArmInputRef);
+        //initializeSlot(
+        //    settings.Loadout.LeftArm,
+        //    m_eqSlotArmLeft,
+        //    settings.IsPlayer,
+        //    PlayerInputComponent.LeftArmInputRef);
 
-        initializeSlot(
-            settings.Loadout.RightShoulder,
-            m_eqSlotShoulderRight,
-            settings.IsPlayer,
-            PlayerInputComponent.RightShoulderInputRef);
+        //initializeSlot(
+        //    settings.Loadout.RightShoulder,
+        //    m_eqSlotShoulderRight,
+        //    settings.IsPlayer,
+        //    PlayerInputComponent.RightShoulderInputRef);
 
-        initializeSlot(
-            settings.Loadout.RightArm,
-            m_eqSlotArmRight,
-            settings.IsPlayer,
-            PlayerInputComponent.RightArmInputRef);
+        //initializeSlot(
+        //    settings.Loadout.RightArm,
+        //    m_eqSlotArmRight,
+        //    settings.IsPlayer,
+        //    PlayerInputComponent.RightArmInputRef);
     }
 
     private void initializeSlot(Equipment equipment, EquipmentSlot slot, bool isPlayer, InputActionReference inputActionRef)
