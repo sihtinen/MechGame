@@ -52,11 +52,15 @@ public class EditLoadoutTab : UITab
 
         foreach (var _kvp in m_loadoutAsset.Dictionary)
         {
-            var _uiElement = m_equipmentElementDictionary[_kvp.Key];
+            var _slotType = _kvp.Key;
+            var _equipmentAsset = _kvp.Value;
+
+            var _uiElement = m_equipmentElementDictionary[_slotType];
 
             _uiElement.Initialize(
-                equipment: _kvp.Value, 
-                onSelectedCallback: () => onEquipmentSelected(_kvp.Value));
+                equipment: _equipmentAsset,
+                onSelectedCallback: () => onEquipmentSelected(_equipmentAsset),
+                onClickedCallback: () => onSlotClicked(_slotType));
         }
 
         if (getActiveInputDevice() != InputDeviceTypes.KeyboardAndMouse)
@@ -76,10 +80,9 @@ public class EditLoadoutTab : UITab
         m_equipmentDataPanel.gameObject.SetActive(true);
     }
 
-    public void Button_SlotClicked(int slotTypeInt)
+    private void onSlotClicked(EquipmentSlotTypes slotType)
     {
-        var _slotType = (EquipmentSlotTypes)slotTypeInt;
-        m_slotEditTab.SetSlot(_slotType);
+        m_slotEditTab.SetSlot(slotType);
         DevelopmentScreen.Instance.OpenTab(2);
     }
 

@@ -86,9 +86,9 @@ public class EquipmentSlotEditTab : UITab
         var _slotTypeString = Regex.Replace(m_slotType.ToString(), @"([a-z])([A-Z])", "$1 $2");
         m_slotNameText.SetText(_slotTypeString);
 
-        Type _validEquipmentType = getValidEquipmentType();
+        var _buildParams = getBuildParams();
 
-        if (_validEquipmentType == null)
+        if (_buildParams.ValidEquipmentType == null)
             return;
 
         populateDataFromSaveFile();
@@ -98,11 +98,35 @@ public class EquipmentSlotEditTab : UITab
             var _asset = m_editEquipmentCollection.EquipmentAssets[i];
             var _assetType = _asset.GetType();
 
-            if (_assetType == _validEquipmentType || _assetType.IsSubclassOf(_validEquipmentType))
+            if (_assetType == _buildParams.ValidEquipmentType || _assetType.IsSubclassOf(_buildParams.ValidEquipmentType))
             {
                 if (m_categories.Contains(_asset.Category) == false)
                     m_categories.Add(_asset.Category);
             }
+        }
+
+        var _currentlyEquippedAsset = m_editLoadout.Dictionary[m_slotType];
+
+        if (_buildParams.CanUnequip)
+        {
+            var _emptyGroup = EquipmentCategoryGroupPool.Get();
+            _emptyGroup.transform.SetParent(m_verticalGroupContent);
+
+            _emptyGroup.Populate(
+                category: null, 
+                equipmentCollection: m_editEquipmentCollection,
+                currentlyEquippedAsset: _currentlyEquippedAsset,
+                onEquipmentSelectedCallback: onEquipmentSelected,
+                onEquipmentClickedCallback: onEquipmentClicked);
+
+            _emptyGroup.gameObject.SetActiveOptimized(true);
+            m_activeCategoryGroups.Add(_emptyGroup);
+
+            var _divider = HorizontalDividerPool.Get();
+            _divider.transform.SetParent(m_verticalGroupContent);
+            _divider.SetPreferredHeight(20);
+            _divider.gameObject.SetActiveOptimized(true);
+            m_activeDividers.Add(_divider);
         }
 
         for (int i = 0; i < m_categories.Count; i++)
@@ -111,7 +135,14 @@ public class EquipmentSlotEditTab : UITab
 
             var _group = EquipmentCategoryGroupPool.Get();
             _group.transform.SetParent(m_verticalGroupContent);
-            _group.Populate(_category, m_editEquipmentCollection);
+
+            _group.Populate(
+                category: _category,
+                equipmentCollection: m_editEquipmentCollection,
+                currentlyEquippedAsset: _currentlyEquippedAsset,
+                onEquipmentSelectedCallback: onEquipmentSelected,
+                onEquipmentClickedCallback: onEquipmentClicked);
+
             _group.gameObject.SetActiveOptimized(true);
             m_activeCategoryGroups.Add(_group);
 
@@ -137,9 +168,19 @@ public class EquipmentSlotEditTab : UITab
         m_editEquipmentCollection.PopulateFromSerializedData(m_unlockedEquipmentSerialized);
     }
 
-    private Type getValidEquipmentType()
+    private struct BuildParams
     {
-        Type _validEquipmentType = null;
+        public Type ValidEquipmentType;
+        public bool CanUnequip;
+    }
+
+    private BuildParams getBuildParams()
+    {
+        var _result = new BuildParams
+        {
+            ValidEquipmentType = null,
+            CanUnequip = false,
+        };
 
         switch (m_slotType)
         {
@@ -150,46 +191,49 @@ public class EquipmentSlotEditTab : UITab
             case EquipmentSlotTypes.RightArm:
             case EquipmentSlotTypes.LeftShoulder:
             case EquipmentSlotTypes.RightShoulder:
-                _validEquipmentType = typeof(PrimaryEquipment);
+                _result.ValidEquipmentType = typeof(PrimaryEquipment);
+                _result.CanUnequip = true;
                 break;
 
             case EquipmentSlotTypes.Melee:
+                _result.CanUnequip = true;
                 break;
 
             case EquipmentSlotTypes.Generator:
                 break;
 
             case EquipmentSlotTypes.Head:
-                _validEquipmentType = typeof(HeadEquipment);
+                _result.ValidEquipmentType = typeof(HeadEquipment);
                 break;
 
             case EquipmentSlotTypes.Arms:
-                _validEquipmentType = typeof(ArmsEquipment);
+                _result.ValidEquipmentType = typeof(ArmsEquipment);
                 break;
 
             case EquipmentSlotTypes.Body:
-                _validEquipmentType = typeof(BodyEquipment);
+                _result.ValidEquipmentType = typeof(BodyEquipment);
                 break;
 
             case EquipmentSlotTypes.Legs:
-                _validEquipmentType = typeof(LegsEquipment);
+                _result.ValidEquipmentType = typeof(LegsEquipment);
                 break;
 
             case EquipmentSlotTypes.Utility1:
             case EquipmentSlotTypes.Utility2:
             case EquipmentSlotTypes.Utility3:
             case EquipmentSlotTypes.Utility4:
-
+                _result.CanUnequip = true;
                 break;
 
             case EquipmentSlotTypes.Passive1:
             case EquipmentSlotTypes.Passive2:
             case EquipmentSlotTypes.Passive3:
             case EquipmentSlotTypes.Passive4:
+                _result.CanUnequip = true;
                 break;
         }
 
-        return _validEquipmentType;
+        return _result;
     }
 
     public void Button_SwitchSlot(int direction)
@@ -203,6 +247,24 @@ public class EquipmentSlotEditTab : UITab
             _enumIndex = 0;
 
         m_slotType = (EquipmentSlotTypes)_enumIndex;
+
+        rebuild();
+    }
+
+    private void onEquipmentSelected(Equipment equipment)
+    {
+
+    }
+
+    private void onEquipmentClicked(Equipment equipment)
+    {
+        m_editLoadout.Dictionary[m_slotType] = equipment;
+        m_loadoutListSerialized.AllLoadouts[ManageLoadoutsTab.EditLoadoutIndex] = m_editLoadout.Serialize();
+
+        var _saveData = SaveManager.Instance.CurrentSave;
+        _saveData.RegisterVariable(SaveIDConstants.LOADOUT_LIST_ID, m_loadoutListSerialized);
+
+        SaveManager.Instance.SaveData();
 
         rebuild();
     }

@@ -34,16 +34,16 @@ public class MechLoadout : ScriptableObject
     {
         var _equipmentDatabase = EquipmentDatabaseAccess.Instance.Database;
 
-        Dictionary.Clear();
-
         LoadoutName = loadoutSerialized.LoadoutName;
 
+        ClearSlots();
+
         foreach (var _kvp in loadoutSerialized.DictionarySerialized)
-            Dictionary.Add(_kvp.Key, _equipmentDatabase.GetAsset<Equipment>(_kvp.Value));
+            Dictionary[_kvp.Key] = _equipmentDatabase.GetAsset<Equipment>(_kvp.Value);
     }
 
     [ContextMenu("Clear Loadout")]
-    public void ClearLoadout()
+    public void ClearSlots()
     {
         Dictionary.Clear();
 

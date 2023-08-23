@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using UnityEngine.UI;
 
 public class EquipmentUIElement : PoolableBehaviour<EquipmentUIElement>
 {
@@ -13,11 +14,22 @@ public class EquipmentUIElement : PoolableBehaviour<EquipmentUIElement>
     private Equipment m_equipment = null;
     private UISelectionHighlight m_uiSelectionHighlight = null;
     private Action m_onSelectedCallback = null;
+    private Action m_onClickedCallback = null;
+
+    private Button m_button = null;
 
     private void Awake()
     {
+        TryGetComponent(out m_button);
+        m_button.onClick.AddListener(this.onButtonClicked);
+
         TryGetComponent(out m_uiSelectionHighlight);
         m_uiSelectionHighlight.OnSelected.AddListener(this.onSelected);
+    }
+
+    private void onButtonClicked()
+    {
+        m_onClickedCallback?.Invoke();
     }
 
     private void onSelected()
@@ -29,12 +41,14 @@ public class EquipmentUIElement : PoolableBehaviour<EquipmentUIElement>
     {
         m_equipment = null;
         m_onSelectedCallback = null;
+        m_onClickedCallback = null;
     }
 
-    public void Initialize(Equipment equipment, Action onSelectedCallback, EquipmentSlotTypes slotType = EquipmentSlotTypes.Undefined)
+    public void Initialize(Equipment equipment, Action onSelectedCallback, Action onClickedCallback = null, EquipmentSlotTypes slotType = EquipmentSlotTypes.Undefined)
     {
         m_equipment = equipment;
         m_onSelectedCallback = onSelectedCallback;
+        m_onClickedCallback = onClickedCallback;
 
         if (equipment != null)
         {
@@ -50,6 +64,11 @@ public class EquipmentUIElement : PoolableBehaviour<EquipmentUIElement>
         if (slotType != EquipmentSlotTypes.Undefined)
             m_slotNameText.SetText(slotType.ToString());
     }
+
+    public void SetBottomLeftText(string text) => m_nameText.SetText(text);
+    public void SetBottomRightText(string text) => m_typeText.SetText(text);
+    public void SetTopLeftText(string text) => m_slotNameText.SetText(text);
+    public void SetButtonInteractable(bool isInteractable) => m_button.interactable = isInteractable;
 }
 
 [System.Serializable]
