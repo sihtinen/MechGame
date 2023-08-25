@@ -1909,7 +1909,7 @@ MonoBehaviour:
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
     m_Style: 1
-    m_Time: 1.5
+    m_Time: 2
     m_CustomCurve:
       serializedVersion: 2
       m_Curve: []
@@ -5980,6 +5980,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_isPersistentObject: 0
   m_gamepadFirstActiveElement: {fileID: 0}
+  HighlightMission: {fileID: 0}
   ActiveMission: {fileID: 0}
   m_detailsPanelSmoothTime: 0.2
   m_detailsPanelMaxSpeed: 15
@@ -5988,6 +5989,8 @@ MonoBehaviour:
   m_missionSelectWorldObjects: {fileID: 1023046621}
   m_gamepadFirstMissionElement: {fileID: 1684583855}
   m_missionDetailsPanel: {fileID: 931647248}
+  m_submitInputActionRef: {fileID: -588095333666615016, guid: 2f28d9729a43efb458ec42a6ca8418c6,
+    type: 3}
   m_cancelInputActionRef: {fileID: 176236454720261840, guid: 2f28d9729a43efb458ec42a6ca8418c6,
     type: 3}
   m_navigateLeftInputActionRef: {fileID: 3472907083271011038, guid: 2f28d9729a43efb458ec42a6ca8418c6,
@@ -10332,7 +10335,7 @@ MonoBehaviour:
   m_inputActionRef: {fileID: 176236454720261840, guid: 2f28d9729a43efb458ec42a6ca8418c6,
     type: 3}
   m_disableObjectWhenController: {fileID: 0}
-  m_inputIconImage: {fileID: 385649026}
+  m_inputIconImage: {fileID: 1577845137}
 --- !u!1 &1579778632
 GameObject:
   m_ObjectHideFlags: 0

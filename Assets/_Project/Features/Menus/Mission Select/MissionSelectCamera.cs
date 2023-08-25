@@ -23,7 +23,8 @@ public class MissionSelectCamera : MonoBehaviour
     private void Start()
     {
         var _missionSelectScreen = MissionSelectScreen.Instance;
-        _missionSelectScreen.OnSelectedMissionUpdated += this.onSelectedMissionUpdated;
+        _missionSelectScreen.OnHighlightMissionUpdated += this.updateCameraState;
+        _missionSelectScreen.OnSelectedMissionUpdated += this.updateCameraState;
     }
 
     private void OnDestroy()
@@ -33,25 +34,31 @@ public class MissionSelectCamera : MonoBehaviour
 
         var _missionSelectScreen = MissionSelectScreen.Instance;
         if (_missionSelectScreen != null)
-            _missionSelectScreen.OnSelectedMissionUpdated -= this.onSelectedMissionUpdated;
+        {
+            _missionSelectScreen.OnHighlightMissionUpdated -= this.updateCameraState;
+            _missionSelectScreen.OnSelectedMissionUpdated -= this.updateCameraState;
+        }
     }
 
-    private void onSelectedMissionUpdated()
+    private void updateCameraState()
     {
         var _missionSelectScreen = MissionSelectScreen.Instance;
+        var _eventSystem = UIEventSystemComponent.Instance;
+
+        if (_eventSystem.ActiveInputDevice == InputDeviceTypes.KeyboardAndMouse)
+        {
+            if (_missionSelectScreen.ActiveMission != null)
+                m_cameraTarget.transform.position = _missionSelectScreen.ActiveMission.transform.position;
+        }
+        else
+        {
+            if (_missionSelectScreen.HighlightMission != null)
+                m_cameraTarget.transform.position = _missionSelectScreen.HighlightMission.transform.position;
+        }
 
         bool _isMissionSelected = _missionSelectScreen.ActiveMission != null;
-
         bool _isCameraActive = m_isCameraActiveWhenMissionSelected == _isMissionSelected;
 
-        if (_isMissionSelected)
-            m_cameraTarget.transform.position = _missionSelectScreen.ActiveMission.transform.position;
-
         m_vcam.enabled = _isCameraActive;
-    }
-
-    private void LateUpdate()
-    {
-
     }
 }

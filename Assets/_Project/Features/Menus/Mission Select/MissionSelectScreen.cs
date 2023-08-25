@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 public class MissionSelectScreen : UIScreen<MissionSelectScreen>
 {
     [Header("Runtime Parameters")]
+    [NonEditable] public MissionUIElement HighlightMission = null;
     [NonEditable] public MissionUIElement ActiveMission = null;
 
     [Header("Visual Settings")]
@@ -21,6 +22,7 @@ public class MissionSelectScreen : UIScreen<MissionSelectScreen>
     [SerializeField] private MissionUIElement m_gamepadFirstMissionElement = null;
     [SerializeField] private MissionDetailsPanel m_missionDetailsPanel = null;
     [Space]
+    [SerializeField] private InputActionReference m_submitInputActionRef = null;
     [SerializeField] private InputActionReference m_cancelInputActionRef = null;
     [SerializeField] private InputActionReference m_navigateLeftInputActionRef = null;
     [SerializeField] private InputActionReference m_navigateRightInputActionRef = null;
@@ -32,6 +34,7 @@ public class MissionSelectScreen : UIScreen<MissionSelectScreen>
 
     private Vector2 m_offsetMin, m_offsetMax;
 
+    public event Action OnHighlightMissionUpdated = null;
     public event Action OnSelectedMissionUpdated = null;
 
     protected override void Start()
@@ -76,12 +79,13 @@ public class MissionSelectScreen : UIScreen<MissionSelectScreen>
     {
         base.onOpened();
 
+        SetHighlightMission(null);
         SetActiveMission(null);
 
         m_missionSelectWorldObjects.SetActiveOptimized(true);
 
         if (UIEventSystemComponent.Instance.ActiveInputDevice != InputDeviceTypes.KeyboardAndMouse)
-            SetActiveMission(m_gamepadFirstMissionElement);
+            SetHighlightMission(m_gamepadFirstMissionElement);
 
         InputGuideElementPool.ResetUsedObjects();
     }
@@ -101,7 +105,7 @@ public class MissionSelectScreen : UIScreen<MissionSelectScreen>
             return;
 
         if (deviceType != InputDeviceTypes.KeyboardAndMouse)
-            SetActiveMission(m_gamepadFirstMissionElement);
+            SetHighlightMission(m_gamepadFirstMissionElement);
     }
 
     private void Update()
@@ -129,17 +133,27 @@ public class MissionSelectScreen : UIScreen<MissionSelectScreen>
             return;
         }
 
-        if (ActiveMission == null)
+        if (HighlightMission == null)
             return;
 
-        if (m_navigateLeftInputActionRef.action.WasPerformedThisFrame() && ActiveMission.ConnectionLeft != null)
-            SetActiveMission(ActiveMission.ConnectionLeft);
-        else if (m_navigateRightInputActionRef.action.WasPerformedThisFrame() && ActiveMission.ConnectionRight != null)
-            SetActiveMission(ActiveMission.ConnectionRight);
-        else if (m_navigateUpInputActionRef.action.WasPerformedThisFrame() && ActiveMission.ConnectionUp != null)
-            SetActiveMission(ActiveMission.ConnectionUp);
-        else if (m_navigateDownInputActionRef.action.WasPerformedThisFrame() && ActiveMission.ConnectionDown != null)
-            SetActiveMission(ActiveMission.ConnectionDown);
+        if (m_submitInputActionRef.action.WasPerformedThisFrame())
+        {
+            if (ActiveMission == null)
+                SetActiveMission(HighlightMission);
+            else
+                Button_DetailsPanelAccept();
+
+            return;
+        }
+
+        if (m_navigateLeftInputActionRef.action.WasPerformedThisFrame() && HighlightMission.ConnectionLeft != null)
+            SetHighlightMission(HighlightMission.ConnectionLeft);
+        else if (m_navigateRightInputActionRef.action.WasPerformedThisFrame() && HighlightMission.ConnectionRight != null)
+            SetHighlightMission(HighlightMission.ConnectionRight);
+        else if (m_navigateUpInputActionRef.action.WasPerformedThisFrame() && HighlightMission.ConnectionUp != null)
+            SetHighlightMission(HighlightMission.ConnectionUp);
+        else if (m_navigateDownInputActionRef.action.WasPerformedThisFrame() && HighlightMission.ConnectionDown != null)
+            SetHighlightMission(HighlightMission.ConnectionDown);
     }
 
     private void updateDetailsPanelPosition()
@@ -165,12 +179,34 @@ public class MissionSelectScreen : UIScreen<MissionSelectScreen>
         _panelRectTransform.offsetMax = m_offsetMax;
     }
 
-    public void SetActiveMission(MissionUIElement activeMissionElement)
+    public void SetHighlightMission(MissionUIElement missionElement)
     {
+        if (missionElement == HighlightMission)
+            return;
+
+        if (HighlightMission != null)
+            HighlightMission.onHoverEnd();
+
+        HighlightMission = missionElement;
+
+        if (HighlightMission != null)
+            HighlightMission.onHoverStart();
+
+        OnHighlightMissionUpdated?.Invoke();
+
+        if (UIEventSystemComponent.Instance.ActiveInputDevice != InputDeviceTypes.KeyboardAndMouse && ActiveMission != null)
+            SetActiveMission(HighlightMission);
+    }
+
+    public void SetActiveMission(MissionUIElement missionElement)
+    {
+        if (missionElement == ActiveMission)
+            return;
+
         if (ActiveMission != null)
             ActiveMission.IsSelected = false;
 
-        ActiveMission = activeMissionElement;
+        ActiveMission = missionElement;
 
         if (ActiveMission != null)
             ActiveMission.IsSelected = true;
@@ -180,7 +216,8 @@ public class MissionSelectScreen : UIScreen<MissionSelectScreen>
 
     public void Button_DetailsPanelAccept()
     {
-
+        if (ActiveMission != null)
+            UnityEngine.SceneManagement.SceneManager.LoadScene(ActiveMission.Mission.Scene.ScenePath, UnityEngine.SceneManagement.LoadSceneMode.Single);
     }
 
     public void Button_DetailsPanelClose()

@@ -61,17 +61,17 @@ public class MissionUIElement : MonoBehaviour
             m_button.onClick?.RemoveAllListeners();
     }
 
-    private void onHoverStart()
+    public void onHoverStart()
     {
         IsHovered = true;
-
         m_missionIconImage.color = m_missionIconColor + new Color(0.4f, 0.4f, 0.4f);
+
+        MissionSelectScreen.Instance.SetHighlightMission(this);
     }
 
-    private void onHoverEnd()
+    public void onHoverEnd()
     {
         IsHovered = false;
-
         m_missionIconImage.color = m_missionIconColor;
     }
 
