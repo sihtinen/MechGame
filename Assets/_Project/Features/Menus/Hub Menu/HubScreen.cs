@@ -14,7 +14,9 @@ public class HubScreen : UIScreen<HubScreen>
 
     public void Button_Missions()
     {
+        this.Close();
 
+        MissionSelectScreen.Instance.Open();
     }
 
     public void Button_Development()

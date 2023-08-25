@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -28,7 +29,7 @@ public class EditLoadoutTab : UITab
     {
         base.onActiveInputDeviceChanged(deviceType);
 
-        if (IsOpened == false)
+        if (IsOpened == false || gameObject.activeInHierarchy == false)
             return;
 
         if (getActiveInputDevice() != InputDeviceTypes.KeyboardAndMouse)
@@ -37,7 +38,7 @@ public class EditLoadoutTab : UITab
 
     protected override void onCancelInput(InputAction.CallbackContext context)
     {
-        if (IsOpened == false)
+        if (IsOpened == false || gameObject.activeInHierarchy == false)
             return;
 
         DevelopmentScreen.Instance.OpenTab(0);
@@ -69,15 +70,14 @@ public class EditLoadoutTab : UITab
 
     private void onEquipmentSelected(Equipment equipment)
     {
-        if (equipment == null)
-        {
-            m_equipmentDataPanel.gameObject.SetActiveOptimized(false);
-            return;
-        }
-
         m_equipmentDataPanel.Clear();
-        equipment.PopulateDataPanel(m_equipmentDataPanel);
-        m_equipmentDataPanel.gameObject.SetActive(true);
+
+        if (equipment == null)
+            m_equipmentDataPanel.PopulateWithEmptyData();
+        else
+            equipment.PopulateDataPanel(m_equipmentDataPanel);
+
+        m_equipmentDataPanel.gameObject.SetActiveOptimized(true);
     }
 
     private void onSlotClicked(EquipmentSlotTypes slotType)

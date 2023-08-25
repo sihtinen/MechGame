@@ -545,6 +545,24 @@ public partial class @MechGameInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""NavigateUp"",
+                    ""type"": ""Button"",
+                    ""id"": ""695046b6-8df7-41e6-b5a1-69b21b6a92b1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""NavigateDown"",
+                    ""type"": ""Button"",
+                    ""id"": ""bd940b1a-f741-445d-98a0-63812659fa22"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1031,6 +1049,28 @@ public partial class @MechGameInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""NavigateRight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9af8e9ec-b7c5-4662-80d0-01ffb3cc6f34"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NavigateUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2d4e6740-1901-4126-9783-5949fc133a73"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NavigateDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1066,6 +1106,8 @@ public partial class @MechGameInputActions: IInputActionCollection2, IDisposable
         m_UI_TabNext = m_UI.FindAction("TabNext", throwIfNotFound: true);
         m_UI_NavigateLeft = m_UI.FindAction("NavigateLeft", throwIfNotFound: true);
         m_UI_NavigateRight = m_UI.FindAction("NavigateRight", throwIfNotFound: true);
+        m_UI_NavigateUp = m_UI.FindAction("NavigateUp", throwIfNotFound: true);
+        m_UI_NavigateDown = m_UI.FindAction("NavigateDown", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1267,6 +1309,8 @@ public partial class @MechGameInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_TabNext;
     private readonly InputAction m_UI_NavigateLeft;
     private readonly InputAction m_UI_NavigateRight;
+    private readonly InputAction m_UI_NavigateUp;
+    private readonly InputAction m_UI_NavigateDown;
     public struct UIActions
     {
         private @MechGameInputActions m_Wrapper;
@@ -1285,6 +1329,8 @@ public partial class @MechGameInputActions: IInputActionCollection2, IDisposable
         public InputAction @TabNext => m_Wrapper.m_UI_TabNext;
         public InputAction @NavigateLeft => m_Wrapper.m_UI_NavigateLeft;
         public InputAction @NavigateRight => m_Wrapper.m_UI_NavigateRight;
+        public InputAction @NavigateUp => m_Wrapper.m_UI_NavigateUp;
+        public InputAction @NavigateDown => m_Wrapper.m_UI_NavigateDown;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1336,6 +1382,12 @@ public partial class @MechGameInputActions: IInputActionCollection2, IDisposable
             @NavigateRight.started += instance.OnNavigateRight;
             @NavigateRight.performed += instance.OnNavigateRight;
             @NavigateRight.canceled += instance.OnNavigateRight;
+            @NavigateUp.started += instance.OnNavigateUp;
+            @NavigateUp.performed += instance.OnNavigateUp;
+            @NavigateUp.canceled += instance.OnNavigateUp;
+            @NavigateDown.started += instance.OnNavigateDown;
+            @NavigateDown.performed += instance.OnNavigateDown;
+            @NavigateDown.canceled += instance.OnNavigateDown;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
@@ -1382,6 +1434,12 @@ public partial class @MechGameInputActions: IInputActionCollection2, IDisposable
             @NavigateRight.started -= instance.OnNavigateRight;
             @NavigateRight.performed -= instance.OnNavigateRight;
             @NavigateRight.canceled -= instance.OnNavigateRight;
+            @NavigateUp.started -= instance.OnNavigateUp;
+            @NavigateUp.performed -= instance.OnNavigateUp;
+            @NavigateUp.canceled -= instance.OnNavigateUp;
+            @NavigateDown.started -= instance.OnNavigateDown;
+            @NavigateDown.performed -= instance.OnNavigateDown;
+            @NavigateDown.canceled -= instance.OnNavigateDown;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -1429,5 +1487,7 @@ public partial class @MechGameInputActions: IInputActionCollection2, IDisposable
         void OnTabNext(InputAction.CallbackContext context);
         void OnNavigateLeft(InputAction.CallbackContext context);
         void OnNavigateRight(InputAction.CallbackContext context);
+        void OnNavigateUp(InputAction.CallbackContext context);
+        void OnNavigateDown(InputAction.CallbackContext context);
     }
 }

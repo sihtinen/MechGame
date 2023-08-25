@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ee7c7471f2edd542993e4fdfc8f6a79, type: 3}
+  m_Name: MachineGun_CB-50-A
+  m_EditorClassIdentifier: 
+  GUID:
+    m_guid: f0d2e7888d454c56afd0e91b52e146a4
+  DisplayName: CB-50-A
+  Description: Description
+  Category: {fileID: 11400000, guid: 7e6c17a535ecda94bad8a7b904e1cb81, type: 2}
+  Weight: 100
+  EnergyDrain: 100
+  UseCount: 120
+  UseRatePerSecond: 1.8
+  TargetLayers: 15
+  Damage: 80
+  CollisionRadius: 1
+  Lifetime: 3
+  Velocity: 700
+  TargetingMinDot: 0.3
+  TargetingCameraDotScore: 1
+  TargetingComponentDotScore: 0.2
+  TargetingDistance: 300
+  TargetingOptimalDistance: 100
+  TargetingDistanceScoreMultiplier: 1
+  HUDPrefab: {fileID: 0}
+  HUD_ValidTarget: {fileID: 0}
+  HUD_ValidTarget_Size: 25
+  HUD_ActiveTarget: {fileID: 0}
+  HUD_ActiveTarget_Size: 25
+  HUD_Prediction: {fileID: 0}
+  HUD_Prediction_Size: 25

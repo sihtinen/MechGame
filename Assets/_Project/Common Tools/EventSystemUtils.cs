@@ -30,6 +30,7 @@ public static class EventSystemUtils
 
     private static IEnumerator setSelectedObject(string source, GameObject go)
     {
+        EventSystem.current.SetSelectedGameObject(null);
         yield return null;
         SetSelectedObjectWithManualCall(source, go, isDelayed: false);
     }

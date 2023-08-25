@@ -39,4 +39,11 @@ public class DataPanel : MonoBehaviour
         m_activeHorizontalDividers.Add(_divider);
         return _divider;
     }
+
+    public void PopulateWithEmptyData()
+    {
+        CreateTextElement().Initialize("-EMPTY-", 24);
+        CreateDivider().SetPreferredHeight(14);
+        CreateTextElement().Initialize("No equipment installed in this slot", 18);
+    }
 }

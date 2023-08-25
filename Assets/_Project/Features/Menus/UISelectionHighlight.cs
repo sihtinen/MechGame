@@ -20,15 +20,14 @@ public class UISelectionHighlight : MonoBehaviour,
 
     private bool m_isSelected = false;
 
-    private void Start()
-    {
-        setHighlightActive(false);
-    }
-
     private void OnDisable()
     {
-        if (Application.isPlaying)
-            setHighlightActive(false);
+        m_isSelected = false;
+    }
+
+    private void LateUpdate()
+    {
+        setHighlightActive(m_isSelected);
     }
 
     public void OnSelect(BaseEventData eventData)
@@ -37,8 +36,6 @@ public class UISelectionHighlight : MonoBehaviour,
             return;
 
         m_isSelected = true;
-
-        setHighlightActive(true);
 
         OnSelected?.Invoke();
     }
@@ -49,8 +46,6 @@ public class UISelectionHighlight : MonoBehaviour,
             return;
 
         m_isSelected = false;
-
-        setHighlightActive(false);
 
         OnDeselected?.Invoke();
     }

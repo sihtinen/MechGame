@@ -9,7 +9,7 @@ public class ProjectileEquipment : PrimaryEquipment
 {
     [Header("Projectile Settings")]
     [Min(1)] public int UseCount = 320;
-    [Min(1)] public int UseRatePerSecond = 1;
+    [Min(0)] public float UseRatePerSecond = 1;
     public ContextTargetLayers TargetLayers = ContextTargetLayers.None;
     [Min(0)] public int Damage = 1;
     [Min(0)] public float CollisionRadius = 1;
@@ -55,7 +55,7 @@ public class ProjectileEquipment : PrimaryEquipment
     {
         dataPanel.CreateTextElement().Initialize("Damage", Damage.ToStringMinimalAlloc());
         dataPanel.CreateTextElement().Initialize("Capacity", UseCount.ToStringMinimalAlloc());
-        dataPanel.CreateTextElement().Initialize("Rate of fire", UseRatePerSecond.ToStringMinimalAlloc() + "/s");
+        dataPanel.CreateTextElement().Initialize("Rate of fire", UseRatePerSecond.ToString("0.0") + "/s");
         dataPanel.CreateTextElement().Initialize("Projectile speed", Velocity.ToString("0"));
     }
 }

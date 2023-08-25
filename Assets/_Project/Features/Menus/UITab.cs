@@ -13,6 +13,7 @@ public abstract class UITab : MonoBehaviour
     [Header("Base Object References")]
     [SerializeField] protected Button m_connectedButton = null;
 
+    private bool m_isOpened = false;
     private InputAction m_cancelAction = null;
 
     public virtual void Initialize()

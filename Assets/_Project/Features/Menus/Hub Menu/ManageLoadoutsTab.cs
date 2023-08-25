@@ -57,7 +57,7 @@ public class ManageLoadoutsTab : UITab
 
     protected override void onActiveInputDeviceChanged(InputDeviceTypes deviceType)
     {
-        if (IsOpened == false)
+        if (IsOpened == false || gameObject.activeInHierarchy == false)
             return;
 
         updateSelectedObject();
@@ -65,7 +65,7 @@ public class ManageLoadoutsTab : UITab
 
     protected override void onCancelInput(InputAction.CallbackContext context)
     {
-        if (IsOpened == false)
+        if (IsOpened == false || gameObject.activeInHierarchy == false)
             return;
 
         if (m_editLoadoutIndex >= 0)

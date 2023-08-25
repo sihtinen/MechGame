@@ -20,6 +20,10 @@ public class EquipmentSlotEditTab : UITab
     [SerializeField] private TMP_Text m_slotNameText = null;
     [SerializeField] private Image m_slotIndicatorPrefab = null;
     [SerializeField] private RectTransform m_slotIndicatorsGroup = null;
+    [SerializeField] private DataPanel m_currentItemDataPanel = null;
+    [SerializeField] private DataPanel m_selectedItemDataPanel = null;
+    [SerializeField] private InputActionReference m_previousTabInputRef = null;
+    [SerializeField] private InputActionReference m_nextTabInputRef = null;
 
     private EquipmentSlotTypes m_slotType = EquipmentSlotTypes.Undefined;
 
@@ -42,6 +46,23 @@ public class EquipmentSlotEditTab : UITab
             var _indicator = Instantiate(m_slotIndicatorPrefab.gameObject, m_slotIndicatorsGroup).GetComponent<Image>();
             m_slotIndicatorImages.Add(_indicator);
         }
+
+        m_previousTabInputRef.action.performed += this.onPreviousTabInput;
+        m_nextTabInputRef.action.performed += this.onNextTabInput;
+
+        if (m_previousTabInputRef.action.enabled == false)
+            m_previousTabInputRef.action.Enable();
+
+        if (m_nextTabInputRef.action.enabled == false)
+            m_nextTabInputRef.action.Enable();
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+
+        m_previousTabInputRef.action.performed -= this.onPreviousTabInput;
+        m_nextTabInputRef.action.performed -= this.onNextTabInput;
     }
 
     public void SetSlot(EquipmentSlotTypes slotType)
@@ -58,9 +79,7 @@ public class EquipmentSlotEditTab : UITab
 
     protected override void onCancelInput(InputAction.CallbackContext context)
     {
-        base.onCancelInput(context);
-
-        if (IsOpened == false)
+        if (IsOpened == false || gameObject.activeInHierarchy == false)
             return;
 
         DevelopmentScreen.Instance.OpenTab(1);
@@ -87,6 +106,9 @@ public class EquipmentSlotEditTab : UITab
         m_slotNameText.SetText(_slotTypeString);
 
         var _buildParams = getBuildParams();
+
+        m_currentItemDataPanel.Clear();
+        m_selectedItemDataPanel.Clear();
 
         if (_buildParams.ValidEquipmentType == null)
             return;
@@ -155,6 +177,11 @@ public class EquipmentSlotEditTab : UITab
                 m_activeDividers.Add(_divider);
             }
         }
+
+        if (_currentlyEquippedAsset != null)
+            _currentlyEquippedAsset.PopulateDataPanel(m_currentItemDataPanel);
+        else
+            m_currentItemDataPanel.PopulateWithEmptyData();
     }
 
     private void populateDataFromSaveFile()
@@ -251,9 +278,43 @@ public class EquipmentSlotEditTab : UITab
         rebuild();
     }
 
+    protected override void onActiveInputDeviceChanged(InputDeviceTypes deviceType)
+    {
+        base.onActiveInputDeviceChanged(deviceType);
+
+        if (IsOpened == false || m_activeCategoryGroups.Count == 0)
+            return;
+
+        if (deviceType == InputDeviceTypes.KeyboardAndMouse)
+            return;
+
+        rebuild();
+    }
+
+    private void onPreviousTabInput(InputAction.CallbackContext context)
+    {
+        if (IsOpened == false || gameObject.activeInHierarchy == false)
+            return;
+
+        Button_SwitchSlot(-1);
+    }
+
+    private void onNextTabInput(InputAction.CallbackContext context)
+    {
+        if (IsOpened == false || gameObject.activeInHierarchy == false)
+            return;
+
+        Button_SwitchSlot(1);
+    }
+
     private void onEquipmentSelected(Equipment equipment)
     {
+        m_selectedItemDataPanel.Clear();
 
+        if (equipment != null)
+            equipment.PopulateDataPanel(m_selectedItemDataPanel);
+        else
+            m_selectedItemDataPanel.PopulateWithEmptyData();
     }
 
     private void onEquipmentClicked(Equipment equipment)

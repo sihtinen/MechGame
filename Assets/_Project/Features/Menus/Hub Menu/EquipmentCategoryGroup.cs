@@ -37,6 +37,8 @@ public class EquipmentCategoryGroup : PoolableBehaviour<EquipmentCategoryGroup>
         m_onEquipmentSelectedCallback = onEquipmentSelectedCallback;
         m_onEquipmentClickedCallback = onEquipmentClickedCallback;
 
+        InputDeviceTypes _inputDevice = UIEventSystemComponent.Instance.ActiveInputDevice;
+
         if (category == null)
         {
             var _emptyElement = EquipmentUIElementPool.Get();
@@ -47,12 +49,15 @@ public class EquipmentCategoryGroup : PoolableBehaviour<EquipmentCategoryGroup>
                 onSelectedCallback: () => onEquipmentSelected(null), 
                 onClickedCallback: () => onEquipmentClicked(null));
 
-            _emptyElement.SetButtonInteractable(currentlyEquippedAsset != null);
+            _emptyElement.SetButtonInteractable(true);
             _emptyElement.SetTopLeftText(string.Empty);
             _emptyElement.SetBottomRightText(string.Empty);
             _emptyElement.gameObject.SetActiveOptimized(true);
 
             m_activeElements.Add(_emptyElement);
+
+            if (_inputDevice != InputDeviceTypes.KeyboardAndMouse && currentlyEquippedAsset == null)
+                EventSystemUtils.SetSelectedObjectWithManualCall(GetType().Name, _emptyElement.gameObject);
 
             return;
         }
@@ -71,8 +76,12 @@ public class EquipmentCategoryGroup : PoolableBehaviour<EquipmentCategoryGroup>
                     onClickedCallback: () => onEquipmentClicked(_asset));
 
                 _uiElement.gameObject.SetActiveOptimized(true);
-                _uiElement.SetButtonInteractable(currentlyEquippedAsset != _asset);
+                _uiElement.SetButtonInteractable(true);
+
                 m_activeElements.Add(_uiElement);
+
+                if (_inputDevice != InputDeviceTypes.KeyboardAndMouse && currentlyEquippedAsset == _asset)
+                    EventSystemUtils.SetSelectedObjectWithManualCall(GetType().Name, _uiElement.gameObject);
             }
         }
 

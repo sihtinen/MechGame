@@ -20,7 +20,7 @@ public class LoadoutEditTab : UITab
 
     protected override void onActiveInputDeviceChanged(InputDeviceTypes deviceType)
     {
-        if (IsOpened == false)
+        if (IsOpened == false || gameObject.activeInHierarchy == false)
             return;
 
         rebuild();
