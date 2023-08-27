@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d1fee3ac6d73ab40b0a84ba97e7eb98, type: 3}
   m_Name: PID_RideHeight_PlayerMech
   m_EditorClassIdentifier: 
+  IsEnabled: 1
   ProportionalGain: 26000
   IntegralGain: 2
   IntegralLimit: 5000

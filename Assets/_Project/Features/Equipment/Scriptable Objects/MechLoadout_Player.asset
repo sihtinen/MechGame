@@ -13,7 +13,24 @@ MonoBehaviour:
   m_Name: MechLoadout_Player
   m_EditorClassIdentifier: 
   LoadoutName: Default
-  Slot_LeftShoulder: {fileID: 11400000, guid: 284f7342680fc8747addda7214b709a7, type: 2}
-  Slot_RightShoulder: {fileID: 11400000, guid: 139ca052919341042bf8e673f49436a6, type: 2}
-  Slot_LeftArm: {fileID: 11400000, guid: 139ca052919341042bf8e673f49436a6, type: 2}
-  Slot_RightArm: {fileID: 11400000, guid: 139ca052919341042bf8e673f49436a6, type: 2}
+  Dictionary:
+    m_keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f0000001000000011000000
+    m_values:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 11400000, guid: 62fadc2b979c3ef47b425ef09f775e31, type: 2}
+    - {fileID: 11400000, guid: e3a703c94fbc37844b3678918a061581, type: 2}
+    - {fileID: 11400000, guid: ed83da73f9404ef4fba42eccf5f633b7, type: 2}
+    - {fileID: 11400000, guid: 74306a0238122804ea839a9a01315b25, type: 2}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}

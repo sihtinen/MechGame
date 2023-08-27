@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 006259ddf57d73c4da3cf489d5c311a2, type: 3}
-  m_Name: Head_Default
+  m_Name: Head-Medium-01
   m_EditorClassIdentifier: 
   GUID:
     m_guid: 793e17e6248c465bb4be7143357841cc
@@ -19,3 +19,5 @@ MonoBehaviour:
   Category: {fileID: 11400000, guid: 3e40de9baf3fa3b4aa11f8d7d1267b36, type: 2}
   Weight: 100
   EnergyDrain: 100
+  VisualsPrefab: {fileID: 5229057989124718802, guid: 3dc3cc5f3a0803646b4c36dba5b4940d,
+    type: 3}

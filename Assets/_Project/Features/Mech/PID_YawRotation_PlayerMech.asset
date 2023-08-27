@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d1fee3ac6d73ab40b0a84ba97e7eb98, type: 3}
   m_Name: PID_YawRotation_PlayerMech
   m_EditorClassIdentifier: 
-  ProportionalGain: 8000
-  IntegralGain: 1
-  IntegralLimit: 30
-  DerivativeGain: 2600
-  OutputMin: -400
-  OutputMax: 400
+  IsEnabled: 1
+  ProportionalGain: 120
+  IntegralGain: 5
+  IntegralLimit: 10
+  DerivativeGain: 50
+  OutputMin: -380
+  OutputMax: 380
   DerivativeMeasurementType: 0

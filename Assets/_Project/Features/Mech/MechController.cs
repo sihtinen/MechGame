@@ -22,10 +22,7 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
     [SerializeField, Expandable] private PID m_rollRotationPID = null;
     [SerializeField, Expandable] private MechSettings m_settings = null;
     [Space]
-    [SerializeField] private EquipmentSlot m_eqSlotShoulderLeft = null;
-    [SerializeField] private EquipmentSlot m_eqSlotArmLeft = null;
-    [SerializeField] private EquipmentSlot m_eqSlotShoulderRight = null;
-    [SerializeField] private EquipmentSlot m_eqSlotArmRight = null;
+    [SerializeField] private MechBuilder m_mechBuilder = null;
 
     private bool m_isGrounded = false;
     public bool IsGrounded => m_isGrounded;
@@ -36,6 +33,8 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
     private PID.PIDState m_yawRotationPIDState = new PID.PIDState();
     private PID.PIDState m_rollRotationPIDState = new PID.PIDState();
 
+    private List<Collider> m_mechColliders = new List<Collider>();
+
     protected override void Awake()
     {
         base.Awake();
@@ -45,6 +44,26 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
 
     public void InitializeGameplay(InitializeSettings settings)
     {
+        m_mechBuilder.LoadoutAsset = settings.Loadout;
+        var _mechTransform = m_mechBuilder.Build();
+        _mechTransform.transform.SetParent(transform, worldPositionStays: false);
+        _mechTransform.GetComponentsInChildren(includeInactive: true, m_mechColliders);
+
+        for (int i = 0; i < m_mechColliders.Count; i++)
+        {
+            var _coll = m_mechColliders[i];
+
+            for (int ii = 0; ii < m_mechColliders.Count; ii++)
+            {
+                if (i == ii)
+                    continue;
+
+                var _otherColl = m_mechColliders[ii];
+
+                Physics.IgnoreCollision(_coll, _otherColl);
+            }
+        }
+
         if (TryGetComponent(out MechPlayerInput _inputComponent))
             _inputComponent.enabled = settings.IsPlayer;
 
@@ -136,7 +155,7 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
             Color.Lerp(Color.red, Color.green, Mathf.InverseLerp(-1f, 1f, _directionDot)),
             m_deltaTime);
 
-        updateMovementTiltTorque(_moveVectorRaw);
+        //updateMovementTiltTorque(_moveVectorRaw);
     }
 
     private void updateThrustForces()
@@ -178,19 +197,19 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
     {
         var _axisAngles = TransformComponent.GetAxisAngles();
 
-        applyTorquePID(
-            pid: m_pitchRotationPID,
-            pidState: ref m_pitchRotationPIDState,
-            rotateAxisLocal: Vector3.right,
-            currentValue: _axisAngles.Pitch,
-            targetValue: 0f);
+        //applyTorquePID(
+        //    pid: m_pitchRotationPID,
+        //    pidState: ref m_pitchRotationPIDState,
+        //    rotateAxisLocal: Vector3.right,
+        //    currentValue: _axisAngles.Pitch,
+        //    targetValue: 0f);
 
-        applyTorquePID(
-            pid: m_rollRotationPID,
-            pidState: ref m_rollRotationPIDState,
-            rotateAxisLocal: Vector3.forward,
-            currentValue: _axisAngles.Roll,
-            targetValue: 0f);
+        //applyTorquePID(
+        //    pid: m_rollRotationPID,
+        //    pidState: ref m_rollRotationPIDState,
+        //    rotateAxisLocal: Vector3.forward,
+        //    currentValue: _axisAngles.Roll,
+        //    targetValue: 0f);
 
         applyAngleTorquePID(
             pid: m_yawRotationPID,

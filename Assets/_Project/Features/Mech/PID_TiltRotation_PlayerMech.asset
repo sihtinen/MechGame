@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d1fee3ac6d73ab40b0a84ba97e7eb98, type: 3}
   m_Name: PID_TiltRotation_PlayerMech
   m_EditorClassIdentifier: 
-  ProportionalGain: 200
-  IntegralGain: 1
-  IntegralLimit: 1
+  IsEnabled: 1
+  ProportionalGain: 600
+  IntegralGain: 20
+  IntegralLimit: 600
   DerivativeGain: 40
-  OutputMin: -800
-  OutputMax: 800
+  OutputMin: -6000
+  OutputMax: 6000
   DerivativeMeasurementType: 0

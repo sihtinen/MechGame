@@ -14,6 +14,9 @@ public abstract class Equipment : ScriptableObject
     [Space]
     [Min(0)] public int Weight = 100;
     [Min(0)] public int EnergyDrain = 100;
+    [Space]
+    public GameObject VisualsPrefab = null;
+    public Vector3 VisualPrefabEulerOffset = Vector3.zero;
 
     public abstract void InitializeGameplay(
         MechController mech,

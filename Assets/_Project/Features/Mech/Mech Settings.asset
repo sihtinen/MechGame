@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bc119dad3d5c1642a80373aeec80fc6, type: 3}
   m_Name: Mech Settings
   m_EditorClassIdentifier: 
+  Health: 1000
   MaxMovementSpeed: 11000
   MovementForwardDirectionMultCurve:
     serializedVersion: 2
@@ -51,7 +52,7 @@ MonoBehaviour:
   SidewaysMovementTiltForceMult: 0.1
   HorizontalDrag_Ground: 2
   HorizontalDrag_Air: 1.6
-  GravityMultiplier: 9
+  GravityMultiplier: 8.5
   GroundRideHeight: 15
   GroundCheckHeight: 10
   GroundCheckDistance: 15
