@@ -33,6 +33,12 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
     private PID.PIDState m_yawRotationPIDState = new PID.PIDState();
     private PID.PIDState m_rollRotationPIDState = new PID.PIDState();
 
+    private Vector3 m_bodyEulerDefault;
+
+    private Transform m_mechTransformRoot = null;
+    private Transform m_mechBodyBone = null;
+
+    private MechLoadout m_loadout = null;
     private List<Collider> m_mechColliders = new List<Collider>();
 
     protected override void Awake()
@@ -44,28 +50,23 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
 
     public void InitializeGameplay(InitializeSettings settings)
     {
-        m_mechBuilder.LoadoutAsset = settings.Loadout;
-        var _mechTransform = m_mechBuilder.Build();
-        _mechTransform.transform.SetParent(transform, worldPositionStays: false);
-        _mechTransform.GetComponentsInChildren(includeInactive: true, m_mechColliders);
+        m_loadout = settings.Loadout;
+        m_mechBuilder.LoadoutAsset = m_loadout;
 
-        for (int i = 0; i < m_mechColliders.Count; i++)
-        {
-            var _coll = m_mechColliders[i];
+        m_mechTransformRoot = m_mechBuilder.Build();
+        m_mechTransformRoot.transform.SetParent(transform, worldPositionStays: false);
+        m_mechTransformRoot.GetComponentsInChildren(includeInactive: true, m_mechColliders);
 
-            for (int ii = 0; ii < m_mechColliders.Count; ii++)
-            {
-                if (i == ii)
-                    continue;
+        m_mechBodyBone = m_mechTransformRoot.FindChildRecursive("Bone_Body01");
+        m_bodyEulerDefault = m_mechBodyBone.localEulerAngles;
 
-                var _otherColl = m_mechColliders[ii];
-
-                Physics.IgnoreCollision(_coll, _otherColl);
-            }
-        }
+        ignoreSelfCollisions();
 
         if (TryGetComponent(out MechPlayerInput _inputComponent))
             _inputComponent.enabled = settings.IsPlayer;
+
+        if (TryGetComponent(out MechAnimator _mechAnimator))
+            _mechAnimator.Initialize(m_mechTransformRoot);
 
         //initializeSlot(
         //    settings.Loadout.LeftShoulder,
@@ -92,6 +93,24 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
         //    PlayerInputComponent.RightArmInputRef);
     }
 
+    private void ignoreSelfCollisions()
+    {
+        for (int i = 0; i < m_mechColliders.Count; i++)
+        {
+            var _coll = m_mechColliders[i];
+
+            for (int ii = 0; ii < m_mechColliders.Count; ii++)
+            {
+                if (i == ii)
+                    continue;
+
+                var _otherColl = m_mechColliders[ii];
+
+                Physics.IgnoreCollision(_coll, _otherColl);
+            }
+        }
+    }
+
     private void initializeSlot(Equipment equipment, EquipmentSlot slot, bool isPlayer, InputActionReference inputActionRef)
     {
         if (equipment == null)
@@ -103,6 +122,12 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
+
+        var _rot = RigidBody.rotation.eulerAngles;
+        _rot.x = 0;
+        _rot.z = 0;
+        RigidBody.rotation = Quaternion.Euler(_rot);
+        RigidBody.ResetInertiaTensor();
 
         groundCheck();
         updateDrag();
@@ -211,13 +236,57 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
         //    currentValue: _axisAngles.Roll,
         //    targetValue: 0f);
 
-        applyAngleTorquePID(
-            pid: m_yawRotationPID,
-            pidState: ref m_yawRotationPIDState,
-            rotateAxisLocal: Vector3.up,
-            currentValue: _axisAngles.Yaw,
-            targetValue: TargetRotY % 360);
+        Vector3 _moveDir = RigidBody.velocity;
+        _moveDir.y = 0;
+        _moveDir.Normalize();
+
+        if (_moveDir.sqrMagnitude > 0.2f)
+        {
+            float angle = Vector3.SignedAngle(_moveDir, Vector3.forward, Vector3.down);
+            float _moveDirAngle = Quaternion.Euler(new Vector3(0, angle, 0)).eulerAngles.y;
+
+            applyAngleTorquePID(
+                pid: m_yawRotationPID,
+                pidState: ref m_yawRotationPIDState,
+                rotateAxisLocal: Vector3.up,
+                currentValue: _axisAngles.Yaw,
+                targetValue: _moveDirAngle % 360);
+        }
+
+        updateBodyRotation();
     }
+
+    private void updateBodyRotation()
+    {
+        var _bodySettings = m_loadout.Dictionary[EquipmentSlotTypes.Body] as BodyEquipment;
+
+        float _currentAngle = (transform.eulerAngles.y + m_bodyRotateAngle) % 360;
+        float _targetAngle = TargetRotY % 360;
+
+        float _angleDiff = Mathf.DeltaAngle(_currentAngle, _targetAngle);
+        float _targetRotAngle = m_bodyRotateAngle + _angleDiff;
+
+        if (_targetRotAngle > 180)
+            _targetRotAngle -= 360;
+        else if (_targetRotAngle < -180)
+            _targetRotAngle += 360;
+
+        _targetRotAngle = Mathf.Clamp(_targetRotAngle, -_bodySettings.MaxRotationAngle_Yaw, _bodySettings.MaxRotationAngle_Yaw);
+
+        m_bodyRotateAngle = Mathf.SmoothDamp(
+            m_bodyRotateAngle,
+            _targetRotAngle,
+            ref m_bodyRotateVelocity, 
+            _bodySettings.RotationSmoothTime_Yaw, 
+            _bodySettings.RotationMaxSpeed_Yaw + RigidBody.angularVelocity.y, 
+            m_deltaTime);
+
+        m_mechBodyBone.localEulerAngles = m_bodyEulerDefault;
+        m_mechBodyBone.Rotate(Vector3.back, m_bodyRotateAngle, Space.Self);
+    }
+
+    private float m_bodyRotateAngle = 0;
+    private float m_bodyRotateVelocity = 0;
 
     private void groundCheck()
     {
@@ -248,6 +317,13 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
                 maxDistance: m_settings.GroundCheckDistance,
                 layerMask: m_settings.GroundCheckLayers,
                 queryTriggerInteraction: QueryTriggerInteraction.Ignore);
+        }
+
+        if (m_isGrounded && m_mechTransformRoot != null)
+        {
+            var _pos = m_mechTransformRoot.transform.position;
+            _pos.y = m_groundHit.point.y + 1f;
+            m_mechTransformRoot.position = _pos;
         }
     }
 

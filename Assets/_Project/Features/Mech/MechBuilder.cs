@@ -36,8 +36,8 @@ public class MechBuilder : MonoBehaviour
         _bodyObj.transform.SetPositionAndRotation(_root.transform.position, _root.transform.rotation);
         _bodyObj.transform.SetParent(_root);
 
-        var _bodySocket_Legs = getChild(_legsObj.transform, "Socket_Body");
-        var _bodySocket_Body = getChild(_bodyObj.transform, "Socket_Body");
+        var _bodySocket_Legs = _legsObj.transform.FindChildRecursive("Socket_Body");
+        var _bodySocket_Body = _bodyObj.transform.FindChildRecursive("Socket_Body");
 
         createParentConstraint(
             sourceSocket: _bodySocket_Legs, 
@@ -55,10 +55,10 @@ public class MechBuilder : MonoBehaviour
         _armsObj.transform.SetPositionAndRotation(_root.transform.position, _root.transform.rotation);
         _armsObj.transform.SetParent(_root);
 
-        var _armSocket_R_Body = getChild(_bodyObj.transform, "Socket_Arm.R");
-        var _armSocket_L_Body = getChild(_bodyObj.transform, "Socket_Arm.L");
-        var _armSocket_R_Arms = getChild(_armsObj.transform, "Socket_Arm.R");
-        var _armSocket_L_Arms = getChild(_armsObj.transform, "Socket_Arm.L");
+        var _armSocket_R_Body = _bodyObj.transform.FindChildRecursive("Socket_Arm.R");
+        var _armSocket_L_Body = _bodyObj.transform.FindChildRecursive("Socket_Arm.L");
+        var _armSocket_R_Arms = _armsObj.transform.FindChildRecursive("Socket_Arm.R");
+        var _armSocket_L_Arms = _armsObj.transform.FindChildRecursive("Socket_Arm.L");
 
         createParentConstraint(
             sourceSocket: _armSocket_R_Body, 
@@ -81,8 +81,8 @@ public class MechBuilder : MonoBehaviour
         _headObj.transform.SetPositionAndRotation(_root.transform.position, _root.transform.rotation);
         _headObj.transform.SetParent(_root);
 
-        var _headSocket_Body = getChild(_bodyObj.transform, "Socket_Head");
-        var _headSocket_Head = getChild(_headObj.transform, "Socket_Head");
+        var _headSocket_Body = _bodyObj.transform.FindChildRecursive("Socket_Head");
+        var _headSocket_Head = _headObj.transform.FindChildRecursive("Socket_Head");
 
         createParentConstraint(
             sourceSocket: _headSocket_Body, 
@@ -108,21 +108,5 @@ public class MechBuilder : MonoBehaviour
 #endif
 
         return Instantiate(prefab, parent: null);
-    }
-
-    private static List<Transform> m_cachedTransforms = new List<Transform>();
-
-    private Transform getChild(Transform root, string name)
-    {
-        m_cachedTransforms.Clear();
-        root.GetComponentsInChildren(includeInactive: true, m_cachedTransforms);
-
-        for (int i = 0; i < m_cachedTransforms.Count; i++)
-        {
-            if (m_cachedTransforms[i].name == name)
-                return m_cachedTransforms[i];
-        }
-
-        return null;
     }
 }

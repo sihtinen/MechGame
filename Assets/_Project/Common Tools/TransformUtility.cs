@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-
 using UnityEngine;
 
 public static class TransformUtility
@@ -31,4 +30,20 @@ public static class TransformUtility
             Yaw = _rad2Deg * Mathf.Atan2(2 * _rot.y * _rot.w - 2 * _rot.x * _rot.z, 1 - 2 * _rot.y * _rot.y - 2 * _rot.z * _rot.z),
         };
     }
+
+    public static Transform FindChildRecursive(this Transform transform, string childName)
+    {
+        m_cachedTransforms.Clear();
+        transform.GetComponentsInChildren(includeInactive: true, m_cachedTransforms);
+
+        for (int i = 0; i < m_cachedTransforms.Count; i++)
+        {
+            if (m_cachedTransforms[i].name == childName)
+                return m_cachedTransforms[i];
+        }
+
+        return null;
+    }
+
+    private static List<Transform> m_cachedTransforms = new List<Transform>();
 }
