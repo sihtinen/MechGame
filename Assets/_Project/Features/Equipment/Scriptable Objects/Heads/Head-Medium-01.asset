@@ -19,5 +19,6 @@ MonoBehaviour:
   Category: {fileID: 11400000, guid: 3e40de9baf3fa3b4aa11f8d7d1267b36, type: 2}
   Weight: 100
   EnergyDrain: 100
-  VisualsPrefab: {fileID: 5229057989124718802, guid: 3dc3cc5f3a0803646b4c36dba5b4940d,
+  VisualsPrefab: {fileID: 1876215885347353320, guid: 3dc3cc5f3a0803646b4c36dba5b4940d,
     type: 3}
+  VisualPrefabEulerOffset: {x: 90, y: 0, z: 0}

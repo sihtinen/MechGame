@@ -19,9 +19,9 @@ MonoBehaviour:
   Category: {fileID: 11400000, guid: fe47c4ce6f51ee34fb81af5e6e061189, type: 2}
   Weight: 100
   EnergyDrain: 100
-  VisualsPrefab: {fileID: 8298607166119828165, guid: 80f05ba54afebea40b50741ba02ab4f4,
+  VisualsPrefab: {fileID: 6655051862688811486, guid: 80f05ba54afebea40b50741ba02ab4f4,
     type: 3}
-  VisualPrefabEulerOffset: {x: 0, y: 0, z: 0}
+  VisualPrefabEulerOffset: {x: -90, y: 0, z: 0}
   MaxRotationAngle_Yaw: 80
   RotationSmoothTime_Yaw: 0.1
   RotationMaxSpeed_Yaw: 165

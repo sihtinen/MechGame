@@ -45,5 +45,19 @@ public static class TransformUtility
         return null;
     }
 
-    private static List<Transform> m_cachedTransforms = new List<Transform>();
+    public static void BuildChildNameCache(this Transform transform, Dictionary<string, Transform> cache)
+    {
+        m_cachedTransforms.Clear();
+        transform.GetComponentsInChildren(includeInactive: true, m_cachedTransforms);
+
+        for (int i = 0; i < m_cachedTransforms.Count; i++)
+        {
+            var _child = m_cachedTransforms[i];
+
+            if (cache.ContainsKey(_child.name) == false)
+                cache.Add(_child.name, _child);
+        }
+    }
+
+    private static List<Transform> m_cachedTransforms = new();
 }

@@ -16,6 +16,7 @@ public abstract class Equipment : ScriptableObject
     [Min(0)] public int EnergyDrain = 100;
     [Space]
     public GameObject VisualsPrefab = null;
+    public Vector3 VisualPrefabPositionOffset = Vector3.zero;
     public Vector3 VisualPrefabEulerOffset = Vector3.zero;
 
     public abstract void InitializeGameplay(

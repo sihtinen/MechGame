@@ -12,6 +12,7 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
     [NonEditable] public float TargetRotY = 0;
     [NonEditable] public float ThrustVelocityHorizontal = 0;
     [NonEditable] public float ThrustVelocityVertical = 0;
+    [NonEditable] public RaycastHit GroundHit;
 
     [NonSerialized] public MechPlayerInput PlayerInputComponent = null;
 
@@ -27,7 +28,6 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
     private bool m_isGrounded = false;
     public bool IsGrounded => m_isGrounded;
 
-    private RaycastHit m_groundHit;
     private PID.PIDState m_rideHeightPIDState = new PID.PIDState();
     private PID.PIDState m_pitchRotationPIDState = new PID.PIDState();
     private PID.PIDState m_yawRotationPIDState = new PID.PIDState();
@@ -143,7 +143,7 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
     {
         var _totalVel = RigidBody.velocity;
 
-        Vector3 _verticaVel = Vector3.Project(_totalVel, m_isGrounded ? m_groundHit.normal : Vector3.up);
+        Vector3 _verticaVel = Vector3.Project(_totalVel, m_isGrounded ? GroundHit.normal : Vector3.up);
 
         Vector3 _horizontalVel_Old = _totalVel - _verticaVel;
         _totalVel -= _horizontalVel_Old;
@@ -159,7 +159,7 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
         if (MoveInput.sqrMagnitude <= Mathf.Epsilon)
             return;
 
-        Vector3 _movePlaneUp = m_isGrounded ? m_groundHit.normal : Vector3.up;
+        Vector3 _movePlaneUp = m_isGrounded ? GroundHit.normal : Vector3.up;
         Quaternion _targetLookQuaternion = Quaternion.Euler(0, TargetRotY, 0);
         Vector3 _targetForward = _targetLookQuaternion * Vector3.forward;
         Vector3 _targetRight = _targetLookQuaternion * Vector3.right;
@@ -190,7 +190,7 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
 
         if (MoveInput.sqrMagnitude > Mathf.Epsilon)
         {
-            Vector3 _movePlaneUp = m_isGrounded ? m_groundHit.normal : Vector3.up;
+            Vector3 _movePlaneUp = m_isGrounded ? GroundHit.normal : Vector3.up;
             Quaternion _targetLookQuaternion = Quaternion.Euler(0, TargetRotY, 0);
             Vector3 _targetForward = _targetLookQuaternion * Vector3.forward;
             Vector3 _targetRight = _targetLookQuaternion * Vector3.right;
@@ -296,7 +296,7 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
                 origin: transform.position + m_settings.GroundCheckHeight * m_upDirection,
                 radius: m_settings.GroundCheckRadius,
                 direction: -m_upDirection,
-                hitInfo: out m_groundHit,
+                hitInfo: out GroundHit,
                 maxDistance: m_settings.GroundCheckDistance,
                 layerMask: m_settings.GroundCheckLayers,
                 queryTriggerInteraction: QueryTriggerInteraction.Ignore,
@@ -313,7 +313,7 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
                 origin: transform.position + m_settings.GroundCheckHeight * m_upDirection,
                 radius: m_settings.GroundCheckRadius,
                 direction: -m_upDirection,
-                hitInfo: out m_groundHit,
+                hitInfo: out GroundHit,
                 maxDistance: m_settings.GroundCheckDistance,
                 layerMask: m_settings.GroundCheckLayers,
                 queryTriggerInteraction: QueryTriggerInteraction.Ignore);
@@ -321,8 +321,8 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
 
         if (m_isGrounded && m_mechTransformRoot != null)
         {
-            var _pos = m_mechTransformRoot.transform.position;
-            _pos.y = m_groundHit.point.y + 1f;
+            var _pos = m_mechTransformRoot.position;
+            _pos.y = GroundHit.point.y;
             m_mechTransformRoot.position = _pos;
         }
     }
@@ -335,7 +335,7 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
             return;
         }
 
-        float _hitDistanceCorrected = m_groundHit.distance + m_settings.GroundCheckRadius;
+        float _hitDistanceCorrected = GroundHit.distance + m_settings.GroundCheckRadius;
         m_rideHeightPIDState = m_rideHeightPID.UpdateTick(m_deltaTime, m_rideHeightPIDState, _hitDistanceCorrected, m_settings.GroundRideHeight);
         Vector3 _force = m_deltaTime * Mathf.Max(m_rideHeightPIDState.Output - ThrustVelocityVertical, 0) * Vector3.up;
         RigidBody.AddForce(_force, ForceMode.Acceleration);
