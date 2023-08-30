@@ -10,7 +10,9 @@ public class MechAnimator : MonoBehaviour
     
     private Animator m_animator = null;
     private MechController m_mech = null;
-    private Transform m_mechVisualsRoot = null;
+    private Transform m_animationRoot = null;
+
+    private List<MechIKSource> m_ikSources = new();
 
     private void Awake()
     {
@@ -18,25 +20,40 @@ public class MechAnimator : MonoBehaviour
         TryGetComponent(out m_mech);
     }
 
-    public void Initialize(Transform mechVisuals)
+    public void Initialize(Transform animationRoot)
     {
-        m_mechVisualsRoot = mechVisuals;
+        m_animationRoot = animationRoot;
+        animationRoot.GetComponentsInChildren(includeInactive: true, m_ikSources);
     }
 
     private void Update()
     {
-        if (m_mechVisualsRoot == null)
+        if (m_animationRoot == null)
             return;
 
-        m_mechVisualsRoot.localEulerAngles = Vector3.zero;
+        Vector3 _lookTargetPos = m_mech.GetLookTargetPos();
+
+        for (int i = 0; i < m_ikSources.Count; i++)
+        {
+            var _source = m_ikSources[i];
+
+            switch (_source.MyType)
+            {
+                case MechIKSource.SourceType.LookTarget:
+                    _source.transform.position = _lookTargetPos;
+                    break;
+            }
+        }
+
+        m_animationRoot.localEulerAngles = Vector3.zero;
 
         var _horizontalVel = m_mech.RigidBody.velocity;
         _horizontalVel.y = 0;
 
-        float _forwardAmount = Vector3.Dot(_horizontalVel.normalized, m_mechVisualsRoot.forward);
-        float _rightAmount = Vector3.Dot(_horizontalVel.normalized, m_mechVisualsRoot.right);
+        float _forwardAmount = Vector3.Dot(_horizontalVel.normalized, m_animationRoot.forward);
+        float _rightAmount = Vector3.Dot(_horizontalVel.normalized, m_animationRoot.right);
 
-        m_mechVisualsRoot.Rotate(new Vector3(
+        m_animationRoot.Rotate(new Vector3(
             _forwardAmount * m_leanAmount * _horizontalVel.magnitude, 
             0,
             -_rightAmount * m_leanAmount * _horizontalVel.magnitude), Space.Self);

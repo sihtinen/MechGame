@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using NaughtyAttributes;
+using BKUnity;
 
 public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
 {
@@ -15,6 +16,7 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
     [NonEditable] public RaycastHit GroundHit;
 
     [NonSerialized] public MechPlayerInput PlayerInputComponent = null;
+    [NonSerialized] public MechAnimator MechAnimatorComponent = null;
 
     [Header("Object References")]
     [SerializeField, Expandable] private PID m_rideHeightPID = null;
@@ -24,6 +26,8 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
     [SerializeField, Expandable] private MechSettings m_settings = null;
     [Space]
     [SerializeField] private MechBuilder m_mechBuilder = null;
+    [SerializeField] private HumanoidAvatarBuilder m_avatarBuilder = null;
+    [SerializeField] private Transform m_lookTarget = null;
 
     private bool m_isGrounded = false;
     public bool IsGrounded => m_isGrounded;
@@ -33,10 +37,9 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
     private PID.PIDState m_yawRotationPIDState = new PID.PIDState();
     private PID.PIDState m_rollRotationPIDState = new PID.PIDState();
 
-    private Vector3 m_bodyEulerDefault;
-
+    private Transform m_animationTransformRoot = null;
     private Transform m_mechTransformRoot = null;
-    private Transform m_mechBodyBone = null;
+    private MechSpineRotator m_spineRotator = null;
 
     private MechLoadout m_loadout = null;
     private List<Collider> m_mechColliders = new List<Collider>();
@@ -46,6 +49,9 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
         base.Awake();
         
         TryGetComponent(out PlayerInputComponent);
+        TryGetComponent(out MechAnimatorComponent);
+
+        m_animationTransformRoot = m_mechBuilder.transform;
     }
 
     public void InitializeGameplay(InitializeSettings settings)
@@ -55,46 +61,23 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
 
         m_mechTransformRoot = m_mechBuilder.Build();
         m_mechTransformRoot.transform.SetParent(transform, worldPositionStays: false);
-        m_mechTransformRoot.GetComponentsInChildren(includeInactive: true, m_mechColliders);
 
-        m_mechBodyBone = m_mechTransformRoot.FindChildRecursive("Bone_Body01");
-        m_bodyEulerDefault = m_mechBodyBone.localEulerAngles;
+        m_avatarBuilder.SetAvatarTarget(m_mechTransformRoot.gameObject.GetComponent<AvatarTarget>());
+        m_avatarBuilder.BuildRuntime();
+
+        m_spineRotator = m_animationTransformRoot.GetComponentInChildren<MechSpineRotator>();
 
         ignoreSelfCollisions();
 
-        if (TryGetComponent(out MechPlayerInput _inputComponent))
-            _inputComponent.enabled = settings.IsPlayer;
+        PlayerInputComponent.enabled = settings.IsPlayer;
 
-        if (TryGetComponent(out MechAnimator _mechAnimator))
-            _mechAnimator.Initialize(m_mechTransformRoot);
-
-        //initializeSlot(
-        //    settings.Loadout.LeftShoulder,
-        //    m_eqSlotShoulderLeft,
-        //    settings.IsPlayer, 
-        //    PlayerInputComponent.LeftShoulderInputRef);
-
-        //initializeSlot(
-        //    settings.Loadout.LeftArm,
-        //    m_eqSlotArmLeft,
-        //    settings.IsPlayer,
-        //    PlayerInputComponent.LeftArmInputRef);
-
-        //initializeSlot(
-        //    settings.Loadout.RightShoulder,
-        //    m_eqSlotShoulderRight,
-        //    settings.IsPlayer,
-        //    PlayerInputComponent.RightShoulderInputRef);
-
-        //initializeSlot(
-        //    settings.Loadout.RightArm,
-        //    m_eqSlotArmRight,
-        //    settings.IsPlayer,
-        //    PlayerInputComponent.RightArmInputRef);
+        MechAnimatorComponent.Initialize(m_animationTransformRoot);
     }
 
     private void ignoreSelfCollisions()
     {
+        m_mechTransformRoot.GetComponentsInChildren(includeInactive: true, m_mechColliders);
+
         for (int i = 0; i < m_mechColliders.Count; i++)
         {
             var _coll = m_mechColliders[i];
@@ -128,6 +111,8 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
         _rot.z = 0;
         RigidBody.rotation = Quaternion.Euler(_rot);
         RigidBody.ResetInertiaTensor();
+
+        m_lookTarget.position = RigidBody.position + new Vector3(0, 20, 0) + Quaternion.Euler(0, TargetRotY, 0) * Vector3.forward * 100;
 
         groundCheck();
         updateDrag();
@@ -281,8 +266,7 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
             _bodySettings.RotationMaxSpeed_Yaw + RigidBody.angularVelocity.y, 
             m_deltaTime);
 
-        m_mechBodyBone.localEulerAngles = m_bodyEulerDefault;
-        m_mechBodyBone.Rotate(Vector3.back, m_bodyRotateAngle, Space.Self);
+        m_spineRotator.SetRotation(-m_bodyRotateAngle);
     }
 
     private float m_bodyRotateAngle = 0;
@@ -319,11 +303,11 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
                 queryTriggerInteraction: QueryTriggerInteraction.Ignore);
         }
 
-        if (m_isGrounded && m_mechTransformRoot != null)
+        if (m_isGrounded && m_animationTransformRoot != null)
         {
-            var _pos = m_mechTransformRoot.position;
+            var _pos = m_animationTransformRoot.position;
             _pos.y = GroundHit.point.y;
-            m_mechTransformRoot.position = _pos;
+            m_animationTransformRoot.position = _pos;
         }
     }
 
@@ -339,6 +323,11 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
         m_rideHeightPIDState = m_rideHeightPID.UpdateTick(m_deltaTime, m_rideHeightPIDState, _hitDistanceCorrected, m_settings.GroundRideHeight);
         Vector3 _force = m_deltaTime * Mathf.Max(m_rideHeightPIDState.Output - ThrustVelocityVertical, 0) * Vector3.up;
         RigidBody.AddForce(_force, ForceMode.Acceleration);
+    }
+
+    public Vector3 GetLookTargetPos()
+    {
+        return m_lookTarget.position;
     }
 
     [System.Serializable]

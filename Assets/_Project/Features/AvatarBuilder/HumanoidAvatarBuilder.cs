@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.UIElements;
 
 namespace BKUnity
@@ -9,6 +10,8 @@ namespace BKUnity
         [SerializeField] private AvatarTarget m_avatarTarget = null;
 		[SerializeField] private Animator m_animator;
         [SerializeField] private bool m_drawBones = false;
+
+        public void SetAvatarTarget(AvatarTarget target) => m_avatarTarget = target;
 
         private void Start()
         {
@@ -55,6 +58,12 @@ namespace BKUnity
             AlignToAvatarTarget();
             BuildAvatar();
 
+            if (Application.isPlaying && TryGetComponent(out RigBuilder _rigBuilder))
+            {
+                _rigBuilder.enabled = true;
+                _rigBuilder.Build();
+            }
+
             m_animator.enabled = true;
         }
 
@@ -62,10 +71,13 @@ namespace BKUnity
 
         private void OnDrawGizmos()
         {
-            if (m_drawBones == false)
+            if (m_drawBones == false || m_animator.avatar == null)
                 return;
 
             transform.BuildChildNameCache(m_childCache);
+
+            if (m_childCache == null || m_childCache.Count == 0)
+                return;
 
             Gizmos.color = Color.yellow;
 
