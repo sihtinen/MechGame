@@ -13,6 +13,7 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
     [NonEditable] public float TargetRotY = 0;
     [NonEditable] public float ThrustVelocityHorizontal = 0;
     [NonEditable] public float ThrustVelocityVertical = 0;
+    [NonEditable] public bool IsBoosting = true;
     [NonEditable] public RaycastHit GroundHit;
 
     [NonSerialized] public MechPlayerInput PlayerInputComponent = null;
@@ -221,21 +222,36 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
         //    currentValue: _axisAngles.Roll,
         //    targetValue: 0f);
 
-        Vector3 _moveDir = RigidBody.velocity;
-        _moveDir.y = 0;
-        _moveDir.Normalize();
+        bool _applyRotation = false;
+        float _rotationAngle = TargetRotY;
 
-        if (_moveDir.sqrMagnitude > 0.2f)
+        if (IsBoosting)
         {
-            float angle = Vector3.SignedAngle(_moveDir, Vector3.forward, Vector3.down);
-            float _moveDirAngle = Quaternion.Euler(new Vector3(0, angle, 0)).eulerAngles.y;
+            _applyRotation = true;
+        }
+        else
+        {
+            Vector3 _moveDir = RigidBody.velocity;
+            _moveDir.y = 0;
+            _moveDir.Normalize();
 
+            if (_moveDir.sqrMagnitude > 0.2f)
+            {
+                float angle = Vector3.SignedAngle(_moveDir, Vector3.forward, Vector3.down);
+                float _moveDirAngle = Quaternion.Euler(new Vector3(0, angle, 0)).eulerAngles.y;
+                _rotationAngle = _moveDirAngle;
+                _applyRotation = true;
+            }
+        }
+
+        if (_applyRotation)
+        {
             applyAngleTorquePID(
                 pid: m_yawRotationPID,
                 pidState: ref m_yawRotationPIDState,
                 rotateAxisLocal: Vector3.up,
                 currentValue: _axisAngles.Yaw,
-                targetValue: _moveDirAngle % 360);
+                targetValue: _rotationAngle % 360);
         }
 
         updateBodyRotation();

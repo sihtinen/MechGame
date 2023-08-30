@@ -3017,6 +3017,7 @@ MonoBehaviour:
   TargetRotY: 0
   ThrustVelocityHorizontal: 0
   ThrustVelocityVertical: 0
+  IsBoosting: 1
   m_rideHeightPID: {fileID: 11400000, guid: f265dfefb8e8b654fa57facc67b02c5a, type: 2}
   m_pitchRotationPID: {fileID: 11400000, guid: 73be9678164f3554dbea14d53a16dd32, type: 2}
   m_yawRotationPID: {fileID: 11400000, guid: be0ce288309d59549a3384b0104d7f89, type: 2}

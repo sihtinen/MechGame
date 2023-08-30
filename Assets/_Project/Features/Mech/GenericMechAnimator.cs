@@ -26,12 +26,6 @@ public class GenericMechAnimator : MonoBehaviour
         float _velMagnitude = _horizontalVel.magnitude;
         float _minVelMag = 2f;
 
-        if (_velMagnitude < _minVelMag)
-        {
-            playState("Idle");
-            return;
-        }
-
         m_animator.SetFloat("MoveSpeed", _horizontalVel.magnitude * m_movementSpeedMultiplier);
 
         float _forwardDirectionDot = Vector3.Dot(_horizontalVel.normalized, m_mech.transform.forward);
@@ -42,7 +36,17 @@ public class GenericMechAnimator : MonoBehaviour
         m_animator.SetFloat("MoveDirZ", _forwardDirectionDot * _moveMagMult);
         m_animator.SetFloat("MoveDirX", _rightDirectionDot * _moveMagMult);
 
-        playState("Movement");
+        if (m_mech.IsBoosting)
+        {
+            playState("Movement Boost");
+        }
+        else
+        {
+            if (_velMagnitude < _minVelMag)
+                playState("Idle");
+            else
+                playState("Movement Bipedal");
+        }
     }
 
     private void playState(string stateName)
