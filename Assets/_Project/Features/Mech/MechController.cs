@@ -13,6 +13,7 @@ public class MechController : RigidBodyEntity
     [NonEditable] public float TargetRotY = 0;
     [NonEditable] public float ThrustVelocityHorizontal = 0;
     [NonEditable] public float ThrustVelocityVertical = 0;
+    [NonEditable] public bool IsGrounded = false;
     [NonEditable] public bool IsBoosting = false;
     [NonEditable] public RaycastHit GroundHit;
 
@@ -30,9 +31,6 @@ public class MechController : RigidBodyEntity
     [SerializeField] private HumanoidAvatarBuilder m_avatarBuilder = null;
     [SerializeField] private Transform m_lookTarget = null;
 
-    private bool m_isGrounded = false;
-    public bool IsGrounded => m_isGrounded;
-
     private PID.PIDState m_rideHeightPIDState = new PID.PIDState();
     private PID.PIDState m_pitchRotationPIDState = new PID.PIDState();
     private PID.PIDState m_yawRotationPIDState = new PID.PIDState();
@@ -48,7 +46,9 @@ public class MechController : RigidBodyEntity
     protected override void Awake()
     {
         base.Awake();
-        
+
+        IsBoosting = false;
+
         TryGetComponent(out PlayerInputComponent);
         TryGetComponent(out MechAnimatorComponent);
 
@@ -73,6 +73,31 @@ public class MechController : RigidBodyEntity
         PlayerInputComponent.enabled = settings.IsPlayer;
 
         MechAnimatorComponent.Initialize(m_animationTransformRoot);
+
+        setupEquipment(settings.IsPlayer);
+    }
+
+    private void setupEquipment(bool isPlayer)
+    {
+        foreach (var _kvp in m_loadout.Dictionary)
+        {
+            if (_kvp.Value == null)
+                continue;
+
+            var _slotTransform = new GameObject(_kvp.Key.ToString() + "-" + _kvp.Value.DisplayName).transform;
+            _slotTransform.SetParent(transform, worldPositionStays: false);
+
+            var _setupData = new Equipment.EquipmentRuntimeSetupData
+            {
+                Mech = this,
+                SlotTransform = _slotTransform,
+                SlotType = _kvp.Key,
+                IsPlayer = isPlayer,
+                InputActionRef = isPlayer ? PlayerInputComponent.GetInputActionRef(_kvp.Key) : null,
+            };
+
+            _kvp.Value.InitializeGameplay(_setupData);
+        }
     }
 
     private void ignoreSelfCollisions()
@@ -93,14 +118,6 @@ public class MechController : RigidBodyEntity
                 Physics.IgnoreCollision(_coll, _otherColl);
             }
         }
-    }
-
-    private void initializeSlot(Equipment equipment, EquipmentSlot slot, bool isPlayer, InputActionReference inputActionRef)
-    {
-        if (equipment == null)
-            return;
-
-        equipment.InitializeGameplay(this, slot, isPlayer, inputActionRef);
     }
 
     protected override void FixedUpdate()
@@ -129,7 +146,7 @@ public class MechController : RigidBodyEntity
     {
         var _totalVel = RigidBody.velocity;
 
-        Vector3 _verticaVel = Vector3.Project(_totalVel, m_isGrounded ? GroundHit.normal : Vector3.up);
+        Vector3 _verticaVel = Vector3.Project(_totalVel, IsGrounded ? GroundHit.normal : Vector3.up);
 
         Vector3 _horizontalVel_Old = _totalVel - _verticaVel;
         _totalVel -= _horizontalVel_Old;
@@ -145,7 +162,7 @@ public class MechController : RigidBodyEntity
         if (MoveInput.sqrMagnitude <= Mathf.Epsilon)
             return;
 
-        Vector3 _movePlaneUp = m_isGrounded ? GroundHit.normal : Vector3.up;
+        Vector3 _movePlaneUp = IsGrounded ? GroundHit.normal : Vector3.up;
         Quaternion _targetLookQuaternion = Quaternion.Euler(0, TargetRotY, 0);
         Vector3 _targetForward = _targetLookQuaternion * Vector3.forward;
         Vector3 _targetRight = _targetLookQuaternion * Vector3.right;
@@ -176,7 +193,7 @@ public class MechController : RigidBodyEntity
 
         if (MoveInput.sqrMagnitude > Mathf.Epsilon)
         {
-            Vector3 _movePlaneUp = m_isGrounded ? GroundHit.normal : Vector3.up;
+            Vector3 _movePlaneUp = IsGrounded ? GroundHit.normal : Vector3.up;
             Quaternion _targetLookQuaternion = Quaternion.Euler(0, TargetRotY, 0);
             Vector3 _targetForward = _targetLookQuaternion * Vector3.forward;
             Vector3 _targetRight = _targetLookQuaternion * Vector3.right;
@@ -231,17 +248,18 @@ public class MechController : RigidBodyEntity
         }
         else
         {
-            Vector3 _moveDir = RigidBody.velocity;
-            _moveDir.y = 0;
-            _moveDir.Normalize();
+            var _bodySettings = m_loadout.Dictionary[EquipmentSlotTypes.Body] as BodyEquipment;
 
-            if (_moveDir.sqrMagnitude > 0.2f)
-            {
-                float angle = Vector3.SignedAngle(_moveDir, Vector3.forward, Vector3.down);
-                float _moveDirAngle = Quaternion.Euler(new Vector3(0, angle, 0)).eulerAngles.y;
-                _rotationAngle = _moveDirAngle;
-                _applyRotation = true;
-            }
+            float _forwardAngle = Vector3.SignedAngle(m_forwardDirection, Vector3.forward, Vector3.down);
+
+            float _angleDifference = Quaternion.Angle(
+                Quaternion.Euler(new Vector3(0, _forwardAngle, 0)),
+                Quaternion.Euler(new Vector3(0, TargetRotY, 0)));
+
+            Vector3 _moveVel = RigidBody.velocity;
+            _moveVel.y = 0;
+
+            _applyRotation = _angleDifference > _bodySettings.MaxRotationAngle_Yaw || _moveVel.sqrMagnitude > 1f;
         }
 
         if (_applyRotation)
@@ -292,7 +310,7 @@ public class MechController : RigidBodyEntity
     {
         if (Application.isEditor)
         {
-            m_isGrounded = RotaryHeart.Lib.PhysicsExtension.Physics.SphereCast(
+            IsGrounded = RotaryHeart.Lib.PhysicsExtension.Physics.SphereCast(
                 origin: transform.position + m_settings.GroundCheckHeight * m_upDirection,
                 radius: m_settings.GroundCheckRadius,
                 direction: -m_upDirection,
@@ -309,7 +327,7 @@ public class MechController : RigidBodyEntity
         }
         else
         {
-            m_isGrounded = Physics.SphereCast(
+            IsGrounded = Physics.SphereCast(
                 origin: transform.position + m_settings.GroundCheckHeight * m_upDirection,
                 radius: m_settings.GroundCheckRadius,
                 direction: -m_upDirection,
@@ -319,7 +337,7 @@ public class MechController : RigidBodyEntity
                 queryTriggerInteraction: QueryTriggerInteraction.Ignore);
         }
 
-        if (m_isGrounded && m_animationTransformRoot != null)
+        if (IsGrounded && m_animationTransformRoot != null)
         {
             var _pos = m_animationTransformRoot.position;
             _pos.y = GroundHit.point.y;
@@ -329,7 +347,7 @@ public class MechController : RigidBodyEntity
 
     private void updateRideHeightPID()
     {
-        if (m_isGrounded == false)
+        if (IsGrounded == false)
         {
             m_rideHeightPIDState.ResetState();
             return;

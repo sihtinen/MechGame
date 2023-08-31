@@ -19,21 +19,26 @@ public abstract class Equipment : ScriptableObject
     public Vector3 VisualPrefabPositionOffset = Vector3.zero;
     public Vector3 VisualPrefabEulerOffset = Vector3.zero;
 
-    public abstract void InitializeGameplay(
-        MechController mech,
-        EquipmentSlot slot,
-        bool isPlayer,
-        InputActionReference inputActionRef);
-
-    protected T initializeRuntimeComponent<T>(MechController mech, EquipmentSlot slot) where T : MechEquipmentRuntime
+    public struct EquipmentRuntimeSetupData
     {
-        var _newObj = new GameObject($"{slot.SlotType}_{DisplayName}");
-        _newObj.transform.SetParent(slot.TransformComponent);
+        public MechController Mech;
+        public Transform SlotTransform;
+        public EquipmentSlotTypes SlotType;
+        public bool IsPlayer;
+        public InputActionReference InputActionRef;
+    }
+
+    public abstract void InitializeGameplay(EquipmentRuntimeSetupData setupData);
+
+    protected T initializeRuntimeComponent<T>(EquipmentRuntimeSetupData setupData) where T : MechEquipmentRuntime
+    {
+        var _newObj = new GameObject($"{setupData.SlotType}_{DisplayName}");
+        _newObj.transform.SetParent(setupData.SlotTransform);
         _newObj.transform.localPosition = Vector3.zero;
         _newObj.transform.localRotation = Quaternion.identity;
 
         var _runtimeComponent = _newObj.AddComponent<T>();
-        _runtimeComponent.InitializeGameplay(mech, this);
+        _runtimeComponent.InitializeGameplay(setupData.Mech, this);
 
         return _runtimeComponent;
     }

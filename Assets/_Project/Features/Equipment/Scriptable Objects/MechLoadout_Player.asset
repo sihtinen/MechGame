@@ -16,9 +16,9 @@ MonoBehaviour:
   Dictionary:
     m_keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f0000001000000011000000
     m_values:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
+    - {fileID: 11400000, guid: e63d70ac7913e2a4b8a8d5716e4a44a6, type: 2}
+    - {fileID: 11400000, guid: 139ca052919341042bf8e673f49436a6, type: 2}
+    - {fileID: 11400000, guid: 284f7342680fc8747addda7214b709a7, type: 2}
     - {fileID: 0}
     - {fileID: 0}
     - {fileID: 0}

@@ -12,7 +12,7 @@ public class BodyEquipment : Equipment
     [Min(0)] public float RotationSmoothTime_Yaw = 0.5f;
     [Min(0)] public float RotationMaxSpeed_Yaw = 0.5f;
 
-    public override void InitializeGameplay(MechController mech, EquipmentSlot slot, bool isPlayer, InputActionReference inputActionRef)
+    public override void InitializeGameplay(EquipmentRuntimeSetupData setupData)
     {
 
     }

@@ -19,6 +19,9 @@ MonoBehaviour:
   Category: {fileID: 11400000, guid: 7e6c17a535ecda94bad8a7b904e1cb81, type: 2}
   Weight: 100
   EnergyDrain: 100
+  VisualsPrefab: {fileID: 0}
+  VisualPrefabPositionOffset: {x: 0, y: 0, z: 0}
+  VisualPrefabEulerOffset: {x: 0, y: 0, z: 0}
   UseCount: 120
   UseRatePerSecond: 1.8
   TargetLayers: 15
@@ -32,7 +35,8 @@ MonoBehaviour:
   TargetingDistance: 300
   TargetingOptimalDistance: 100
   TargetingDistanceScoreMultiplier: 1
-  HUDPrefab: {fileID: 0}
+  HUDPrefab: {fileID: 807154664928231954, guid: 289e2a89775c7964ba1f911480f4e556,
+    type: 3}
   HUD_ValidTarget: {fileID: 0}
   HUD_ValidTarget_Size: 25
   HUD_ActiveTarget: {fileID: 0}

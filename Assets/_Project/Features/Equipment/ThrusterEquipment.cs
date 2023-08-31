@@ -24,16 +24,16 @@ public class ThrusterEquipment : PrimaryEquipment
     [Header("HUD Settings")]
     public HUDThrusterEquipmentElement HUDPrefab = null;
 
-    public override void InitializeGameplay(MechController mech, EquipmentSlot slot, bool isPlayer, InputActionReference inputActionRef)
+    public override void InitializeGameplay(EquipmentRuntimeSetupData setupData)
     {
-        var _thrusterComp = initializeRuntimeComponent<MechThrusterRuntime>(mech, slot);
+        var _thrusterComp = initializeRuntimeComponent<MechThrusterRuntime>(setupData);
 
-        if (isPlayer == false)
+        if (setupData.IsPlayer == false)
             return;
 
-        _thrusterComp.BindToInput(inputActionRef);
+        _thrusterComp.BindToInput(setupData.InputActionRef);
 
-        var _hudElement = HUDManager.Instance.InitializeHUDElement(HUDPrefab, slot.SlotType);
+        var _hudElement = HUDManager.Instance.InitializeHUDElement(HUDPrefab, setupData.SlotType);
         _hudElement.BindToRuntimeComponent(_thrusterComp);
     }
 

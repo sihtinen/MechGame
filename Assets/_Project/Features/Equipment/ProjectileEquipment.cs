@@ -36,16 +36,16 @@ public class ProjectileEquipment : PrimaryEquipment
     public Sprite HUD_Prediction = null;
     [Min(0f)] public float HUD_Prediction_Size = 25f;
 
-    public override void InitializeGameplay(MechController mech, EquipmentSlot slot, bool isPlayer, InputActionReference inputActionRef)
+    public override void InitializeGameplay(EquipmentRuntimeSetupData setupData)
     {
-        var _projectileRuntimeComponent = initializeRuntimeComponent<MechProjectileRuntime>(mech, slot);
+        var _projectileRuntimeComponent = initializeRuntimeComponent<MechProjectileRuntime>(setupData);
 
-        if (isPlayer == false)
+        if (setupData.IsPlayer == false)
             return;
 
-        _projectileRuntimeComponent.BindToInput(inputActionRef);
+        _projectileRuntimeComponent.BindToInput(setupData.InputActionRef);
 
-        var _hudElement = HUDManager.Instance.InitializeHUDElement(HUDPrefab, slot.SlotType);
+        var _hudElement = HUDManager.Instance.InitializeHUDElement(HUDPrefab, setupData.SlotType);
         _hudElement.BindToRuntimeComponent(_projectileRuntimeComponent);
 
         TargetingHUDManager.Instance.RegisterProjectileRuntime(_projectileRuntimeComponent);

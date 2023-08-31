@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 [CreateAssetMenu(menuName = "MechGame/Equipment/New Head Equipment")]
 public class HeadEquipment : Equipment
 {
-    public override void InitializeGameplay(MechController mech, EquipmentSlot slot, bool isPlayer, InputActionReference inputActionRef)
+    public override void InitializeGameplay(EquipmentRuntimeSetupData setupData)
     {
         
     }

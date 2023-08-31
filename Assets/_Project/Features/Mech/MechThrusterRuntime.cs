@@ -40,7 +40,9 @@ public class MechThrusterRuntime : MechEquipmentRuntime
         float _horizontalThrust = 0;
         float _verticalThrust = 0;
 
-        if (m_inputActionRef != null && m_inputActionRef.action.IsPressed())
+        m_mechController.IsBoosting = m_inputActionRef != null && m_inputActionRef.action.IsPressed();
+
+        if (m_mechController.IsBoosting)
         {
             var _thrustType = m_mechController.IsGrounded == false || m_currentThrustType == ThrustType.Boost ? 
                 ThrustType.Boost : 

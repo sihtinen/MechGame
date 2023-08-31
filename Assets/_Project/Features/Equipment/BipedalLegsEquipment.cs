@@ -7,8 +7,8 @@ using UnityEngine.InputSystem;
 [CreateAssetMenu(menuName = "MechGame/Equipment/Legs/New Bipedal Legs")]
 public class BipedalLegsEquipment : LegsEquipment
 {
-    public override void InitializeGameplay(MechController mech, EquipmentSlot slot, bool isPlayer, InputActionReference inputActionRef)
+    public override void InitializeGameplay(EquipmentRuntimeSetupData setupData)
     {
-
+        
     }
 }
