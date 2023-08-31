@@ -6,14 +6,14 @@ using UnityEngine.InputSystem;
 using NaughtyAttributes;
 using BKUnity;
 
-public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
+public class MechController : RigidBodyEntity
 {
     [Header("Runtime Parameters")]
     [NonEditable] public Vector2 MoveInput = Vector2.zero;
     [NonEditable] public float TargetRotY = 0;
     [NonEditable] public float ThrustVelocityHorizontal = 0;
     [NonEditable] public float ThrustVelocityVertical = 0;
-    [NonEditable] public bool IsBoosting = true;
+    [NonEditable] public bool IsBoosting = false;
     [NonEditable] public RaycastHit GroundHit;
 
     [NonSerialized] public MechPlayerInput PlayerInputComponent = null;
@@ -352,7 +352,4 @@ public class MechController : RigidBodyEntity, DynamicHUD.IDynamicHUDTarget
         public bool IsPlayer;
         public MechLoadout Loadout;
     }
-
-    Vector3 DynamicHUD.IDynamicHUDTarget.GetForwardDirection() => m_forwardDirection;
-    Vector3 DynamicHUD.IDynamicHUDTarget.GetVelocity() => RigidBody.velocity;
 }
