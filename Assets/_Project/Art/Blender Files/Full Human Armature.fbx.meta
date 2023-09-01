@@ -20,8 +20,18 @@ ModelImporter:
     rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
-    animationRetargetingWarnings: "\nRetargeting quality report for clip 'Armature|Boost_Backwards':\n\tRetargeting
+    animationRetargetingWarnings: "\nRetargeting quality report for clip 'Armature|Aim_Down_RightArm':\n\tRetargeting
       quality is good. No significant differences with original animation were found.\n\nRetargeting
+      quality report for clip 'Armature|Aim_Forward_RightArm':\n\tRetargeting quality
+      is good. No significant differences with original animation were found.\n\nRetargeting
+      quality report for clip 'Armature|Aim_Left_RightArm':\n\tRetargeting quality
+      is good. No significant differences with original animation were found.\n\nRetargeting
+      quality report for clip 'Armature|Aim_Right_RightArm':\n\tRetargeting quality
+      is good. No significant differences with original animation were found.\n\nRetargeting
+      quality report for clip 'Armature|Aim_Up_RightArm':\n\tRetargeting quality
+      is good. No significant differences with original animation were found.\n\nRetargeting
+      quality report for clip 'Armature|Boost_Backwards':\n\tRetargeting quality
+      is good. No significant differences with original animation were found.\n\nRetargeting
       quality report for clip 'Armature|Boost_Forward':\n\tRetargeting quality is
       good. No significant differences with original animation were found.\n\nRetargeting
       quality report for clip 'Armature|Boost_Left':\n\tRetargeting quality is good.
@@ -32,12 +42,22 @@ ModelImporter:
       good. No significant differences with original animation were found.\n\nRetargeting
       quality report for clip 'Armature|Idle':\n\tRetargeting quality is good. No
       significant differences with original animation were found.\n\nRetargeting
+      quality report for clip 'Armature|Run_Back_Right':\n\tRetargeting quality is
+      good. No significant differences with original animation were found.\n\nRetargeting
+      quality report for clip 'Armature|Run_Backwards':\n\tRetargeting quality is
+      good. No significant differences with original animation were found.\n\nRetargeting
       quality report for clip 'Armature|Run_Forward':\n\tRetargeting quality is good.
+      No significant differences with original animation were found.\n\nRetargeting
+      quality report for clip 'Armature|Run_Right':\n\tRetargeting quality is good.
       No significant differences with original animation were found.\n\nRetargeting
       quality report for clip 'Armature|TPose':\n\tRetargeting quality is good. No
       significant differences with original animation were found.\n\nRetargeting
+      quality report for clip 'Armature|Walk_Backwards':\n\tRetargeting quality is
+      good. No significant differences with original animation were found.\n\nRetargeting
       quality report for clip 'Armature|Walk_Forward':\n\tRetargeting quality is
-      good. No significant differences with original animation were found.\n"
+      good. No significant differences with original animation were found.\n\nRetargeting
+      quality report for clip 'Armature|Walk_Right':\n\tRetargeting quality is good.
+      No significant differences with original animation were found.\n"
     animationDoRetargetingWarnings: 1
     importAnimatedCustomProperties: 0
     importConstraints: 0
@@ -287,6 +307,296 @@ ModelImporter:
       internalID: -840103715442599727
       firstFrame: 0
       lastFrame: 59
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Armature|Walk_Right
+      takeName: Armature|Walk_Right
+      internalID: 5872607492427136677
+      firstFrame: 0
+      lastFrame: 59
+      wrapMode: 0
+      orientationOffsetY: -65.85
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 1
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Armature|Run_Right
+      takeName: Armature|Run_Right
+      internalID: 1140901581493398914
+      firstFrame: 0
+      lastFrame: 59
+      wrapMode: 0
+      orientationOffsetY: -68.7
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 1
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Armature|Walk_Backwards
+      takeName: Armature|Walk_Backwards
+      internalID: -6988115575439084157
+      firstFrame: 0
+      lastFrame: 59
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Armature|Run_Backwards
+      takeName: Armature|Run_Backwards
+      internalID: 4346947733687605391
+      firstFrame: 0
+      lastFrame: 59
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Armature|Run_Back_Right
+      takeName: Armature|Run_Back_Right
+      internalID: 7747619211574341834
+      firstFrame: 0
+      lastFrame: 59
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Armature|Aim_Down_RightArm
+      takeName: Armature|Aim_Down_RightArm
+      internalID: 1275368473974201404
+      firstFrame: 0
+      lastFrame: 1
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Armature|Aim_Forward_RightArm
+      takeName: Armature|Aim_Forward_RightArm
+      internalID: 5248801344620820107
+      firstFrame: 0
+      lastFrame: 1
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Armature|Aim_Right_RightArm
+      takeName: Armature|Aim_Right_RightArm
+      internalID: 9135682016600829888
+      firstFrame: 0
+      lastFrame: 1
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Armature|Aim_Up_RightArm
+      takeName: Armature|Aim_Up_RightArm
+      internalID: -8824826206775554605
+      firstFrame: 0
+      lastFrame: 1
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Armature|Aim_Left_RightArm
+      takeName: Armature|Aim_Left_RightArm
+      internalID: -3735686242793041984
+      firstFrame: 0
+      lastFrame: 1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
