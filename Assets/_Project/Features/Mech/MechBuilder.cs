@@ -6,8 +6,29 @@ public class MechBuilder : MonoBehaviour
 {
     public MechLoadout LoadoutAsset = null;
 
+    private static List<Transform> m_cachedChildTransforms = new();
+
     [ContextMenu("Build")]
     public Transform Build()
+    {
+        var _mechRoot = assembleMech();
+
+        _mechRoot.GetComponentsInChildren(includeInactive: true, m_cachedChildTransforms);
+
+        var _characterLayer = LayerMask.NameToLayer("Character");
+
+        for (int i = 0; i < m_cachedChildTransforms.Count; i++)
+        {
+            var _transform  = m_cachedChildTransforms[i];
+            _transform.gameObject.layer = _characterLayer;
+        }
+
+        m_cachedChildTransforms.Clear();
+
+        return _mechRoot;
+    }
+
+    private Transform assembleMech()
     {
         var _root = new GameObject(LoadoutAsset.LoadoutName).transform;
         _root.SetParent(null);
@@ -39,7 +60,7 @@ public class MechBuilder : MonoBehaviour
         var _bodyObj = instantiate(_bodyAsset.VisualsPrefab);
 
         _bodyObj.transform.SetPositionAndRotation(
-            _bodySocket_Legs.position, 
+            _bodySocket_Legs.position,
             Quaternion.Euler(_bodyAsset.VisualPrefabEulerOffset) * _bodySocket_Legs.rotation);
 
         _bodyObj.transform.SetParent(_root);

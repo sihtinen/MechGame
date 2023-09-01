@@ -18,7 +18,6 @@ public class MechController : RigidBodyEntity
     [NonEditable] public RaycastHit GroundHit;
 
     [NonSerialized] public MechPlayerInput PlayerInputComponent = null;
-    [NonSerialized] public MechAnimator MechAnimatorComponent = null;
 
     [Header("Object References")]
     [SerializeField, Expandable] private PID m_rideHeightPID = null;
@@ -50,7 +49,6 @@ public class MechController : RigidBodyEntity
         IsBoosting = false;
 
         TryGetComponent(out PlayerInputComponent);
-        TryGetComponent(out MechAnimatorComponent);
 
         m_animationTransformRoot = m_mechBuilder.transform;
     }
@@ -71,8 +69,6 @@ public class MechController : RigidBodyEntity
         ignoreSelfCollisions();
 
         PlayerInputComponent.enabled = settings.IsPlayer;
-
-        MechAnimatorComponent.Initialize(m_animationTransformRoot);
 
         setupEquipment(settings.IsPlayer);
     }
@@ -357,6 +353,11 @@ public class MechController : RigidBodyEntity
         m_rideHeightPIDState = m_rideHeightPID.UpdateTick(m_deltaTime, m_rideHeightPIDState, _hitDistanceCorrected, m_settings.GroundRideHeight);
         Vector3 _force = m_deltaTime * Mathf.Max(m_rideHeightPIDState.Output - ThrustVelocityVertical, 0) * Vector3.up;
         RigidBody.AddForce(_force, ForceMode.Acceleration);
+    }
+
+    public void SetLookTargetPos(Vector3 pos)
+    {
+        m_lookTarget.position = pos;
     }
 
     public Vector3 GetLookTargetPos()

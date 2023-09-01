@@ -5,6 +5,8 @@ using UnityEngine.Animations.Rigging;
 
 public class MechSpineRotator : MonoBehaviour
 {
+    [SerializeField] private Vector3 m_eulerOffset = Vector3.zero;
+
     private MultiAimConstraint m_aimConstraint = null;
 
     private void Awake()
@@ -14,6 +16,6 @@ public class MechSpineRotator : MonoBehaviour
 
     public void SetRotation(float rotation)
     {
-        m_aimConstraint.data.offset = new Vector3(0, 0, rotation);
+        m_aimConstraint.data.offset = m_eulerOffset + new Vector3(0, 0, rotation);
     }
 }

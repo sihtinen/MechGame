@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [DefaultExecutionOrder(1)]
-public class FreeAimCrosshair : MonoBehaviour
+public class FreeAimCrosshair : SingletonBehaviour<FreeAimCrosshair>
 {
     [SerializeField] private float m_smoothDampTime = 0.1f;
     [SerializeField] private float m_smoothDampMaxSpeed = 50f;

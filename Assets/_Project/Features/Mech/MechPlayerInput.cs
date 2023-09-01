@@ -50,6 +50,37 @@ public class MechPlayerInput : SingletonBehaviour<MechPlayerInput>
             return;
 
         m_mechController.MoveInput = m_moveInputRef.action.ReadValue<Vector2>();
+
+        updateAimPosition();
+    }
+
+    private void updateAimPosition()
+    {
+        var _mainCam = MainCameraComponent.Instance;
+        var _freeAimTarget = FreeAimCrosshair.Instance;
+
+        var _ray = _mainCam.CameraComponent.ScreenPointToRay(_freeAimTarget.transform.position);
+
+        int _hitCount = Physics.RaycastNonAlloc(_ray, PhysicsUtility.CachedRaycastHits);
+
+        if (_hitCount == 0)
+        {
+            m_mechController.SetLookTargetPos(_ray.origin + 20000 * _ray.direction);
+            return;
+        }
+
+        int _selfInstanceID = transform.root.GetInstanceID();
+
+        for (int i = 0; i < _hitCount; i++)
+        {
+            var _hit = PhysicsUtility.CachedRaycastHits[i];
+
+            if (_hit.transform.root.GetInstanceID() == _selfInstanceID)
+                continue;
+
+            m_mechController.SetLookTargetPos(_hit.point);
+            return;
+        }
     }
 
     public InputActionReference GetInputActionRef(EquipmentSlotTypes slotType) => m_inputRefDictionary[slotType];
