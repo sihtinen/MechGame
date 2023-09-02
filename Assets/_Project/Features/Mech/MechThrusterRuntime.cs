@@ -16,7 +16,7 @@ public class MechThrusterRuntime : MechEquipmentRuntime
     private ThrusterEquipment m_settings = null;
     public ThrusterEquipment Settings => m_settings;
 
-    public override void InitializeGameplay(MechController mech, Equipment settings)
+    public override void InitializeGameplay(MechController mech, Equipment settings, EquipmentSlotTypes slotType)
     {
         m_mechController = mech;
         m_settings = settings as ThrusterEquipment;

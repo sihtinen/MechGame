@@ -7,7 +7,7 @@ public abstract class MechEquipmentRuntime : MonoBehaviour
 {
     protected InputActionReference m_inputActionRef = null;
 
-    public abstract void InitializeGameplay(MechController mech, Equipment settings);
+    public abstract void InitializeGameplay(MechController mech, Equipment settings, EquipmentSlotTypes slotType);
 
     public void BindToInput(InputActionReference inputRef)
     {

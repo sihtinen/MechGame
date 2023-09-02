@@ -759,7 +759,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 165064567}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.06421411, y: 0.00000001769933, z: -0.0000000011388972, w: 0.9979362}
+  m_LocalRotation: {x: 0.06421411, y: -0.000000017699323, z: 0.0000000011388968, w: 0.9979362}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1160,7 +1160,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.06421411, y: 0.00000001769933, z: -0.0000000011388972, w: 0.9979362}
+  m_LocalRotation: {x: 0.06421411, y: -0.000000017699323, z: 0.0000000011388968, w: 0.9979362}
   m_LocalPosition: {x: 0, y: 32.6, z: -72.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1797,12 +1797,6 @@ Transform:
   - {fileID: 984969016}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
---- !u!4 &750089966 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5503706512674474792, guid: 5b1fac481bec74e4ebd24de79b92f6ff,
-    type: 3}
-  m_PrefabInstance: {fileID: 1673996944}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &756512525
 GameObject:
   m_ObjectHideFlags: 0
@@ -2658,6 +2652,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1086648273}
   m_CullTransparentMesh: 1
+--- !u!4 &1111744231 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4493028954847769891, guid: 5b1fac481bec74e4ebd24de79b92f6ff,
+    type: 3}
+  m_PrefabInstance: {fileID: 1673996944}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &1119141232
 Mesh:
   m_ObjectHideFlags: 0
@@ -2936,6 +2936,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveInput: {x: 0, y: 0}
+  LookTargetWorldPos: {x: 0, y: 0, z: 0}
   TargetRotY: 0
   ThrustVelocityHorizontal: 0
   ThrustVelocityVertical: 0
@@ -2948,7 +2949,9 @@ MonoBehaviour:
   m_settings: {fileID: 11400000, guid: 6d0fc7f6d5f4468439a43d7a8a22bcdf, type: 2}
   m_mechBuilder: {fileID: 1673996948}
   m_avatarBuilder: {fileID: 1673996947}
-  m_lookTarget: {fileID: 750089966}
+  MechAnimator: {fileID: 1762199608}
+  m_lookTargets:
+  - {fileID: 1111744231}
 --- !u!114 &1211419579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4324,11 +4327,6 @@ PrefabInstance:
       propertyPath: m_mech
       value: 
       objectReference: {fileID: 1211419578}
-    - target: {fileID: 7658006700009805756, guid: 5b1fac481bec74e4ebd24de79b92f6ff,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4713,6 +4711,18 @@ MonoBehaviour:
   m_positionMaxSpeed: 10
   m_rotationSmoothTime: 0.1
   m_rotationMaxSpeed: 10
+--- !u!114 &1762199608 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7276611440045436098, guid: 5b1fac481bec74e4ebd24de79b92f6ff,
+    type: 3}
+  m_PrefabInstance: {fileID: 1673996944}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b36b347f31cd8e4799b3bc01b1364d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1798580440
 GameObject:
   m_ObjectHideFlags: 0

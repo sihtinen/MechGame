@@ -15,6 +15,7 @@ public class MechProjectileRuntime : MechEquipmentRuntime
     private int m_rootTransformID;
     private float m_previousUseTime;
     private RaycastHit m_hitInfo;
+    private EquipmentSlotTypes m_slotType;
 
     private Transform m_transform = null;
     private MechController m_mechController = null;
@@ -38,12 +39,24 @@ public class MechProjectileRuntime : MechEquipmentRuntime
         m_rootTransformID = m_transform.root.GetInstanceID();
     }
 
-    public override void InitializeGameplay(MechController mech, Equipment settings)
+    public override void InitializeGameplay(MechController mech, Equipment settings, EquipmentSlotTypes slotType)
     {
         m_mechController = mech;
         m_settings = settings as ProjectileEquipment;
+        m_slotType = slotType;
 
         RemainingUses = m_settings.UseCount;
+
+        switch (m_slotType)
+        {
+            case EquipmentSlotTypes.LeftArm:
+                m_mechController.MechAnimator.IsWieldingWeapon_Left = true;
+                break;
+
+            case EquipmentSlotTypes.RightArm:
+                m_mechController.MechAnimator.IsWieldingWeapon_Right = true;
+                break;
+        }
     }
 
     private void FixedUpdate()
@@ -168,6 +181,8 @@ public class MechProjectileRuntime : MechEquipmentRuntime
             Position = _sourcePos,
             PreviousPosition = _sourcePos,
         });
+
+        m_mechController.MechAnimator.WeaponFired(m_slotType);
     }
 
     private void calculatePredictionPos(Vector3 targetPosition, Vector3 targetVelocity)

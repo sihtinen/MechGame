@@ -4,20 +4,33 @@ using UnityEngine;
 
 public class GenericMechAnimator : MonoBehaviour
 {
+    [Header("Runtime Parameters")]
+    [NonEditable] public bool IsWieldingWeapon_Left = false;
+    [NonEditable] public bool IsWieldingWeapon_Right = false;
+    [NonEditable] public float AimAmount_Left = 0;
+    [NonEditable] public float AimAmount_Right = 0;
+
     [Header("Visual Settings")]
     [SerializeField] private float m_leanAmount = 0.08f;
     [SerializeField] private float m_movementSpeedMultiplier = 1.0f;
 
     [Header("Object References")]
     [SerializeField] private MechController m_mech = null;
+    [SerializeField] private Transform m_spineBone = null;
+    [SerializeField] private Transform m_lookTarget = null;
 
     private Animator m_animator = null;
-    private string m_animState = null;
     private List<MechIKSource> m_ikSources = new();
+
+    private string[] m_animStates = new string[3];
 
     private void Awake()
     {
         TryGetComponent(out m_animator);
+
+        m_animStates[0] = string.Empty;
+        m_animStates[1] = string.Empty;
+        m_animStates[2] = string.Empty;
     }
 
     private void Start()
@@ -32,6 +45,35 @@ public class GenericMechAnimator : MonoBehaviour
 
         updateMovement();
         updateBodyLeanRotation();
+
+        m_animator.SetLayerWeight(1, IsWieldingWeapon_Left ? 1 : 0);
+        m_animator.SetLayerWeight(2, IsWieldingWeapon_Right ? 1 : 0);
+
+        m_animator.SetFloat("LeftArm_AimAmount", AimAmount_Left);
+        m_animator.SetFloat("RightArm_AimAmount", AimAmount_Right);
+
+        Vector3 _toLookTarget = (m_lookTarget.position - m_spineBone.position).normalized;
+
+        float _aimUpDot = Vector3.Dot(-m_spineBone.forward, _toLookTarget);
+        float _aimRightDot = Vector3.Dot(-m_spineBone.right, _toLookTarget);
+
+        smoothSetAnimatorFloat("RightArm_DotUp", _aimUpDot);
+        smoothSetAnimatorFloat("LeftArm_DotUp", _aimUpDot);
+        smoothSetAnimatorFloat("RightArm_DotRight", _aimRightDot);
+        smoothSetAnimatorFloat("LeftArm_DotRight", _aimRightDot);
+
+        if (AimAmount_Left > 0f)
+            AimAmount_Left -= Time.deltaTime * 0.25f;
+
+        if (AimAmount_Right > 0f)
+            AimAmount_Right -= Time.deltaTime * 0.25f;
+    }
+
+    private void smoothSetAnimatorFloat(string paramName, float value, float speed = 6f)
+    {
+        var _currentValue = m_animator.GetFloat(paramName);
+        _currentValue = Mathf.Lerp(_currentValue, value, Time.deltaTime * speed);
+        m_animator.SetFloat(paramName, _currentValue);
     }
 
     private void updateMovement()
@@ -54,24 +96,24 @@ public class GenericMechAnimator : MonoBehaviour
 
         if (m_mech.IsBoosting)
         {
-            playState("Movement Boost");
+            playState(0, "Movement Boost");
         }
         else
         {
             if (_velMagnitude < _minVelMag)
-                playState("Idle");
+                playState(0, "Idle");
             else
-                playState("Movement Bipedal");
+                playState(0, "Movement Bipedal");
         }
     }
 
-    private void playState(string stateName)
+    private void playState(int layer, string stateName)
     {
-        if (m_animState == stateName)
+        if (m_animStates[layer] == stateName)
             return;
 
-        m_animState = stateName;
-        m_animator.CrossFadeInFixedTime(m_animState, 0.2f);
+        m_animStates[layer] = stateName;
+        m_animator.CrossFadeInFixedTime(m_animStates[layer], 0.2f);
     }
 
     private void updateBodyLeanRotation()
@@ -102,5 +144,19 @@ public class GenericMechAnimator : MonoBehaviour
             _forwardAmount * m_leanAmount * _horizontalVel.magnitude,
             0,
             -_rightAmount * m_leanAmount * _horizontalVel.magnitude), Space.Self);
+    }
+
+    public void WeaponFired(EquipmentSlotTypes slotType)
+    {
+        switch (slotType)
+        {
+            case EquipmentSlotTypes.LeftArm:
+                AimAmount_Left = 1f;
+                break;
+
+            case EquipmentSlotTypes.RightArm:
+                AimAmount_Right = 1f;
+                break;
+        }
     }
 }

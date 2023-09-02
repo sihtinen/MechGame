@@ -68,6 +68,7 @@ namespace BKUnity
 
         public static Dictionary<string, string> HumanSkeletonNames2 = new Dictionary<string, string>()
         {
+			{"Bone_Root", "Root"},
             {"Bone_Chest", "Chest"},
             {"Bone_Head", "Head" },
             {"Bone_Hip", "Hips" },
@@ -156,10 +157,7 @@ namespace BKUnity
                 bool _humanBoneFound = HumanSkeletonNames2.TryGetValue(_avatarTransform.name, out string humanBoneName);
 
                 if (_humanBoneFound == false)
-                {
-					Debug.Log($"AvatarUtils.CreateHuman(): no bone found in dictionary for {_avatarTransform.name}");
                     continue;
-                }
 
                 var _bone = new HumanBone
                 {

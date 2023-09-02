@@ -5,11 +5,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using NaughtyAttributes;
 using BKUnity;
+using static UnityEditor.PlayerSettings;
 
 public class MechController : RigidBodyEntity
 {
     [Header("Runtime Parameters")]
     [NonEditable] public Vector2 MoveInput = Vector2.zero;
+    [NonEditable] public Vector3 LookTargetWorldPos = Vector3.zero;
     [NonEditable] public float TargetRotY = 0;
     [NonEditable] public float ThrustVelocityHorizontal = 0;
     [NonEditable] public float ThrustVelocityVertical = 0;
@@ -28,7 +30,8 @@ public class MechController : RigidBodyEntity
     [Space]
     [SerializeField] private MechBuilder m_mechBuilder = null;
     [SerializeField] private HumanoidAvatarBuilder m_avatarBuilder = null;
-    [SerializeField] private Transform m_lookTarget = null;
+    public GenericMechAnimator MechAnimator = null;
+    [SerializeField] private List<Transform> m_lookTargets = new();
 
     private PID.PIDState m_rideHeightPIDState = new PID.PIDState();
     private PID.PIDState m_pitchRotationPIDState = new PID.PIDState();
@@ -80,7 +83,7 @@ public class MechController : RigidBodyEntity
             if (_kvp.Value == null)
                 continue;
 
-            var _slotTransform = new GameObject(_kvp.Key.ToString() + "-" + _kvp.Value.DisplayName).transform;
+            var _slotTransform = new GameObject($"{ _kvp.Key}_{_kvp.Value.DisplayName}").transform;
             _slotTransform.SetParent(transform, worldPositionStays: false);
 
             var _setupData = new Equipment.EquipmentRuntimeSetupData
@@ -125,8 +128,6 @@ public class MechController : RigidBodyEntity
         _rot.z = 0;
         RigidBody.rotation = Quaternion.Euler(_rot);
         RigidBody.ResetInertiaTensor();
-
-        m_lookTarget.position = RigidBody.position + new Vector3(0, 20, 0) + Quaternion.Euler(0, TargetRotY, 0) * Vector3.forward * 100;
 
         groundCheck();
         updateDrag();
@@ -357,12 +358,18 @@ public class MechController : RigidBodyEntity
 
     public void SetLookTargetPos(Vector3 pos)
     {
-        m_lookTarget.position = pos;
+        LookTargetWorldPos = Vector3.Lerp(LookTargetWorldPos, pos, Time.deltaTime * 20);
+    }
+
+    private void LateUpdate()
+    {
+        for (int i = 0; i < m_lookTargets.Count; i++)
+            m_lookTargets[i].position = LookTargetWorldPos;
     }
 
     public Vector3 GetLookTargetPos()
     {
-        return m_lookTarget.position;
+        return m_lookTargets[0].position;
     }
 
     [System.Serializable]

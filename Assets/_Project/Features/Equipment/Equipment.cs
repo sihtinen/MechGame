@@ -32,14 +32,8 @@ public abstract class Equipment : ScriptableObject
 
     protected T initializeRuntimeComponent<T>(EquipmentRuntimeSetupData setupData) where T : MechEquipmentRuntime
     {
-        var _newObj = new GameObject($"{setupData.SlotType}_{DisplayName}");
-        _newObj.transform.SetParent(setupData.SlotTransform);
-        _newObj.transform.localPosition = Vector3.zero;
-        _newObj.transform.localRotation = Quaternion.identity;
-
-        var _runtimeComponent = _newObj.AddComponent<T>();
-        _runtimeComponent.InitializeGameplay(setupData.Mech, this);
-
+        var _runtimeComponent = setupData.SlotTransform.gameObject.AddComponent<T>();
+        _runtimeComponent.InitializeGameplay(setupData.Mech, this, setupData.SlotType);
         return _runtimeComponent;
     }
 

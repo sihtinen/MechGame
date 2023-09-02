@@ -13,19 +13,26 @@ public class MechBuilder : MonoBehaviour
     {
         var _mechRoot = assembleMech();
 
+        spawnEquipment(_mechRoot);
+
+        updateObjetLayers(_mechRoot);
+
+        return _mechRoot;
+    }
+
+    private static void updateObjetLayers(Transform _mechRoot)
+    {
         _mechRoot.GetComponentsInChildren(includeInactive: true, m_cachedChildTransforms);
 
         var _characterLayer = LayerMask.NameToLayer("Character");
 
         for (int i = 0; i < m_cachedChildTransforms.Count; i++)
         {
-            var _transform  = m_cachedChildTransforms[i];
+            var _transform = m_cachedChildTransforms[i];
             _transform.gameObject.layer = _characterLayer;
         }
 
         m_cachedChildTransforms.Clear();
-
-        return _mechRoot;
     }
 
     private Transform assembleMech()
@@ -111,6 +118,50 @@ public class MechBuilder : MonoBehaviour
         _headSocket_Head.localEulerAngles = _headAsset.VisualPrefabEulerOffset;
 
         return _root;
+    }
+
+    private void spawnEquipment(Transform root)
+    {
+        spawnEquipmentSlot(root, EquipmentSlotTypes.RightArm, mirrorXAxis: false);
+        spawnEquipmentSlot(root, EquipmentSlotTypes.LeftArm, mirrorXAxis: true);
+    }
+
+    private void spawnEquipmentSlot(Transform root, EquipmentSlotTypes slotType, bool mirrorXAxis)
+    {
+        var _equipmentAsset = LoadoutAsset.Dictionary[slotType];
+
+        if (_equipmentAsset == null || _equipmentAsset.VisualsPrefab == null)
+            return;
+
+        Transform _pivotBone = null;
+
+        switch (slotType)
+        {
+            case EquipmentSlotTypes.LeftArm:
+                _pivotBone = root.FindChildRecursive("Bone_Hand.L");
+                break;
+
+            case EquipmentSlotTypes.RightArm:
+                _pivotBone = root.FindChildRecursive("Bone_Hand.R");
+                break;
+        }
+
+        if (_pivotBone == null)
+            return;
+
+        var _obj = instantiate(_equipmentAsset.VisualsPrefab);
+        _obj.transform.SetParent(root, worldPositionStays: false);
+
+        var _equipmentRootBone = _obj.transform.FindChildRecursive("Bone_Root");
+        _equipmentRootBone.name = _pivotBone.name;
+
+        Vector3 _posOffset = _equipmentAsset.VisualPrefabPositionOffset;
+        if (mirrorXAxis)
+            _posOffset = Vector3.Scale(_posOffset, new Vector3(-1, 1, 1));
+
+        var _constraintOffset = _equipmentRootBone.gameObject.AddComponent<ParentConstraintOffset>();
+        _constraintOffset.PosOffset = _posOffset;
+        _constraintOffset.EulerOffset = _equipmentAsset.VisualPrefabEulerOffset;
     }
 
     private GameObject instantiate(GameObject prefab)

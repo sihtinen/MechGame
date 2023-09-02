@@ -65,7 +65,7 @@ public class MechPlayerInput : SingletonBehaviour<MechPlayerInput>
 
         if (_hitCount == 0)
         {
-            m_mechController.SetLookTargetPos(_ray.origin + 20000 * _ray.direction);
+            m_mechController.SetLookTargetPos(_ray.origin + 10000 * _ray.direction);
             return;
         }
 

@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
-using UnityEngine.UIElements;
 
 namespace BKUnity
 {
@@ -58,13 +58,30 @@ namespace BKUnity
             AlignToAvatarTarget();
             BuildAvatar();
 
-            if (Application.isPlaying && TryGetComponent(out RigBuilder _rigBuilder))
+            m_animator.enabled = true;
+
+            if (Application.isPlaying)
+                StartCoroutine(coroutine_activateRigBuilder());
+        }
+
+        private IEnumerator coroutine_activateRigBuilder()
+        {
+            yield return null;
+
+            if (TryGetComponent(out RigBuilder _rigBuilder))
             {
                 _rigBuilder.enabled = true;
                 _rigBuilder.Build();
             }
+        }
 
-            m_animator.enabled = true;
+        private void Update()
+        {
+            if (TryGetComponent(out RigBuilder _rigBuilder))
+            {
+                if (_rigBuilder.graph.IsValid())
+                    _rigBuilder.graph.Evaluate(Time.deltaTime);
+            }
         }
 
         private Dictionary<string, Transform> m_childCache = new();

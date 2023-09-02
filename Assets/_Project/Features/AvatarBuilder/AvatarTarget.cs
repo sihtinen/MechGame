@@ -42,7 +42,19 @@ public class AvatarTarget : MonoBehaviour
             _constraint = source.gameObject.AddComponent<ParentConstraint>();
 
         _constraint.AddSource(new ConstraintSource { sourceTransform = target, weight = 1 });
-        _constraint.SetTranslationOffset(0, Vector3.zero);
+
+        Vector3 _posOffset = Vector3.zero;
+        Vector3 _eulerOffset = Vector3.zero;
+
+        if (source.TryGetComponent(out ParentConstraintOffset _offsetComponent))
+        {
+            _posOffset = _offsetComponent.PosOffset;
+            _eulerOffset = _offsetComponent.EulerOffset;
+        }
+
+        _constraint.SetTranslationOffset(0, _posOffset);
+        _constraint.SetRotationOffset(0, _eulerOffset);
+
         _constraint.constraintActive = true;
     }
 }
