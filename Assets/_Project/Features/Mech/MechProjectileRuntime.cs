@@ -18,6 +18,7 @@ public class MechProjectileRuntime : MechEquipmentRuntime
     private EquipmentSlotTypes m_slotType;
 
     private Transform m_transform = null;
+    private Transform m_weaponBarrel = null;
     private MechController m_mechController = null;
     private ProjectileEquipment m_settings = null;
     public ProjectileEquipment Settings => m_settings;
@@ -57,6 +58,11 @@ public class MechProjectileRuntime : MechEquipmentRuntime
                 m_mechController.MechAnimator.IsWieldingWeapon_Right = true;
                 break;
         }
+
+        if (m_mechController.MechAnimator.EquipmentVisuals.TryGetValue(slotType, out Transform _weaponRoot))
+            m_weaponBarrel = _weaponRoot.FindChildRecursive("Bone_Barrel");
+        else
+            Debug.Log(slotType + " visual missing!");
     }
 
     private void FixedUpdate()
@@ -164,8 +170,8 @@ public class MechProjectileRuntime : MechEquipmentRuntime
         m_previousUseTime = _timeNow;
         RemainingUses--;
 
-        Vector3 _sourcePos = m_transform.position;
-        Vector3 _direction = ActiveTarget != null ? (PredictionPos - _sourcePos).normalized : m_transform.forward;
+        Vector3 _sourcePos = m_weaponBarrel != null ? m_weaponBarrel.position : m_transform.position;
+        Vector3 _direction = getShootDirection(_sourcePos);
 
         ProjectileManager.Instance.RegisterNewProjectile(new ProjectileData
         {
@@ -183,6 +189,17 @@ public class MechProjectileRuntime : MechEquipmentRuntime
         });
 
         m_mechController.MechAnimator.WeaponFired(m_slotType);
+    }
+
+    private Vector3 getShootDirection(Vector3 _sourcePos)
+    {
+        if (ActiveTarget != null)
+            return (PredictionPos - _sourcePos).normalized;
+        else
+        {
+            var _freeAimTarget = m_mechController.GetLookTargetPos();
+            return (_freeAimTarget - _sourcePos).normalized;
+        }
     }
 
     private void calculatePredictionPos(Vector3 targetPosition, Vector3 targetVelocity)

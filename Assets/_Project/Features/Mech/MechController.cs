@@ -119,6 +119,15 @@ public class MechController : RigidBodyEntity
         }
     }
 
+    private void LateUpdate()
+    {
+        for (int i = 0; i < m_lookTargets.Count; i++)
+            m_lookTargets[i].position = LookTargetWorldPos;
+
+        if (m_spineRotator != null)
+            m_spineRotator.SetRotation(-m_bodyRotateAngle);
+    }
+
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
@@ -296,8 +305,6 @@ public class MechController : RigidBodyEntity
             _bodySettings.RotationSmoothTime_Yaw, 
             _bodySettings.RotationMaxSpeed_Yaw + RigidBody.angularVelocity.y, 
             m_deltaTime);
-
-        m_spineRotator.SetRotation(-m_bodyRotateAngle);
     }
 
     private float m_bodyRotateAngle = 0;
@@ -359,12 +366,6 @@ public class MechController : RigidBodyEntity
     public void SetLookTargetPos(Vector3 pos)
     {
         LookTargetWorldPos = Vector3.Lerp(LookTargetWorldPos, pos, Time.deltaTime * 20);
-    }
-
-    private void LateUpdate()
-    {
-        for (int i = 0; i < m_lookTargets.Count; i++)
-            m_lookTargets[i].position = LookTargetWorldPos;
     }
 
     public Vector3 GetLookTargetPos()

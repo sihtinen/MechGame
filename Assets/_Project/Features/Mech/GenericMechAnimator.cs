@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,8 @@ public class GenericMechAnimator : MonoBehaviour
     [NonEditable] public bool IsWieldingWeapon_Right = false;
     [NonEditable] public float AimAmount_Left = 0;
     [NonEditable] public float AimAmount_Right = 0;
+
+    [NonSerialized] public Dictionary<EquipmentSlotTypes, Transform> EquipmentVisuals = new();
 
     [Header("Visual Settings")]
     [SerializeField] private float m_leanAmount = 0.08f;
@@ -69,7 +72,7 @@ public class GenericMechAnimator : MonoBehaviour
             AimAmount_Right -= Time.deltaTime * 0.25f;
     }
 
-    private void smoothSetAnimatorFloat(string paramName, float value, float speed = 6f)
+    private void smoothSetAnimatorFloat(string paramName, float value, float speed = 8f)
     {
         var _currentValue = m_animator.GetFloat(paramName);
         _currentValue = Mathf.Lerp(_currentValue, value, Time.deltaTime * speed);

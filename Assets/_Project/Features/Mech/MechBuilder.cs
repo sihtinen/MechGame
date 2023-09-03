@@ -162,6 +162,9 @@ public class MechBuilder : MonoBehaviour
         var _constraintOffset = _equipmentRootBone.gameObject.AddComponent<ParentConstraintOffset>();
         _constraintOffset.PosOffset = _posOffset;
         _constraintOffset.EulerOffset = _equipmentAsset.VisualPrefabEulerOffset;
+
+        if (TryGetComponent(out GenericMechAnimator _mechAnimator))
+            _mechAnimator.EquipmentVisuals.Add(slotType, _obj.transform);
     }
 
     private GameObject instantiate(GameObject prefab)
