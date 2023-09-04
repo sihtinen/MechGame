@@ -9,20 +9,48 @@ public class ThrusterEquipment : PrimaryEquipment
 {
     [Min(0f)] public float RechargeRate = 1.0f;
 
-    [Header("Normal Thrust")]
-    public bool EnableThrust_Normal = true;
-    [Min(0f)] public float HorizontalForce_Normal;
-    [Min(0f)] public float VerticalForce_Normal;
+    [Header("Normal Boost")]
+    public BoostParameters BoostParams_Horizontal = new();
+    public BoostParameters BoostParams_Vertical = new();
     [Min(0f)] public float EnergyDrainRate_Normal = 1f;
 
-    [Header("Boost Thrust")]
-    public bool EnableThrust_Boost = true;
-    [Min(0f)] public float HorizontalForce_Boost;
-    [Min(0f)] public float VerticalForce_Boost;
-    [Min(0f)] public float EnergyDrainRate_Boost = 1f;
+    [Header("Dash Booost")]
+    public BoostParameters DashBoostParams_Horizontal = new();
+    public BoostParameters DashBoostParams_Vertical = new();
+    [Min(0f)] public float DashEnergyDrain = 20;
+    [Min(0f)] public float DashPrepareDuration = 0.4f;
+    [Min(0f)] public float DashBoostDuration = 1.4f;
+    [Range(0f, 1f)] public float DashVerticalVelocityCancelAmount = 0.5f; 
+    public AnimationCurve DashBoostForceCurve = new();
+
+    [System.Serializable]
+    public struct BoostParameters
+    {
+        public float HorizontalForce;
+        public float VerticalForce;
+
+        public static BoostParameters Lerp(BoostParameters a, BoostParameters b, float t)
+        {
+            return new BoostParameters
+            {
+                HorizontalForce = Mathf.Lerp(a.HorizontalForce, b.HorizontalForce, t),
+                VerticalForce = Mathf.Lerp(a.VerticalForce, b.VerticalForce, t),
+            };
+        }
+    }
 
     [Header("HUD Settings")]
     public HUDThrusterEquipmentElement HUDPrefab = null;
+
+    public BoostParameters GetBoostParams(float inputAmount)
+    {
+        return BoostParameters.Lerp(BoostParams_Vertical, BoostParams_Horizontal, inputAmount);
+    }
+
+    public BoostParameters GetDashBoostParams(float inputAmount)
+    {
+        return BoostParameters.Lerp(DashBoostParams_Vertical, DashBoostParams_Horizontal, inputAmount);
+    }
 
     public override void InitializeGameplay(EquipmentRuntimeSetupData setupData)
     {

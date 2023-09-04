@@ -2085,7 +2085,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5dc98593e59ba84f888e84b117ce7eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SlotType: 2
+  SlotType: 3
 --- !u!1 &808775448
 GameObject:
   m_ObjectHideFlags: 0
@@ -2410,7 +2410,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5dc98593e59ba84f888e84b117ce7eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SlotType: 3
+  SlotType: 1
 --- !u!1 &984969015
 GameObject:
   m_ObjectHideFlags: 0
@@ -2938,8 +2938,9 @@ MonoBehaviour:
   MoveInput: {x: 0, y: 0}
   LookTargetWorldPos: {x: 0, y: 0, z: 0}
   TargetRotY: 0
-  ThrustVelocityHorizontal: 0
-  ThrustVelocityVertical: 0
+  BoostForceHorizontal: 0
+  BoostForceVertical: 0
+  DashBoostForce: {x: 0, y: 0, z: 0}
   IsGrounded: 0
   IsBoosting: 1
   m_rideHeightPID: {fileID: 11400000, guid: f265dfefb8e8b654fa57facc67b02c5a, type: 2}
@@ -4267,6 +4268,11 @@ PrefabInstance:
       propertyPath: m_rigidbody
       value: 
       objectReference: {fileID: 1211419576}
+    - target: {fileID: 2718142003178701275, guid: 5b1fac481bec74e4ebd24de79b92f6ff,
+        type: 3}
+      propertyPath: m_Data.m_SourceObjects.m_Item0.weight
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4674378009695280637, guid: 5b1fac481bec74e4ebd24de79b92f6ff,
         type: 3}
       propertyPath: m_Name
@@ -4327,6 +4333,11 @@ PrefabInstance:
       propertyPath: m_mech
       value: 
       objectReference: {fileID: 1211419578}
+    - target: {fileID: 8584614458568924574, guid: 5b1fac481bec74e4ebd24de79b92f6ff,
+        type: 3}
+      propertyPath: m_Data.m_SourceObjects.m_Item0.weight
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4891,7 +4902,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5dc98593e59ba84f888e84b117ce7eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SlotType: 1
+  SlotType: 0
 --- !u!1 &1866416647
 GameObject:
   m_ObjectHideFlags: 0
@@ -5470,7 +5481,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5dc98593e59ba84f888e84b117ce7eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SlotType: 0
+  SlotType: 2
 --- !u!224 &180869552913332705
 RectTransform:
   m_ObjectHideFlags: 0

@@ -23,8 +23,8 @@ MonoBehaviour:
     type: 3}
   VisualPrefabPositionOffset: {x: 0.95, y: -1.85, z: -1.15}
   VisualPrefabEulerOffset: {x: 90, y: 180, z: 0}
-  UseCount: 120
-  UseRatePerSecond: 1.8
+  UseCount: 12000
+  UseRatePerSecond: 180
   TargetLayers: 15
   Damage: 80
   CollisionRadius: 1

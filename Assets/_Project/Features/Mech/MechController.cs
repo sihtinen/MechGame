@@ -2,10 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using NaughtyAttributes;
 using BKUnity;
-using static UnityEditor.PlayerSettings;
 
 public class MechController : RigidBodyEntity
 {
@@ -13,8 +11,11 @@ public class MechController : RigidBodyEntity
     [NonEditable] public Vector2 MoveInput = Vector2.zero;
     [NonEditable] public Vector3 LookTargetWorldPos = Vector3.zero;
     [NonEditable] public float TargetRotY = 0;
-    [NonEditable] public float ThrustVelocityHorizontal = 0;
-    [NonEditable] public float ThrustVelocityVertical = 0;
+
+    [NonEditable] public float BoostForceHorizontal = 0;
+    [NonEditable] public float BoostForceVertical = 0;
+    [NonEditable] public Vector3 DashBoostForce = Vector3.zero;
+
     [NonEditable] public bool IsGrounded = false;
     [NonEditable] public bool IsBoosting = false;
     [NonEditable] public RaycastHit GroundHit;
@@ -44,6 +45,7 @@ public class MechController : RigidBodyEntity
 
     private MechLoadout m_loadout = null;
     private List<Collider> m_mechColliders = new List<Collider>();
+    private HashSet<int> m_preventMovementSources = new HashSet<int>();
 
     protected override void Awake()
     {
@@ -165,21 +167,16 @@ public class MechController : RigidBodyEntity
 
     private void updateMovementForce()
     {
-        if (MoveInput.sqrMagnitude <= Mathf.Epsilon)
+        if (m_preventMovementSources.Count > 0 || MoveInput.sqrMagnitude <= Mathf.Epsilon)
             return;
 
-        Vector3 _movePlaneUp = IsGrounded ? GroundHit.normal : Vector3.up;
-        Quaternion _targetLookQuaternion = Quaternion.Euler(0, TargetRotY, 0);
-        Vector3 _targetForward = _targetLookQuaternion * Vector3.forward;
-        Vector3 _targetRight = _targetLookQuaternion * Vector3.right;
-        Vector3 _inputDirWorldSpace = MoveInput.y * _targetForward + MoveInput.x * _targetRight;
-        Vector3 _inputDirProjected = Vector3.ProjectOnPlane(_inputDirWorldSpace, _movePlaneUp).normalized;
+        var _inputDir = GetInputDirection();
 
-        float _directionDot = Vector3.Dot(_inputDirProjected, m_forwardDirection);
+        float _directionDot = Vector3.Dot(_inputDir, m_forwardDirection);
 
         Vector3 _moveVectorRaw = m_settings.MaxMovementSpeed
             * m_settings.MovementForwardDirectionMultCurve.Evaluate(_directionDot)
-            * _inputDirProjected.normalized;
+            * _inputDir.normalized;
 
         RigidBody.AddForce(m_deltaTime * _moveVectorRaw, ForceMode.Acceleration);
 
@@ -197,19 +194,29 @@ public class MechController : RigidBodyEntity
         if (Vector3.Dot(m_upDirection, Vector3.up) < 0.5)
             return;
 
-        if (MoveInput.sqrMagnitude > Mathf.Epsilon)
-        {
-            Vector3 _movePlaneUp = IsGrounded ? GroundHit.normal : Vector3.up;
-            Quaternion _targetLookQuaternion = Quaternion.Euler(0, TargetRotY, 0);
-            Vector3 _targetForward = _targetLookQuaternion * Vector3.forward;
-            Vector3 _targetRight = _targetLookQuaternion * Vector3.right;
-            Vector3 _inputDirWorldSpace = MoveInput.y * _targetForward + MoveInput.x * _targetRight;
-            Vector3 _inputDirProjected = Vector3.ProjectOnPlane(_inputDirWorldSpace, _movePlaneUp).normalized;
+        Vector3 _force = m_deltaTime * DashBoostForce;
 
-            RigidBody.AddForce(m_deltaTime * ThrustVelocityHorizontal * _inputDirProjected, ForceMode.Acceleration);
+        if (m_preventMovementSources.Count == 0 && MoveInput.sqrMagnitude > Mathf.Epsilon)
+        {
+            Vector3 _inputDirProjected = GetInputDirection();
+
+            _force += m_deltaTime * BoostForceHorizontal * _inputDirProjected;
         }
 
-        RigidBody.AddForce(m_deltaTime * ThrustVelocityVertical * m_upDirection, ForceMode.Acceleration);
+        _force += m_deltaTime * BoostForceVertical * m_upDirection;
+
+        RigidBody.AddForce(_force, ForceMode.Acceleration);
+    }
+
+    public Vector3 GetInputDirection()
+    {
+        Vector3 _movePlaneUp = IsGrounded ? GroundHit.normal : Vector3.up;
+        Quaternion _targetLookQuaternion = Quaternion.Euler(0, TargetRotY, 0);
+        Vector3 _targetForward = _targetLookQuaternion * Vector3.forward;
+        Vector3 _targetRight = _targetLookQuaternion * Vector3.right;
+        Vector3 _inputDirWorldSpace = MoveInput.y * _targetForward + MoveInput.x * _targetRight;
+        Vector3 _inputDirProjected = Vector3.ProjectOnPlane(_inputDirWorldSpace, _movePlaneUp).normalized;
+        return _inputDirProjected;
     }
 
     private void updateMovementTiltTorque(Vector3 moveVector)
@@ -359,7 +366,7 @@ public class MechController : RigidBodyEntity
 
         float _hitDistanceCorrected = GroundHit.distance + m_settings.GroundCheckRadius;
         m_rideHeightPIDState = m_rideHeightPID.UpdateTick(m_deltaTime, m_rideHeightPIDState, _hitDistanceCorrected, m_settings.GroundRideHeight);
-        Vector3 _force = m_deltaTime * Mathf.Max(m_rideHeightPIDState.Output - ThrustVelocityVertical, 0) * Vector3.up;
+        Vector3 _force = m_deltaTime * Mathf.Max(m_rideHeightPIDState.Output - BoostForceVertical, 0) * Vector3.up;
         RigidBody.AddForce(_force, ForceMode.Acceleration);
     }
 
@@ -371,6 +378,18 @@ public class MechController : RigidBodyEntity
     public Vector3 GetLookTargetPos()
     {
         return m_lookTargets[0].position;
+    }
+
+    public void RegisterPreventMovementSource(int id)
+    {
+        if (m_preventMovementSources.Contains(id) == false)
+            m_preventMovementSources.Add(id);
+    }
+
+    public void UnregisterPreventMovementSource(int id)
+    {
+        if (m_preventMovementSources.Contains(id))
+            m_preventMovementSources.Remove(id);
     }
 
     [System.Serializable]

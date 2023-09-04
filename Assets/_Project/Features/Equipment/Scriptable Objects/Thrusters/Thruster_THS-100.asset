@@ -20,14 +20,50 @@ MonoBehaviour:
   Category: {fileID: 11400000, guid: 365d51970c3993d44a2ac967ea3cf20e, type: 2}
   Weight: 100
   EnergyDrain: 100
+  VisualsPrefab: {fileID: 0}
+  VisualPrefabPositionOffset: {x: 0, y: 0, z: 0}
+  VisualPrefabEulerOffset: {x: 0, y: 0, z: 0}
   RechargeRate: 7
-  EnableThrust_Normal: 1
-  HorizontalForce_Normal: 8000
-  VerticalForce_Normal: 1000
+  BoostParams_Horizontal:
+    HorizontalForce: 8000
+    VerticalForce: 4000
+  BoostParams_Vertical:
+    HorizontalForce: 1000
+    VerticalForce: 6500
   EnergyDrainRate_Normal: 10
-  EnableThrust_Boost: 1
-  HorizontalForce_Boost: 1500
-  VerticalForce_Boost: 7400
-  EnergyDrainRate_Boost: 28
+  DashBoostParams_Horizontal:
+    HorizontalForce: 55000
+    VerticalForce: 15000
+  DashBoostParams_Vertical:
+    HorizontalForce: 3000
+    VerticalForce: 40000
+  DashEnergyDrain: 20
+  DashPrepareDuration: 0.45
+  DashBoostDuration: 0.5
+  DashVerticalVelocityCancelAmount: 0.7
+  DashBoostForceCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -2.400121
+      outSlope: -2.400121
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.042659972
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -1
+      outSlope: -1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   HUDPrefab: {fileID: 178931032519082355, guid: 12e7eb9a56eeb114e81517880f7e6687,
     type: 3}

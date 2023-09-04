@@ -61,8 +61,6 @@ public class MechProjectileRuntime : MechEquipmentRuntime
 
         if (m_mechController.MechAnimator.EquipmentVisuals.TryGetValue(slotType, out Transform _weaponRoot))
             m_weaponBarrel = _weaponRoot.FindChildRecursive("Bone_Barrel");
-        else
-            Debug.Log(slotType + " visual missing!");
     }
 
     private void FixedUpdate()
@@ -153,8 +151,13 @@ public class MechProjectileRuntime : MechEquipmentRuntime
             calculatePredictionPos(ActiveTarget.TransformComponent.position, _rb.velocity);
     }
 
+    private bool m_firedLastFrame = false;
+
     private void Update()
     {
+        bool _firedLastFrame = m_firedLastFrame;
+        m_firedLastFrame = false;
+
         if (RemainingUses <= 0 || m_inputActionRef == null)
             return;
 
@@ -163,30 +166,41 @@ public class MechProjectileRuntime : MechEquipmentRuntime
 
         float _timeNow = Time.time;
         float _timeBetweenUses = _timeNow - m_previousUseTime;
+        float _betweenShotsWaitTime = 1.0f / m_settings.UseRatePerSecond;
 
-        if (_timeBetweenUses < (1.0f / m_settings.UseRatePerSecond))
+        if (_timeBetweenUses < _betweenShotsWaitTime)
             return;
 
+        int _newProjectilesCount = _firedLastFrame ? (int)Mathf.Floor(1 + Time.deltaTime / _betweenShotsWaitTime) : 1;
+
+        m_firedLastFrame = true;
         m_previousUseTime = _timeNow;
-        RemainingUses--;
 
-        Vector3 _sourcePos = m_weaponBarrel != null ? m_weaponBarrel.position : m_transform.position;
-        Vector3 _direction = getShootDirection(_sourcePos);
-
-        ProjectileManager.Instance.RegisterNewProjectile(new ProjectileData
+        for (int i = 0; i < _newProjectilesCount; i++)
         {
-            IsAlive = true,
-            OwnerID = m_rootTransformID,
-            Damage = m_settings.Damage,
-            CollisionRadius = m_settings.CollisionRadius,
-            AliveTime = 0,
-            Lifetime = m_settings.Lifetime,
-            Speed = m_settings.Velocity,
-            DistanceTraveledThisFrame = 0,
-            Direction = _direction,
-            Position = _sourcePos,
-            PreviousPosition = _sourcePos,
-        });
+            RemainingUses--;
+
+            Vector3 _sourcePos = m_weaponBarrel != null ? m_weaponBarrel.position : m_transform.position;
+            Vector3 _direction = getShootDirection(_sourcePos);
+
+            if (i > 0)
+                _sourcePos += Time.deltaTime * _direction * m_settings.Velocity;
+
+            ProjectileManager.Instance.RegisterNewProjectile(new ProjectileData
+            {
+                IsAlive = true,
+                OwnerID = m_rootTransformID,
+                Damage = m_settings.Damage,
+                CollisionRadius = m_settings.CollisionRadius,
+                AliveTime = 0,
+                Lifetime = m_settings.Lifetime,
+                Speed = m_settings.Velocity,
+                DistanceTraveledThisFrame = 0,
+                Direction = _direction,
+                Position = _sourcePos,
+                PreviousPosition = _sourcePos,
+            });
+        }
 
         m_mechController.MechAnimator.WeaponFired(m_slotType);
     }
@@ -197,6 +211,8 @@ public class MechProjectileRuntime : MechEquipmentRuntime
             return (PredictionPos - _sourcePos).normalized;
         else
         {
+            return -m_weaponBarrel.forward;
+
             var _freeAimTarget = m_mechController.GetLookTargetPos();
             return (_freeAimTarget - _sourcePos).normalized;
         }
