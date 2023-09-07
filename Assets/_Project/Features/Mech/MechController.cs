@@ -18,6 +18,7 @@ public class MechController : RigidBodyEntity
 
     [NonEditable] public bool IsGrounded = false;
     [NonEditable] public bool IsBoosting = false;
+    [NonEditable] public bool IsDashBoosting = false;
     [NonEditable] public RaycastHit GroundHit;
 
     [NonSerialized] public MechPlayerInput PlayerInputComponent = null;

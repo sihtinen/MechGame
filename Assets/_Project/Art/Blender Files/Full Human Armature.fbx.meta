@@ -30,6 +30,10 @@ ModelImporter:
       is good. No significant differences with original animation were found.\n\nRetargeting
       quality report for clip 'Armature|Aim_Up_RightArm':\n\tRetargeting quality
       is good. No significant differences with original animation were found.\n\nRetargeting
+      quality report for clip 'Armature|Airborne_Down':\n\tRetargeting quality is
+      good. No significant differences with original animation were found.\n\nRetargeting
+      quality report for clip 'Armature|Airborne_Up':\n\tRetargeting quality is good.
+      No significant differences with original animation were found.\n\nRetargeting
       quality report for clip 'Armature|Boost_Backwards':\n\tRetargeting quality
       is good. No significant differences with original animation were found.\n\nRetargeting
       quality report for clip 'Armature|Boost_Forward':\n\tRetargeting quality is
@@ -626,6 +630,64 @@ ModelImporter:
       name: Armature|Idle_Weapon_RightArm
       takeName: Armature|Idle_Weapon_RightArm
       internalID: -1527883348763268346
+      firstFrame: 0
+      lastFrame: 59
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Armature|Airborne_Down
+      takeName: Armature|Airborne_Down
+      internalID: -1765462398926700716
+      firstFrame: 0
+      lastFrame: 59
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Armature|Airborne_Up
+      takeName: Armature|Airborne_Up
+      internalID: -2000671686861940574
       firstFrame: 0
       lastFrame: 59
       wrapMode: 0

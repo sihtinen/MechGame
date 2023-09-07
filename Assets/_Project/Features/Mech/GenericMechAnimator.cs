@@ -82,6 +82,7 @@ public class GenericMechAnimator : MonoBehaviour
     private void updateMovement()
     {
         var _horizontalVel = m_mech.RigidBody.velocity;
+        float _verticalVel = _horizontalVel.y;
         _horizontalVel.y = 0;
 
         float _velMagnitude = _horizontalVel.magnitude;
@@ -103,20 +104,30 @@ public class GenericMechAnimator : MonoBehaviour
         }
         else
         {
-            if (_velMagnitude < _minVelMag)
-                playState(0, "Idle");
+            if (m_mech.IsGrounded)
+            {
+                if (_velMagnitude < _minVelMag)
+                    playState(0, "Idle");
+                else
+                    playState(0, "Movement Bipedal");
+            }
             else
-                playState(0, "Movement Bipedal");
+            {
+                if (_verticalVel >= 0)
+                    playState(0, "Airborne Up");
+                else
+                    playState(0, "Airborne Down", 0.8f);
+            }
         }
     }
 
-    private void playState(int layer, string stateName)
+    private void playState(int layer, string stateName, float crossfadeTime = 0.2f)
     {
         if (m_animStates[layer] == stateName)
             return;
 
         m_animStates[layer] = stateName;
-        m_animator.CrossFadeInFixedTime(m_animStates[layer], 0.2f);
+        m_animator.CrossFadeInFixedTime(m_animStates[layer], crossfadeTime);
     }
 
     private void updateBodyLeanRotation()

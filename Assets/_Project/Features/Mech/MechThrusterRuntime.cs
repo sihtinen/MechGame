@@ -45,7 +45,8 @@ public class MechThrusterRuntime : MechEquipmentRuntime
 
         updateNormalBoost();
 
-        m_mechController.IsBoosting = IsNormalBoostActive || m_dashBoostCoroutine != null;
+        m_mechController.IsDashBoosting = m_dashBoostCoroutine != null;
+        m_mechController.IsBoosting = IsNormalBoostActive || m_mechController.IsDashBoosting;
     }
 
     private void updateNormalBoost()

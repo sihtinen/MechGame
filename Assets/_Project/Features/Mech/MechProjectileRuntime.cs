@@ -18,9 +18,10 @@ public class MechProjectileRuntime : MechEquipmentRuntime
     private EquipmentSlotTypes m_slotType;
 
     private Transform m_transform = null;
-    private Transform m_weaponBarrel = null;
     private MechController m_mechController = null;
     private ProjectileEquipment m_settings = null;
+    private WeaponVisualsManager m_weaponVisualsManager = null;
+
     public ProjectileEquipment Settings => m_settings;
     private Stack<TargetingOption> m_targetingOptionPool = new Stack<TargetingOption>();
     private Stack<TargetingOption> m_usedTargetingOptions = new Stack<TargetingOption>();
@@ -60,7 +61,7 @@ public class MechProjectileRuntime : MechEquipmentRuntime
         }
 
         if (m_mechController.MechAnimator.EquipmentVisuals.TryGetValue(slotType, out Transform _weaponRoot))
-            m_weaponBarrel = _weaponRoot.FindChildRecursive("Bone_Barrel");
+            _weaponRoot.TryGetComponent(out m_weaponVisualsManager);
     }
 
     private void FixedUpdate()
@@ -180,7 +181,7 @@ public class MechProjectileRuntime : MechEquipmentRuntime
         {
             RemainingUses--;
 
-            Vector3 _sourcePos = m_weaponBarrel != null ? m_weaponBarrel.position : m_transform.position;
+            Vector3 _sourcePos = m_weaponVisualsManager != null ? m_weaponVisualsManager.GetWeaponBarrelPosition() : m_transform.position;
             Vector3 _direction = getShootDirection(_sourcePos);
 
             if (i > 0)
@@ -203,6 +204,8 @@ public class MechProjectileRuntime : MechEquipmentRuntime
         }
 
         m_mechController.MechAnimator.WeaponFired(m_slotType);
+
+        m_weaponVisualsManager?.TriggerFireEffects();
     }
 
     private Vector3 getShootDirection(Vector3 _sourcePos)
@@ -210,12 +213,7 @@ public class MechProjectileRuntime : MechEquipmentRuntime
         if (ActiveTarget != null)
             return (PredictionPos - _sourcePos).normalized;
         else
-        {
-            return -m_weaponBarrel.forward;
-
-            var _freeAimTarget = m_mechController.GetLookTargetPos();
-            return (_freeAimTarget - _sourcePos).normalized;
-        }
+            return m_weaponVisualsManager.GetWeaponBarrelForward();
     }
 
     private void calculatePredictionPos(Vector3 targetPosition, Vector3 targetVelocity)

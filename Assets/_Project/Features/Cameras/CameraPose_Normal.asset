@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c0dc8f7dc8494042bf6bc180e4b4d8d, type: 3}
+  m_Name: CameraPose_Normal
+  m_EditorClassIdentifier: 
+  FieldOfView: 48
+  FieldOfViewUpdateSpeed: 5
+  FollowDistance: 80
+  FollowDistanceUpdateSpeed: 20
+  FollowHeightOffset: 26
+  FollowHeightOffsetUpdateSpeed: 5
+  VelocityOffsetFactor: {x: 1, y: 1, z: 0.8}
+  VelocityOffsetMin: {x: -80, y: -10, z: -30}
+  VelocityOffsetMax: {x: 80, y: 20, z: 5}
+  VelocityOffsetSmoothTime: 0.5
+  VelocityOffsetMaxSpeed: 100
