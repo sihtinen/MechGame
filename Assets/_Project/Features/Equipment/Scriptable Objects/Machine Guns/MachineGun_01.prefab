@@ -130,6 +130,101 @@ MonoBehaviour:
     m_DissipationDistance: 200
     m_PropagationSpeed: 34300
   m_DefaultVelocity: {x: 0, y: -1, z: 0}
+--- !u!1001 &2772869115290669114
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6516781300547556210}
+    m_Modifications:
+    - target: {fileID: 6880138206813016633, guid: 04c202fad6dafca4fbc6fb66f1666638,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 6880138206813016633, guid: 04c202fad6dafca4fbc6fb66f1666638,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 6880138206813016633, guid: 04c202fad6dafca4fbc6fb66f1666638,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 6880138206813016633, guid: 04c202fad6dafca4fbc6fb66f1666638,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6880138206813016633, guid: 04c202fad6dafca4fbc6fb66f1666638,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6880138206813016633, guid: 04c202fad6dafca4fbc6fb66f1666638,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6880138206813016633, guid: 04c202fad6dafca4fbc6fb66f1666638,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6880138206813016633, guid: 04c202fad6dafca4fbc6fb66f1666638,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6880138206813016633, guid: 04c202fad6dafca4fbc6fb66f1666638,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6880138206813016633, guid: 04c202fad6dafca4fbc6fb66f1666638,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6880138206813016633, guid: 04c202fad6dafca4fbc6fb66f1666638,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6880138206813016633, guid: 04c202fad6dafca4fbc6fb66f1666638,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 6880138206813016633, guid: 04c202fad6dafca4fbc6fb66f1666638,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6982566534715947410, guid: 04c202fad6dafca4fbc6fb66f1666638,
+        type: 3}
+      propertyPath: m_Name
+      value: Machine Gun Muzzle Flash Effect
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 04c202fad6dafca4fbc6fb66f1666638, type: 3}
+--- !u!2083052967 &6958156273078437979 stripped
+VisualEffect:
+  m_CorrespondingSourceObject: {fileID: 5110287635095640161, guid: 04c202fad6dafca4fbc6fb66f1666638,
+    type: 3}
+  m_PrefabInstance: {fileID: 2772869115290669114}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8719000747232166403 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6880138206813016633, guid: 04c202fad6dafca4fbc6fb66f1666638,
+    type: 3}
+  m_PrefabInstance: {fileID: 2772869115290669114}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8495964456111600421
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -220,6 +315,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 482865885177344422}
+    - targetCorrespondingSourceObject: {fileID: 3429483110506160215, guid: fbc98248050990e4eb1d5083abc5f3a0,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8719000747232166403}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: fbc98248050990e4eb1d5083abc5f3a0,
         type: 3}
@@ -254,3 +353,7 @@ MonoBehaviour:
   m_minTimeBetweenEffects: 0.1
   m_weaponBarrel: {fileID: 6516781300547556210}
   m_CMImpulseSource: {fileID: 1437188785725313286}
+  m_muzzleFlashEffect: {fileID: 6958156273078437979}
+  OnPlayFireEffects:
+    m_PersistentCalls:
+      m_Calls: []

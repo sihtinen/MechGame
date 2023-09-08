@@ -761,7 +761,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 165064567}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.06418625, y: -0, z: -0, w: 0.997938}
+  m_LocalRotation: {x: 0.06421052, y: -0.0000000042927177, z: 2.7620767e-10, w: 0.9979364}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -790,7 +790,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 1211419577}
   m_Follow: {fileID: 906800013}
   m_Lens:
-    FieldOfView: 48.05349
+    FieldOfView: 48.00689
     OrthographicSize: 10
     NearClipPlane: 0.1
     FarClipPlane: 5000
@@ -843,7 +843,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44d70cc20219cd84593f67d248eafe36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Offset: {x: -0.1835475, y: 0.2582381, z: -0.370971}
+  m_Offset: {x: -1.245934e-14, y: -0.001542177, z: -0.0005370304}
   m_ApplyAfter: 1
   m_PreserveComposition: 0
 --- !u!850595691 &170289112
@@ -1174,7 +1174,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 48.05349
+  field of view: 48.00689
   orthographic: 0
   orthographic size: 10
   m_Depth: -1
@@ -1200,8 +1200,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.06418625, y: 0, z: 0, w: 0.997938}
-  m_LocalPosition: {x: -0.1835475, y: 32.903633, z: -72.43483}
+  m_LocalRotation: {x: 0.06421052, y: -0.0000000042927177, z: 2.7620767e-10, w: 0.9979364}
+  m_LocalPosition: {x: 6.2699455e-12, y: 32.598537, z: -72.10073}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5873,14 +5873,14 @@ MonoBehaviour:
   m_distance: 100
   m_targetHorizontalSmoothingAmount: 0.7
   m_cameraDirectionAmount: 0.5
-  m_tiltVelocityRotationAmount: -0.1
+  m_tiltVelocityRotationAmount: -0.04
   m_cameraPitchAmount: 0.5
   m_cameraOffscreenAngleRotation: -50
   m_cameraUpOffset: 10
   m_minRotationSqrVelocity: 1
   m_positionSmoothTime: 0.05
   m_positionMaxSpeed: 500
-  m_rotationSmoothTime: 0.1
+  m_rotationSmoothTime: 0.03
   m_rotationMaxSpeed: 35
 --- !u!222 &8469718679367243431
 CanvasRenderer:

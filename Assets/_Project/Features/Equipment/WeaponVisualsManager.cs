@@ -2,6 +2,8 @@ using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.VFX;
 
 public class WeaponVisualsManager : MonoBehaviour
 {
@@ -12,6 +14,10 @@ public class WeaponVisualsManager : MonoBehaviour
     [Header("Object References")]
     [SerializeField] private Transform m_weaponBarrel = null;
     [SerializeField] private CinemachineImpulseSource m_CMImpulseSource = null;
+    [SerializeField] private VisualEffect m_muzzleFlashEffect = null;
+
+    [Header("Events")]
+    public UnityEvent OnPlayFireEffects = new UnityEvent();
 
     private float m_previousFireEffectsTime = 0;
 
@@ -23,6 +29,17 @@ public class WeaponVisualsManager : MonoBehaviour
         m_previousFireEffectsTime = Time.time;
 
         m_CMImpulseSource?.GenerateImpulseWithForce(m_impulseForce);
+
+        if (m_muzzleFlashEffect != null)
+        {
+            var _muzzleFlashLocalEuler = m_muzzleFlashEffect.transform.localEulerAngles;
+            _muzzleFlashLocalEuler.z = Random.Range(0, 360);
+            m_muzzleFlashEffect.transform.localEulerAngles = _muzzleFlashLocalEuler;
+
+            m_muzzleFlashEffect.Play();
+        }
+
+        OnPlayFireEffects?.Invoke();
     }
 
     public Vector3 GetWeaponBarrelPosition() => m_weaponBarrel.position;
