@@ -12,6 +12,7 @@ public class MechProjectileRuntime : MechEquipmentRuntime
     [System.NonSerialized] public TargetingOption ActiveTarget = null;
     [System.NonSerialized] public Vector3 PredictionPos = Vector3.zero;
 
+    private bool m_firedLastFrame = false;
     private int m_rootTransformID;
     private float m_previousUseTime;
     private RaycastHit m_hitInfo;
@@ -151,8 +152,6 @@ public class MechProjectileRuntime : MechEquipmentRuntime
         if (ActiveTarget != null && ActiveTarget.TransformComponent.root.TryGetComponent(out Rigidbody _rb))
             calculatePredictionPos(ActiveTarget.TransformComponent.position, _rb.velocity);
     }
-
-    private bool m_firedLastFrame = false;
 
     private void Update()
     {
