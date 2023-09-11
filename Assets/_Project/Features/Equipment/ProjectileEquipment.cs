@@ -16,25 +16,8 @@ public class ProjectileEquipment : PrimaryEquipment
     [Min(0)] public float Lifetime = 10;
     [Min(0)] public float Velocity = 20f;
 
-    [Header("Targeting Settings")]
-    public float TargetingMinDot = 0.3f;
-    [Range(0f, 1f)] public float TargetingCameraDotScore = 1f;
-    [Space]
-    [Range(0f, 1f)] public float TargetingComponentDotScore = 1f;
-    [Space]
-    public float TargetingDistance = 300f;
-    public float TargetingOptimalDistance = 100f;
-    [Range(0f, 1f)] public float TargetingDistanceScoreMultiplier = 1f;
-
     [Header("UI Settings")]
     public HUDEquipmentElementBase HUDPrefab = null;
-    [Space]
-    public Sprite HUD_ValidTarget = null;
-    [Min(0f)] public float HUD_ValidTarget_Size = 25f;
-    public Sprite HUD_ActiveTarget = null;
-    [Min(0f)] public float HUD_ActiveTarget_Size = 25f;
-    public Sprite HUD_Prediction = null;
-    [Min(0f)] public float HUD_Prediction_Size = 25f;
 
     public override void InitializeGameplay(EquipmentRuntimeSetupData setupData)
     {
@@ -47,8 +30,6 @@ public class ProjectileEquipment : PrimaryEquipment
 
         var _hudElement = HUDManager.Instance.InitializeHUDElement(HUDPrefab, setupData.SlotType);
         _hudElement.BindToRuntimeComponent(_projectileRuntimeComponent);
-
-        TargetingHUDManager.Instance.RegisterProjectileRuntime(_projectileRuntimeComponent);
     }
 
     protected override void populateDataPanel_Custom(DataPanel dataPanel)

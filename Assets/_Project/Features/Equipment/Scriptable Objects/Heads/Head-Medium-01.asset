@@ -21,4 +21,11 @@ MonoBehaviour:
   EnergyDrain: 100
   VisualsPrefab: {fileID: 1876215885347353320, guid: 3dc3cc5f3a0803646b4c36dba5b4940d,
     type: 3}
+  VisualPrefabPositionOffset: {x: 0, y: 0, z: 0}
   VisualPrefabEulerOffset: {x: 90, y: 0, z: 0}
+  TargetingSettings:
+    MaxDistance: 500
+    OptimalDistance: 100
+    DotScoreMultiplier: 1
+    DistanceScoreMultiplier: 0.05
+    AreaSize: {x: 500, y: 320}

@@ -18,4 +18,9 @@ public class MechSpineRotator : MonoBehaviour
     {
         m_aimConstraint.data.offset = m_eulerOffset + new Vector3(0, 0, rotation);
     }
+
+    public Transform GetSpineTransform()
+    {
+        return m_aimConstraint.data.constrainedObject;
+    }
 }

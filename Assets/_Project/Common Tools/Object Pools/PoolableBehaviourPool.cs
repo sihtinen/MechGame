@@ -134,13 +134,13 @@ public abstract class PoolableBehaviourPool<T> : MonoBehaviour where T : MonoBeh
 
     private void internal_resetUsedObjects()
     {
-        if (m_usedObjectsList.Count > 0)
+        if (m_usedObjectsList.Count <= 0)
+            return;
+
+        for (int i = m_usedObjectsList.Count; i--> 0;)
         {
-            for (int i = m_usedObjectsList.Count; i-- > 0;)
-            {
-                PoolableBehaviour<T> _poolable = m_usedObjectsList[i] as PoolableBehaviour<T>;
-                _poolable.ResetAndReturnToPool();
-            }
+            var _poolable = m_usedObjectsList[i] as PoolableBehaviour<T>;
+            _poolable.ResetAndReturnToPool();
         }
     }
 }

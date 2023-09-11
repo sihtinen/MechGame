@@ -4,18 +4,15 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
-[DefaultExecutionOrder(1)]
+[DefaultExecutionOrder(2)]
 public class MechProjectileRuntime : MechEquipmentRuntime
 {
     [System.NonSerialized] public int RemainingUses;
-    [System.NonSerialized] public List<TargetingOption> ValidTargets = new List<TargetingOption>();
-    [System.NonSerialized] public TargetingOption ActiveTarget = null;
     [System.NonSerialized] public Vector3 PredictionPos = Vector3.zero;
 
     private bool m_firedLastFrame = false;
     private int m_rootTransformID;
     private float m_previousUseTime;
-    private RaycastHit m_hitInfo;
     private EquipmentSlotTypes m_slotType;
 
     private Transform m_transform = null;
@@ -24,17 +21,11 @@ public class MechProjectileRuntime : MechEquipmentRuntime
     private WeaponVisualsManager m_weaponVisualsManager = null;
 
     public ProjectileEquipment Settings => m_settings;
-    private Stack<TargetingOption> m_targetingOptionPool = new Stack<TargetingOption>();
-    private Stack<TargetingOption> m_usedTargetingOptions = new Stack<TargetingOption>();
 
     private void Awake()
     {
         m_transform = transform;
-
         m_previousUseTime = Time.time;
-
-        for (int i = 0; i < 32; i++)
-            m_targetingOptionPool.Push(new TargetingOption());
     }
 
     private void Start()
@@ -67,90 +58,16 @@ public class MechProjectileRuntime : MechEquipmentRuntime
 
     private void FixedUpdate()
     {
-        ActiveTarget = null;
-        ValidTargets.Clear();
+        if (m_mechController == null)
+            return;
 
-        while (m_usedTargetingOptions.Count > 0)
+        var _activeTarget = m_mechController.TargetingComponent.ActiveTarget;
+
+        if (_activeTarget != null && _activeTarget.TransformComponent.root.TryGetComponent(out Rigidbody _rb))
         {
-            var _option = m_usedTargetingOptions.Pop();
-            m_targetingOptionPool.Push(_option);
-        }    
-
-        var _mainCam = MainCameraComponent.Instance;
-        var _possibleTargets = ContextUtils.GetActiveTargets(m_settings.TargetLayers);
-
-        for (int i = 0; i < _possibleTargets.Count; i++)
-        {
-            var _possibleTarget = _possibleTargets[i];
-
-            if (_possibleTarget.TryGetComponent(out IDamageable _damageable) && _damageable.GetCurrentHealth() <= 0)
-                continue;
-
-            Vector3 _toTarget = _possibleTarget.TransformComponent.position - m_transform.position;
-            Vector3 _toTargetNormalized = _toTarget.normalized;
-
-            if (Vector3.Dot(_toTargetNormalized, _mainCam.TransformComponent.forward) < 0f)
-                continue;
-
-            if (Vector3.Dot(_toTargetNormalized, m_transform.forward) < m_settings.TargetingMinDot)
-                continue;
-
-            if (_toTarget.magnitude > m_settings.TargetingDistance)
-                continue;
-
-            if (Physics.Linecast(
-                _mainCam.TransformComponent.position, 
-                _possibleTarget.TransformComponent.position, 
-                out m_hitInfo, 
-                Physics.DefaultRaycastLayers))
-            {
-                if (m_hitInfo.collider.transform.root.GetInstanceID() != _possibleTarget.TransformComponent.GetInstanceID())
-                    continue;
-            }
-
-            var _newOption = getTargetingOption();
-            _newOption.TransformComponent = _possibleTarget.TransformComponent;
-
-            ValidTargets.Add(_newOption);
+            calculatePredictionPos(_activeTarget.TransformComponent.position, _rb.velocity);
+            m_mechController.TargetingComponent.PredictionPositions.Add(PredictionPos);
         }
-
-        float _bestDot = float.MinValue;
-        Vector3 _cameraForward = _mainCam.TransformComponent.forward;
-
-        for (int i = 0; i < ValidTargets.Count; i++)
-        {
-            var _target = ValidTargets[i];
-
-            Vector3 _fromCameraToTarget = _target.TransformComponent.position - _mainCam.TransformComponent.position;
-            float _cameraDot = Vector3.Dot(_fromCameraToTarget.normalized, _cameraForward);
-            _target.CameraDotScore = _cameraDot * m_settings.TargetingCameraDotScore;
-
-            Vector3 _fromProjectileToTarget = _target.TransformComponent.position - m_transform.position;
-            float _projectileDot = Vector3.Dot(_fromProjectileToTarget.normalized, m_transform.forward);
-            _projectileDot = (_projectileDot - m_settings.TargetingMinDot) / (1.0f - m_settings.TargetingMinDot);
-            _target.ComponentDotScore = _projectileDot * m_settings.TargetingComponentDotScore;
-
-            float _distFromOptimalDistance = Mathf.Max(Mathf.InverseLerp(
-                m_settings.TargetingOptimalDistance, 
-                m_settings.TargetingDistance, 
-                _fromProjectileToTarget.magnitude), 0);
-
-            _target.DistScore = (1.0f - _distFromOptimalDistance) * m_settings.TargetingDistanceScoreMultiplier;
-
-            _target.TotalScore = _target.CameraDotScore 
-                + _target.ComponentDotScore 
-                + _target.DistScore;
-
-            if (_target.TotalScore > _bestDot)
-            {
-                _bestDot = _target.TotalScore;
-                ActiveTarget = _target;
-                PredictionPos = _target.TransformComponent.position;
-            }
-        }
-
-        if (ActiveTarget != null && ActiveTarget.TransformComponent.root.TryGetComponent(out Rigidbody _rb))
-            calculatePredictionPos(ActiveTarget.TransformComponent.position, _rb.velocity);
     }
 
     private void Update()
@@ -207,12 +124,15 @@ public class MechProjectileRuntime : MechEquipmentRuntime
         m_weaponVisualsManager?.TriggerFireEffects();
     }
 
-    private Vector3 getShootDirection(Vector3 _sourcePos)
+    private Vector3 getShootDirection(Vector3 sourcePos)
     {
-        if (ActiveTarget != null)
-            return (PredictionPos - _sourcePos).normalized;
-        else
-            return m_weaponVisualsManager.GetWeaponBarrelForward();
+        if (m_mechController.TargetingComponent.ActiveTarget != null)
+        {
+            if (TargetingArea.Instance.IsPointInsideArea(m_mechController.TargetingComponent.ActiveTarget.TransformComponent.position))
+                return (PredictionPos - sourcePos).normalized;
+        }
+
+        return m_weaponVisualsManager.GetWeaponBarrelForward();
     }
 
     private void calculatePredictionPos(Vector3 targetPosition, Vector3 targetVelocity)
@@ -238,23 +158,5 @@ public class MechProjectileRuntime : MechEquipmentRuntime
         Vector3 ret = targetPosition + targetVelocity * time;
 
         PredictionPos = ret;
-    }
-
-    private TargetingOption getTargetingOption()
-    {
-        if (m_targetingOptionPool.Count > 0)
-            return m_targetingOptionPool.Pop();
-
-        return new TargetingOption();
-    }
-
-    [System.Serializable]
-    public class TargetingOption
-    {
-        public Transform TransformComponent = null;
-        public float CameraDotScore;
-        public float ComponentDotScore;
-        public float DistScore;
-        public float TotalScore;
     }
 }

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MachineGun_CB-50-A
   m_EditorClassIdentifier: 
   GUID:
-    m_guid: f0d2e7888d454c56afd0e91b52e146a4
+    m_guid: dea661ea344b47b0b848a1d53aa89627
   DisplayName: CB-50-A
   Description: Description
   Category: {fileID: 11400000, guid: 7e6c17a535ecda94bad8a7b904e1cb81, type: 2}
@@ -30,17 +30,5 @@ MonoBehaviour:
   CollisionRadius: 1
   Lifetime: 3
   Velocity: 700
-  TargetingMinDot: 0.3
-  TargetingCameraDotScore: 1
-  TargetingComponentDotScore: 0.2
-  TargetingDistance: 300
-  TargetingOptimalDistance: 100
-  TargetingDistanceScoreMultiplier: 1
   HUDPrefab: {fileID: 807154664928231954, guid: 289e2a89775c7964ba1f911480f4e556,
     type: 3}
-  HUD_ValidTarget: {fileID: 0}
-  HUD_ValidTarget_Size: 25
-  HUD_ActiveTarget: {fileID: 0}
-  HUD_ActiveTarget_Size: 25
-  HUD_Prediction: {fileID: 0}
-  HUD_Prediction_Size: 25

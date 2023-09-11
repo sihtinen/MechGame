@@ -4,48 +4,62 @@ using UnityEngine;
 
 public class TargetingHUDManager : SingletonBehaviour<TargetingHUDManager>
 {
+    [Header("HUD Settings")]
+    public Sprite HUDTex_ValidTarget = null;
+    public Sprite HUDTex_LockOnTarget = null;
+    public Sprite HUDTex_Prediction = null;
+    [Space]
+    public float HUDTex_ValidTarget_Size;
+    public float HUDTex_LockOnTarget_Size;
+    public float HUDTex_Prediction_Size;
+
+    [Header("Debug Settings")]
     [SerializeField] private bool m_enableDebug = false;
 
-    private List<MechProjectileRuntime> m_activeProjectileWeapons = new List<MechProjectileRuntime>();
+    private MechTargeting m_target = null;
 
     private void LateUpdate()
     {
+        if (m_target == null)
+            return;
+
         var _mainCamera = MainCameraComponent.Instance.CameraComponent;
 
         HUDTargetingElementPool.ResetUsedObjects();
 
-        for (int i = 0; i < m_activeProjectileWeapons.Count; i++)
+        for (int ii = 0; ii < m_target.ValidTargets.Count; ii++)
         {
-            var _projectile = m_activeProjectileWeapons[i];
-            var _settings = _projectile.Settings;
+            var _validTarget = m_target.ValidTargets[ii];
+            var _targetTransform = _validTarget.TransformComponent;
 
-            for (int ii = 0; ii < _projectile.ValidTargets.Count; ii++)
-            {
-                var _validTarget = _projectile.ValidTargets[ii];
-                var _targetTransform = _validTarget.TransformComponent;
+            if (m_target.ActiveTarget != null && _targetTransform.GetInstanceID() == m_target.ActiveTarget.TransformComponent.GetInstanceID())
+                continue;
 
-                if (_projectile.ActiveTarget != null && _targetTransform.GetInstanceID() == _projectile.ActiveTarget.TransformComponent.GetInstanceID())
-                    continue;
+            var _element = generateElement(_targetTransform.position, _mainCamera,
+                HUDTex_ValidTarget,
+                HUDTex_ValidTarget_Size);
 
-                var _element = generateElement(_targetTransform.position, _mainCamera, 
-                    _settings.HUD_ValidTarget, 
-                    _settings.HUD_ValidTarget_Size);
+            _element.BindToTargetingOption(_validTarget, m_enableDebug);
+            _element.gameObject.SetActiveOptimized(true);
+        }
 
-                _element.BindToTargetingOption(_validTarget, m_enableDebug);
-            }
+        if (m_target.ActiveTarget == null)
+            return;
 
-            if (_projectile.ActiveTarget != null)
-            {
-                var _element = generateElement(_projectile.ActiveTarget.TransformComponent.position, _mainCamera,
-                    _settings.HUD_ActiveTarget,
-                    _settings.HUD_ActiveTarget_Size);
+        var _lockOnElement = generateElement(m_target.ActiveTarget.TransformComponent.position, _mainCamera,
+            HUDTex_LockOnTarget,
+            HUDTex_LockOnTarget_Size);
 
-                _element.BindToTargetingOption(_projectile.ActiveTarget, m_enableDebug);
+        _lockOnElement.BindToTargetingOption(m_target.ActiveTarget, m_enableDebug);
+        _lockOnElement.gameObject.SetActiveOptimized(true);
 
-                generateElement(_projectile.PredictionPos, _mainCamera,
-                    _settings.HUD_Prediction,
-                    _settings.HUD_Prediction_Size);
-            }
+        for (int i = 0; i < m_target.PredictionPositions.Count; i++)
+        {
+            var _element = generateElement(m_target.PredictionPositions[i], _mainCamera,
+                HUDTex_Prediction,
+                HUDTex_Prediction_Size);
+
+            _element.gameObject.SetActiveOptimized(true);
         }
     }
 
@@ -65,15 +79,8 @@ public class TargetingHUDManager : SingletonBehaviour<TargetingHUDManager>
         return _hudElement;
     }
 
-    public void RegisterProjectileRuntime(MechProjectileRuntime runtimeComponent)
+    public void BindToComponent(MechTargeting target)
     {
-        if (m_activeProjectileWeapons.Contains(runtimeComponent) == false)
-            m_activeProjectileWeapons.Add(runtimeComponent);
-    }
-
-    public void UnregisterProjectileRuntime(MechProjectileRuntime runtimeComponent)
-    {
-        if (m_activeProjectileWeapons.Contains(runtimeComponent))
-            m_activeProjectileWeapons.Remove(runtimeComponent);
+        m_target = target;
     }
 }

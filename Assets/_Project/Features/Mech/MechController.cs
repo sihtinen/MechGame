@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using NaughtyAttributes;
 using BKUnity;
+using UnityEngine.UIElements;
 
 public class MechController : RigidBodyEntity
 {
@@ -16,12 +17,14 @@ public class MechController : RigidBodyEntity
     [NonEditable] public float BoostForceVertical = 0;
     [NonEditable] public Vector3 DashBoostForce = Vector3.zero;
 
+    [NonEditable] public bool IsPlayer = false;
     [NonEditable] public bool IsGrounded = false;
     [NonEditable] public bool IsBoosting = false;
     [NonEditable] public bool IsDashBoosting = false;
     [NonEditable] public RaycastHit GroundHit;
 
     [NonSerialized] public MechPlayerInput PlayerInputComponent = null;
+    [NonSerialized] public MechTargeting TargetingComponent = null;
 
     [Header("Object References")]
     [SerializeField, Expandable] private PID m_rideHeightPID = null;
@@ -55,12 +58,15 @@ public class MechController : RigidBodyEntity
         IsBoosting = false;
 
         TryGetComponent(out PlayerInputComponent);
+        TryGetComponent(out TargetingComponent);
 
         m_animationTransformRoot = m_mechBuilder.transform;
     }
 
     public void InitializeGameplay(InitializeSettings settings)
     {
+        IsPlayer = settings.IsPlayer;
+
         m_loadout = settings.Loadout;
         m_mechBuilder.LoadoutAsset = m_loadout;
 
@@ -74,9 +80,15 @@ public class MechController : RigidBodyEntity
 
         ignoreSelfCollisions();
 
-        PlayerInputComponent.enabled = settings.IsPlayer;
+        PlayerInputComponent.enabled = IsPlayer;
 
-        setupEquipment(settings.IsPlayer);
+        setupEquipment(IsPlayer);
+
+        if (IsPlayer)
+        {
+            TargetingArea.Instance?.BindToTarget(this);
+            TargetingHUDManager.Instance?.BindToComponent(TargetingComponent);
+        }
     }
 
     private void setupEquipment(bool isPlayer)
@@ -391,6 +403,14 @@ public class MechController : RigidBodyEntity
     {
         if (m_preventMovementSources.Contains(id))
             m_preventMovementSources.Remove(id);
+    }
+
+    public Transform GetTargetingPivotTransform()
+    {
+        if (m_spineRotator != null)
+            return m_spineRotator.GetSpineTransform();
+
+        return TransformComponent;
     }
 
     [System.Serializable]

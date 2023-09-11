@@ -247,7 +247,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &63118765
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -835,8 +835,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 165064567}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.064203046, y: -0.000000017170882, z: 0.0000000011047022,
-    w: 0.9979369}
+  m_LocalRotation: {x: 0.06414378, y: 0.0000000042927377, z: -2.759207e-10, w: 0.99794066}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -865,7 +864,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 1211419577}
   m_Follow: {fileID: 906800013}
   m_Lens:
-    FieldOfView: 48.02122
+    FieldOfView: 48.135
     OrthographicSize: 10
     NearClipPlane: 0.1
     FarClipPlane: 5000
@@ -918,7 +917,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44d70cc20219cd84593f67d248eafe36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Offset: {x: -0.2129943, y: 0.01263122, z: -0.05335313}
+  m_Offset: {x: -1.5607, y: -0.1820534, z: -0.21156}
   m_ApplyAfter: 1
   m_PreserveComposition: 0
 --- !u!850595691 &170289112
@@ -1249,7 +1248,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 48.02122
+  field of view: 48.135
   orthographic: 0
   orthographic size: 10
   m_Depth: -1
@@ -1275,9 +1274,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.064203046, y: -0.000000017170882, z: 0.0000000011047022,
-    w: 0.9979369}
-  m_LocalPosition: {x: -0.2129943, y: 32.61936, z: -72.15129}
+  m_LocalRotation: {x: 0.06414378, y: 0.0000000042927377, z: -2.759207e-10, w: 0.99794066}
+  m_LocalPosition: {x: -1.5607, y: 32.44653, z: -72.33312}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1812,7 +1810,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &696315612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2247,7 +2245,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_isPersistentObject: 0
-  m_enableDebug: 0
+  HUDTex_ValidTarget: {fileID: 1899606932, guid: 6f1d423766ba1204ca4912040a6af123,
+    type: 3}
+  HUDTex_LockOnTarget: {fileID: 110146325, guid: 6f1d423766ba1204ca4912040a6af123,
+    type: 3}
+  HUDTex_Prediction: {fileID: 1282217232, guid: 6f1d423766ba1204ca4912040a6af123,
+    type: 3}
+  HUDTex_ValidTarget_Size: 35
+  HUDTex_LockOnTarget_Size: 48
+  HUDTex_Prediction_Size: 40
+  m_enableDebug: 1
 --- !u!1 &828435918
 GameObject:
   m_ObjectHideFlags: 0
@@ -2988,6 +2995,7 @@ GameObject:
   - component: {fileID: 1211419576}
   - component: {fileID: 1211419578}
   - component: {fileID: 1211419579}
+  - component: {fileID: 1211419586}
   - component: {fileID: 1211419580}
   - component: {fileID: 1211419581}
   - component: {fileID: 1211419584}
@@ -3061,6 +3069,7 @@ MonoBehaviour:
   BoostForceHorizontal: 0
   BoostForceVertical: 0
   DashBoostForce: {x: 0, y: 0, z: 0}
+  IsPlayer: 0
   IsGrounded: 0
   IsBoosting: 1
   IsDashBoosting: 0
@@ -3222,6 +3231,25 @@ MonoBehaviour:
   m_UseImpactDirection: 1
   m_ScaleImpactWithMass: 1
   m_ScaleImpactWithSpeed: 1
+--- !u!114 &1211419586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1211419575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee03bd42ff4dad145af52a11330093f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Settings:
+    MaxDistance: 500
+    OptimalDistance: 100
+    DotScoreMultiplier: 1
+    DistanceScoreMultiplier: 1
+    AreaSize: {x: 250, y: 180}
+  TargetLayers: 15
 --- !u!1 &1239614921
 GameObject:
   m_ObjectHideFlags: 0
@@ -4301,6 +4329,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3080034740796755732, guid: be3963e6ebe550d4aaea3d10568c23a5,
+        type: 3}
+      propertyPath: m_targetFrameRate
+      value: 144
+      objectReference: {fileID: 0}
     - target: {fileID: 6464822505388912610, guid: be3963e6ebe550d4aaea3d10568c23a5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4574,7 +4607,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1678852074
 Transform:
   m_ObjectHideFlags: 0
@@ -4935,7 +4968,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1798580441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5104,7 +5137,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1866416648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5723,8 +5756,9 @@ GameObject:
   - component: {fileID: 180869552913332705}
   - component: {fileID: 8469718679367243431}
   - component: {fileID: 7324858483181997489}
+  - component: {fileID: 8469718679367243432}
   m_Layer: 5
-  m_Name: Lock On Area Container
+  m_Name: Targeting Area Container
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5967,6 +6001,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1827212593358687439}
   m_CullTransparentMesh: 1
+--- !u!114 &8469718679367243432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1827212593358687439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9f1fdfb544251e458daf1af24f45555, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_isPersistentObject: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

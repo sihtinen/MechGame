@@ -1041,7 +1041,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7351fc1236367054d89f9e58a08baf73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_deactivateGOWhenReturnedToPool: 0
+  m_deactivateGOWhenReturnedToPool: 1
   m_camDotScoreValueText: {fileID: 3060185977450958440}
   m_compDotScoreValueText: {fileID: 6378329935049798649}
   m_distScoreValueText: {fileID: 8800989973859308244}

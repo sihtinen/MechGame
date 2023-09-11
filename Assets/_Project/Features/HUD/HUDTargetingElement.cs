@@ -10,6 +10,7 @@ public class HUDTargetingElement : PoolableBehaviour<HUDTargetingElement>
     [NonSerialized] public RectTransform RectTransformComponent = null;
     [NonSerialized] public Image ImageComponent = null;
 
+    [Header("Object References")]
     [SerializeField] private TMP_Text m_camDotScoreValueText = null;
     [SerializeField] private TMP_Text m_compDotScoreValueText = null;
     [SerializeField] private TMP_Text m_distScoreValueText = null;
@@ -43,19 +44,19 @@ public class HUDTargetingElement : PoolableBehaviour<HUDTargetingElement>
         ImageComponent.enabled = false;
     }
 
-    public void BindToTargetingOption(MechProjectileRuntime.TargetingOption option, bool enableDebug)
+    public void BindToTargetingOption(MechTargeting.TargetingOption option, bool enableDebug)
     {
-        m_camDotScoreValueText.SetText(option.CameraDotScore.ToString("G2"));
-        m_compDotScoreValueText.SetText(option.ComponentDotScore.ToString("G2"));
+        //m_camDotScoreValueText.SetText(option.CameraDotScore.ToString("G2"));
+        m_compDotScoreValueText.SetText(option.DotScore.ToString("G2"));
         m_distScoreValueText.SetText(option.DistScore.ToString("G2"));
         m_totalScoreValueText.SetText(option.TotalScore.ToString("G2"));
 
-        m_camDotScoreValueText.enabled = enableDebug;
+        //m_camDotScoreValueText.enabled = enableDebug;
         m_compDotScoreValueText.enabled = enableDebug;
         m_distScoreValueText.enabled = enableDebug;
         m_totalScoreValueText.enabled = enableDebug;
 
-        m_camDotScoreLabelText.enabled = enableDebug;
+        //m_camDotScoreLabelText.enabled = enableDebug;
         m_compDotScoreLabelText.enabled = enableDebug;
         m_distScoreLabelText.enabled = enableDebug;
         m_totalScoreLabelText.enabled = enableDebug;

@@ -52,4 +52,14 @@ public abstract class Equipment : ScriptableObject
     }
 
     protected virtual void populateDataPanel_Custom(DataPanel dataPanel) { }
+
+    [ContextMenu("Regenerate GUID")]
+    public void Editor_RegenerateGUID()
+    {
+#if UNITY_EDITOR
+        GUID = new GUIDWrapper();
+        UnityEditor.EditorUtility.SetDirty(this);
+        UnityEditor.AssetDatabase.SaveAssetIfDirty(this);
+#endif
+    }
 }

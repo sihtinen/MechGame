@@ -5,10 +5,13 @@ using UnityEngine;
 [DefaultExecutionOrder(1)]
 public class FreeAimCrosshair : SingletonBehaviour<FreeAimCrosshair>
 {
+    [Header("Visual Settings")]
     [SerializeField] private float m_smoothDampTime = 0.1f;
     [SerializeField] private float m_smoothDampMaxSpeed = 50f;
     [SerializeField] private float m_borderBufferSize_X = 60f;
     [SerializeField] private float m_borderBufferSize_Y = 40f;
+
+    [Header("Object References")]
     [SerializeField] private RectTransform m_target = null;
 
     private RectTransform m_rectTransform = null;
