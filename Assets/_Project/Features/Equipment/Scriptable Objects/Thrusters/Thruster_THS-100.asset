@@ -25,20 +25,20 @@ MonoBehaviour:
   VisualPrefabEulerOffset: {x: 0, y: 0, z: 0}
   RechargeRate: 7
   BoostParams_Horizontal:
-    HorizontalForce: 8000
-    VerticalForce: 4000
+    HorizontalForce: 11000
+    VerticalForce: 2500
   BoostParams_Vertical:
     HorizontalForce: 1000
     VerticalForce: 6500
-  EnergyDrainRate_Normal: 10
+  EnergyDrainRate_Normal: 8
   DashBoostParams_Horizontal:
     HorizontalForce: 55000
     VerticalForce: 15000
   DashBoostParams_Vertical:
     HorizontalForce: 3000
     VerticalForce: 40000
-  DashEnergyDrain: 20
-  DashPrepareDuration: 0.45
+  DashEnergyDrain: 10
+  DashPrepareDuration: 0.35
   DashBoostDuration: 0.5
   DashVerticalVelocityCancelAmount: 0.7
   DashBoostForceCurve:

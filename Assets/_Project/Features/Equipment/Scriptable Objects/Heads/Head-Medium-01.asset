@@ -24,8 +24,8 @@ MonoBehaviour:
   VisualPrefabPositionOffset: {x: 0, y: 0, z: 0}
   VisualPrefabEulerOffset: {x: 90, y: 0, z: 0}
   TargetingSettings:
-    MaxDistance: 500
-    OptimalDistance: 100
+    MaxDistance: 800
+    OptimalDistance: 400
     DotScoreMultiplier: 1
     DistanceScoreMultiplier: 0.05
     AreaSize: {x: 500, y: 320}
