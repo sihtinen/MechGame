@@ -63,11 +63,14 @@ public class MechProjectileRuntime : MechEquipmentRuntime
 
         var _activeTarget = m_mechController.TargetingComponent.ActiveTarget;
 
-        if (_activeTarget != null && _activeTarget.TransformComponent.root.TryGetComponent(out Rigidbody _rb))
-        {
-            calculatePredictionPos(_activeTarget.TransformComponent.position, _rb.velocity);
-            m_mechController.TargetingComponent.PredictionPositions.Add(PredictionPos);
-        }
+        if (_activeTarget == null)
+            return;
+
+        calculatePredictionPos(
+            _activeTarget.GetPosition(),
+            _activeTarget.GetVelocity());
+
+        m_mechController.TargetingComponent.PredictionPositions.Add(PredictionPos);
     }
 
     private void Update()
@@ -126,9 +129,13 @@ public class MechProjectileRuntime : MechEquipmentRuntime
 
     private Vector3 getShootDirection(Vector3 sourcePos)
     {
-        if (m_mechController.TargetingComponent.ActiveTarget != null)
+        var _target = m_mechController.TargetingComponent.ActiveTarget;
+
+        if (_target != null)
         {
-            if (TargetingArea.Instance.IsPointInsideArea(m_mechController.TargetingComponent.ActiveTarget.TransformComponent.position))
+            Vector3 _targetPos = _target.GetPosition();
+
+            if (TargetingArea.Instance.IsPointInsideArea(_targetPos))
                 return (PredictionPos - sourcePos).normalized;
         }
 

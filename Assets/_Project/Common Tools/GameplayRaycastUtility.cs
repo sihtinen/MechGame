@@ -8,9 +8,7 @@ public static class GameplayRaycastUtility
     public struct Results
     {
         public bool HitFound;
-        public Vector3 HitWorldPoint;
-        public Vector3 HitNormal;
-        public GameObject HitObject;
+        public RaycastHit Hit;
     }
 
     public static Results Raycast(
@@ -25,9 +23,7 @@ public static class GameplayRaycastUtility
         Results _results = new Results()
         {
             HitFound = false,
-            HitWorldPoint = to,
-            HitNormal = _diff.normalized,
-            HitObject = null
+            Hit = default,
         };
 
         var _triggerInteractionMode = collideWithTriggers ? QueryTriggerInteraction.Collide : QueryTriggerInteraction.Ignore;
@@ -43,15 +39,13 @@ public static class GameplayRaycastUtility
         if (_hitCount == 0) 
             return _results;
 
-        RaycastHitExtensions.RaycastHitResultWrapper _resultsWrapper = PhysicsUtility.CachedRaycastHits.GetClosestHit(_hitCount, ignoredObjects);
+        var _resultsWrapper = PhysicsUtility.CachedRaycastHits.GetClosestHit(_hitCount, ignoredObjects);
         
         if (_resultsWrapper.HitFound == false) 
             return _results;
 
         _results.HitFound = true;
-        _results.HitWorldPoint = _resultsWrapper.RaycastHit.point;
-        _results.HitNormal = _resultsWrapper.RaycastHit.normal;
-        _results.HitObject = _resultsWrapper.RaycastHit.collider.gameObject;
+        _results.Hit = _resultsWrapper.RaycastHit;
 
         return _results;
     }

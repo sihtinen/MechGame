@@ -13,11 +13,13 @@ public class MechTargeting : MonoBehaviour
     [System.NonSerialized] public TargetingOption ActiveTarget = null;
     [System.NonSerialized] public List<Vector3> PredictionPositions = new();
 
-    private RaycastHit m_hitInfo;
     private Transform m_transform = null;
     private MechController m_mech = null;
     private Stack<TargetingOption> m_targetingOptionPool = new Stack<TargetingOption>();
     private Stack<TargetingOption> m_usedTargetingOptions = new Stack<TargetingOption>();
+
+    private static List<Transform> m_tempTransformList = new();
+    private List<GameObject> m_raycastIgnoredObjects = new List<GameObject>();
 
     private void Awake()
     {
@@ -27,6 +29,18 @@ public class MechTargeting : MonoBehaviour
 
         for (int i = 0; i < 32; i++)
             m_targetingOptionPool.Push(new TargetingOption());
+    }
+
+    private void Start()
+    {
+        // create list of all ignored objects in visibility raycasts
+
+        m_transform.root.GetComponentsInChildren(includeInactive: true, m_tempTransformList);
+
+        for (int i = 0; i < m_tempTransformList.Count; i++)
+            m_raycastIgnoredObjects.Add(m_tempTransformList[i].gameObject);
+
+        m_tempTransformList.Clear();
     }
 
     private void FixedUpdate()
@@ -43,6 +57,7 @@ public class MechTargeting : MonoBehaviour
 
         var _targetingPivot = m_mech.GetTargetingPivotTransform();
         var _possibleTargets = ContextUtils.GetActiveTargets(TargetLayers);
+        var _mainCameraTransformForward = MainCameraComponent.Instance.TransformComponent.forward;
 
         for (int i = 0; i < _possibleTargets.Count; i++)
         {
@@ -57,31 +72,33 @@ public class MechTargeting : MonoBehaviour
                 if (_targetingArea != null && _targetingArea.IsPointInsideArea(_possibleTarget.TransformComponent.position) == false)
                     continue;
 
-                if (Vector3.Dot(_toTargetNormalized, MainCameraComponent.Instance.TransformComponent.forward) < 0)
+                if (Vector3.Dot(_toTargetNormalized, _mainCameraTransformForward) < 0)
                     continue;
             }
 
-            if (_possibleTarget.TryGetComponent(out IDamageable _damageable) && _damageable.GetCurrentHealth() <= 0)
-                continue;
+            //if (Vector3.Dot(_toTargetNormalized, m_transform.forward) < 0)
+            //    continue;
 
-            if (Vector3.Dot(_toTargetNormalized, m_transform.forward) < 0)
+            if (_possibleTarget.TryGetComponent(out IDamageable _damageable) && _damageable.GetCurrentHealth() <= 0)
                 continue;
 
             if (_toTarget.magnitude > Settings.MaxDistance)
                 continue;
 
-            if (Physics.Linecast(
+            var _raycastResults = GameplayRaycastUtility.Raycast(
                 _targetingPivot.position,
                 _possibleTarget.TransformComponent.position,
-                out m_hitInfo,
-                Physics.DefaultRaycastLayers))
+                Physics.DefaultRaycastLayers,
+                ignoredObjects: m_raycastIgnoredObjects);
+
+            if (_raycastResults.HitFound)
             {
-                if (m_hitInfo.collider.transform.root.GetInstanceID() != _possibleTarget.TransformComponent.GetInstanceID())
+                if (_possibleTarget.HasColliderWithID(_raycastResults.Hit.collider.GetInstanceID()) == false)
                     continue;
             }
 
             var _newOption = getTargetingOption();
-            _newOption.TransformComponent = _possibleTarget.TransformComponent;
+            _newOption.ContextTargetComponent = _possibleTarget;
 
             ValidTargets.Add(_newOption);
         }
@@ -92,7 +109,7 @@ public class MechTargeting : MonoBehaviour
         {
             var _target = ValidTargets[i];
 
-            Vector3 _toTarget = _target.TransformComponent.position - _targetingPivot.position;
+            Vector3 _toTarget = _target.ContextTargetComponent.TransformComponent.position - _targetingPivot.position;
             Vector3 _toWorldTargetPos = m_mech.LookTargetWorldPos - _targetingPivot.position;
 
             float _toWorldTargetDot = Vector3.Dot(_toTarget.normalized, _toWorldTargetPos.normalized);
@@ -127,10 +144,13 @@ public class MechTargeting : MonoBehaviour
     [System.Serializable]
     public class TargetingOption
     {
-        public Transform TransformComponent = null;
+        public ContextTarget ContextTargetComponent = null;
         public float DotScore;
         public float DistScore;
         public float TotalScore;
+
+        public Vector3 GetPosition() => ContextTargetComponent.TransformComponent.position;
+        public Vector3 GetVelocity() => ContextTargetComponent.GetVelocity();
     }
 
     [System.Serializable]

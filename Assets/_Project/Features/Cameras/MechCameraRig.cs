@@ -15,6 +15,9 @@ public class MechCameraRig : MonoBehaviour
     [SerializeField] private float m_maxPitch = 80f;
     [SerializeField] private float m_additionalFOVPerVelocity = 0.03f;
     [Space]
+    [SerializeField] private float m_maxPitchHeightAmount = 10f;
+    [SerializeField] private AnimationCurve m_heightOverPitchCurve = new AnimationCurve();
+    [Space]
     [SerializeField] private MechCameraRigPose m_normalPose = null;
     [SerializeField] private MechCameraRigPose m_dashBoostPose = null;
 
@@ -56,6 +59,7 @@ public class MechCameraRig : MonoBehaviour
     {
         updateTargetInput();
         updatePosition();
+        updateAimHeightOffset();
     }
 
     private void updateTargetInput()
@@ -137,9 +141,18 @@ public class MechCameraRig : MonoBehaviour
 
         m_vcamOffset.m_Offset = Vector3.SmoothDamp(
             m_vcamOffset.m_Offset,
-            _targetOffset, 
-            ref m_velocityOffsetVel, 
-            _pose.VelocityOffsetSmoothTime, 
+            _targetOffset,
+            ref m_velocityOffsetVel,
+            _pose.VelocityOffsetSmoothTime,
             _pose.VelocityOffsetMaxSpeed);
+    }
+
+    private void updateAimHeightOffset()
+    {
+        float _pitchT = Mathf.InverseLerp(m_minPitch, m_maxPitch, m_targetRotationPitch);
+        float _heightOffset = m_heightOverPitchCurve.Evaluate(_pitchT) * m_maxPitchHeightAmount;
+
+        var _composer = m_vcam.GetCinemachineComponent<CinemachineComposer>();
+        _composer.m_TrackedObjectOffset = new Vector3(0, 20 + _heightOffset, 0);
     }
 }

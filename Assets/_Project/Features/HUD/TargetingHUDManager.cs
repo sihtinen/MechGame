@@ -30,9 +30,9 @@ public class TargetingHUDManager : SingletonBehaviour<TargetingHUDManager>
         for (int ii = 0; ii < m_target.ValidTargets.Count; ii++)
         {
             var _validTarget = m_target.ValidTargets[ii];
-            var _targetTransform = _validTarget.TransformComponent;
+            var _targetTransform = _validTarget.ContextTargetComponent.TransformComponent;
 
-            if (m_target.ActiveTarget != null && _targetTransform.GetInstanceID() == m_target.ActiveTarget.TransformComponent.GetInstanceID())
+            if (m_target.ActiveTarget != null && _targetTransform.GetInstanceID() == m_target.ActiveTarget.ContextTargetComponent.TransformComponent.GetInstanceID())
                 continue;
 
             var _element = generateElement(_targetTransform.position, _mainCamera,
@@ -46,7 +46,7 @@ public class TargetingHUDManager : SingletonBehaviour<TargetingHUDManager>
         if (m_target.ActiveTarget == null)
             return;
 
-        var _lockOnElement = generateElement(m_target.ActiveTarget.TransformComponent.position, _mainCamera,
+        var _lockOnElement = generateElement(m_target.ActiveTarget.GetPosition(), _mainCamera,
             HUDTex_LockOnTarget,
             HUDTex_LockOnTarget_Size);
 
