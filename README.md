@@ -1,8 +1,6 @@
 # Untitled Mech Game
 Personal game project - a 3rd person mech action game made with Unity 2022.3
 
-!!! Project currently freezed due to incoming changes to Unity Engine licencing terms. I'm evaluating and choosing my next main game engine at the moment. I plan on porting this project there after I've chosen an engine that is worth investing time into.
-
 Currently building a vertical slice of the game where all core game systems are in an MVP state.
 All visual assets are pure placeholders and there for game systems development purposes only.
 
